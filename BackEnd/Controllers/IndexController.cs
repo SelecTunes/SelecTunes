@@ -9,9 +9,6 @@ namespace cs309server.Controllers
     public class IndexController : ControllerBase
     {
         [HttpGet]
-        public ActionResult<List<String>> Index()
-        {
-            return new List<String> { "" };
-        }
+        public ActionResult<List<String>> Index() => new List<String> { "" };
     }
 }
