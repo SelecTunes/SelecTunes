@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
-namespace cs309server.Controllers
+namespace SelecTunes.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class IndexController : ControllerBase
     {
         [HttpGet]
-        public ActionResult<List<String>> Index() => new List<String> { "" };
+        public ActionResult<List<String>> Index() => Ok(new List<String> { "" });
     }
 }

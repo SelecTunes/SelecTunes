@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace cs309server.Models
+namespace SelecTunes.Models
 {
     public class User
     {

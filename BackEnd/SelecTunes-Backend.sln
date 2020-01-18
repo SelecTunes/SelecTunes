@@ -1,0 +1,30 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SelecTunes-Backend", "SelecTunes-Backend\SelecTunes-Backend.csproj", "{B32BCCB6-A2F9-42D4-B0E9-9B73A41515A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelecTunes-Backend.Test", "SelecTunes-Backend.Test\SelecTunes-Backend.Test.csproj", "{13650286-D3EA-4DAA-BFB6-92DD380281A5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B32BCCB6-A2F9-42D4-B0E9-9B73A41515A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B32BCCB6-A2F9-42D4-B0E9-9B73A41515A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B32BCCB6-A2F9-42D4-B0E9-9B73A41515A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B32BCCB6-A2F9-42D4-B0E9-9B73A41515A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13650286-D3EA-4DAA-BFB6-92DD380281A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13650286-D3EA-4DAA-BFB6-92DD380281A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13650286-D3EA-4DAA-BFB6-92DD380281A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13650286-D3EA-4DAA-BFB6-92DD380281A5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AD9685EA-A641-4CD3-A199-89650F596019}
+	EndGlobalSection
+EndGlobal

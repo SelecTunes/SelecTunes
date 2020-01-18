@@ -1,11 +1,11 @@
-﻿using cs309server.Models;
+﻿using SelecTunes.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace cs309server.Data
+namespace SelecTunes.Data
 {
     public class ApplicationContext : DbContext
     {
