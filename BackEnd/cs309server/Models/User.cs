@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace cs309server.Models
 {
-    public class Users
+    public class User
     {
         // [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string Name { get; set; }
