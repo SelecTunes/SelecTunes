@@ -26,7 +26,7 @@ namespace cs309server
 
             services.AddDbContext<ApplicationContext>(options =>
             {
-                options.UseNpgsql(Configuration.GetSection("DatabaseConfig")["PostgresSQL"]);
+                options.UseNpgsql(Configuration.GetConnectionString("Default"));
             });
         }
 
