@@ -8,7 +8,17 @@ namespace SelecTunes.Models
 {
     public class User
     {
-        // [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public string Name { get; set; }
+
+        public User(string PhoneNumber, bool IsHost, string UserName)
+        {
+            this.PhoneNumber = PhoneNumber;
+            this.IsHost = IsHost;
+            this.UserName = UserName;
+        }
+
+        public string UserName { get; set; }
+        public string PhoneNumber { get; set; }
+        public bool IsBanned { get; set; }
+        public bool IsHost { get; set; }
     }
 }
