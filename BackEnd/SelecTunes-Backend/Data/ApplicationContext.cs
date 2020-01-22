@@ -11,6 +11,8 @@ namespace SelecTunes.Data
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<HostUser> HostUsers { get; set; }
+
+        public DbSet<Party> Parties { get; set; }
     }
 }

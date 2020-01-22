@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace SelecTunes.Models
 {
-    public class Song
+    public class HostUser : User
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
         public string SpotifyId { get; set; }
     }
 }
