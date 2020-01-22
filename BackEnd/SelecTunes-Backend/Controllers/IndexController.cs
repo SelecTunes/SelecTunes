@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using SelecTunes.Data;
 using SelecTunes.Models;
 
@@ -11,6 +12,8 @@ namespace SelecTunes.Controllers
     public class IndexController : ControllerBase
     {
         private readonly ApplicationContext _context;
+
+        private IDistributedCache _distributedCache;
 
         public IndexController(ApplicationContext context)
         {
