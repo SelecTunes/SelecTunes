@@ -29,11 +29,10 @@ namespace SelecTunes
                 options.UseNpgsql(Configuration.GetConnectionString("Default"));
             });
 
-            services.AddDistributedRedisCache(option =>
-              {
-                  option.Configuration = "127.0.0.1";
-                  option.InstanceName = "master";
-              });
+            services.AddDistributedRedisCache(options =>
+            {
+                options.Configuration = Configuration.GetConnectionString("Redis");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
