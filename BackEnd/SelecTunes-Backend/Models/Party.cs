@@ -24,7 +24,7 @@ namespace SelecTunes.Models
         [NotMapped]
         public List<User> PartyMembers { get; set; }
 
-        public List<User> BannedMembers { get; set; }
+        public List<User> BannedMembers { get; }
 
         public HostUser PartyHost { get; set; }
     }
