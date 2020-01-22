@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+<div class="topnav">
+    <a th:href = "@{'/purchase'}">Purchase A Ticket</a>
+    <a th:href = "@{'/admin'}">Admin Page</a>
+</div>
+<h1>Welcome to the Calculated Distance Center Airport!</h1>
+        <p>We hope you have an amazing flight with us!</p>
+    <h2>Here are the current flights we're offering</h2>
+    <table>
+        <thead>
+        <tr>
+            <th> Source </th>
+            <th> Destination </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="flight : ${flights}">
+            <td><span th:text="${flight.source}"> Source </span></td>
+            <td><span th:text="${flight.destination}"> Destination </span></td>
+        </tr>
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <th> We are serving this many passengers</th>
+        </thead>
+        <tbody>
+        <td><span th:text="${passengernum}"></span></td>
+        </tbody>
+    </table>
+    <footer>
+        <p><small>&copy; 2019 Calculated Distance Center</small></p>
+    </footer>
+</body>
+</html>
