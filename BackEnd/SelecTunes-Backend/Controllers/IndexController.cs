@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
@@ -16,17 +18,20 @@ namespace SelecTunes.Controllers
 
         private IDistributedCache _cache;
 
-        public IndexController(ApplicationContext context, IDistributedCache cache)
+        private IHttpClientFactory _cf;
+
+        public IndexController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory)
         {
             _context = context;
             _cache = cache;
+            _cf = factory;
         }
 
         [HttpGet]
         public ActionResult<List<String>> Index() => Ok(new List<String> { "" });
 
         [HttpGet]
-        public ActionResult<int> Ack() {
+        public async Task<ActionResult<int>> Ack() {
             Random random = new Random();
             Party p = new Party
             {
@@ -49,6 +54,16 @@ namespace SelecTunes.Controllers
             String serial = JsonConvert.SerializeObject(p);
 
             _cache.SetString($"$party:${p.Id}", serial, new DistributedCacheEntryOptions());
+
+            using (HttpClient c = _cf.CreateClient("spotify"))
+            {
+                HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, "me/player/devices");
+
+                HttpResponseMessage s = await c.SendAsync(r).ConfigureAwait(false);
+
+                Console.WriteLine(await s.Content.ReadAsStringAsync().ConfigureAwait(false));
+                r.Dispose();
+            }
 
             return Ok(p.Id);
         }
