@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/text_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Type your phone # in here"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_id"
+        android:layout_width="194dp"
+        android:layout_height="112dp"
+        android:paddingLeft="20px"
+        android:paddingTop="150px"
+        android:text="Click Me"
+        tools:layout_editor_absoluteX="104dp"
+        tools:layout_editor_absoluteY="251dp" />
+
+    <EditText
+        android:id="@+id/phone_number"
+        android:layout_width="243dp"
+        android:layout_height="91dp"
+        android:ems="10"
+        android:inputType="phone"
+        android:paddingLeft="20px"
+        android:paddingTop="600px"
+        tools:layout_editor_absoluteX="99dp"
+        tools:layout_editor_absoluteY="392dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
