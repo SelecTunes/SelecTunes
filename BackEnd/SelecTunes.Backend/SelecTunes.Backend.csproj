@@ -28,4 +28,7 @@
     <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Ingestion\" />
+  </ItemGroup>
 </Project>

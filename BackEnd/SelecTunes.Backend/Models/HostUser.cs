@@ -5,6 +5,6 @@ namespace SelecTunes.Backend.Models
     public class HostUser : User
     {
         [Required]
-        public string SpotifyId { get; set; }
+        public string SpotifyHash { get; set; }
     }
 }

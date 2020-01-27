@@ -30,15 +30,20 @@ namespace SelecTunes.Backend.Controllers
         [HttpGet]
         public ActionResult<List<String>> Index() => Ok(new List<String> { "" });
 
+        /*
+         * This is a ton of example code we wrote for redis and ClientFactory
+         * 
+         * To be used in other method calls such as creating parties, guests, etc.
+         */
         [HttpGet]
         public async Task<ActionResult<int>> Ack() {
             Random random = new Random();
             Party p = new Party
             {
+                // Create a new PartyHost with the following values
                 PartyHost = new HostUser
                 {
-                    Id = Guid.NewGuid(),
-                    SpotifyId = random.Next().ToString(),
+                    SpotifyHash = random.Next().ToString(),
                     UserName = random.Next().ToString(),
                     PhoneNumber = random.Next().ToString(),
                     IsBanned = false,
@@ -48,22 +53,23 @@ namespace SelecTunes.Backend.Controllers
                 Id = random.Next()
             };
 
-            _context.Parties.Add(p);
-            _context.SaveChanges();
 
-            String serial = JsonConvert.SerializeObject(p);
+            _context.Parties.Add(p); // Add a party to the database set of all parties we know about
+            _context.SaveChanges(); // Commit to database
 
-            _cache.SetString($"$party:${p.Id}", serial, new DistributedCacheEntryOptions());
+            String serial = JsonConvert.SerializeObject(p); // Serialize the redis entries, as we only have one cache
 
-            using (HttpClient c = _cf.CreateClient("spotify"))
+            _cache.SetString($"$party:${p.Id}", serial, new DistributedCacheEntryOptions()); // Default never expire //TO TEST LATER
+
+            using (HttpClient c = _cf.CreateClient("spotify")) // create a new client to spotify, see Startup
             {
-                using HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, "me/player/devices");
+                using HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, "me/player/devices"); // go to that route. TODO error handling, pass to phone
                 HttpResponseMessage s = await c.SendAsync(r).ConfigureAwait(false);
 
                 Console.WriteLine(await s.Content.ReadAsStringAsync().ConfigureAwait(false));
             }
 
-            return Ok(p.Id);
+            return Ok(p.Id); // 200
         }
     }
 }

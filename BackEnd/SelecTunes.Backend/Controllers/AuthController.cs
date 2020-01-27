@@ -3,43 +3,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using SelecTunes.Backend.Models.Ingestion;
+using Microsoft.Extensions.Caching.Distributed;
+using SelecTunes.Backend.Data;
+using SelecTunes.Backend.Models;
 
 namespace SelecTunes.Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
-        // GET: api/<controller>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly ApplicationContext _context;
+
+        private readonly IDistributedCache _cache;
+
+        public AuthController(ApplicationContext context, IDistributedCache cache)
         {
-            return new string[] { "value1", "value2" };
+            _context = context;
+            _cache = cache;
         }
 
-        // GET api/<controller>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<controller>
         [HttpPost]
-        public void Post([FromBody]string value)
+        public ActionResult<RedirectResult> Login([FromBody]String newHost)
         {
-        }
+            if (newHost == null)
+            {
+                return new BadRequestObjectResult("Object is null");
+            }
 
-        // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
+            Console.WriteLine(newHost);
 
-        // DELETE api/<controller>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            HostIngestion ingestionHost = JsonConvert.DeserializeObject<HostIngestion>(newHost);
+
+
+            return RedirectToAction("Index");
         }
+        
     }
 }
