@@ -28,8 +28,4 @@
     <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
     <PackageReference Include="SpotifyAPI.Web" Version="4.2.2" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\SongSearchIngestion\" />
-  </ItemGroup>
 </Project>
