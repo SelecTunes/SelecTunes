@@ -1,5 +1,6 @@
 package cs309.selectunes
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -24,11 +25,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragement_login)
         val button = findViewById<Button>(R.id.button)
-        val textBox = findViewById<EditText>(R.id.editText5)
         button.setOnClickListener {
-            setContentView(R.layout.show_phone)
-            val text = findViewById<TextView>(R.id.editText)
-            text.text = textBox.text.toString()
+            val intent = Intent(this, PhoneNumberActivity::class.java)
+            intent.putExtra("phone", findViewById<EditText>(R.id.editText5).text.toString())
+            startActivity(intent)
         }
     }
 }
