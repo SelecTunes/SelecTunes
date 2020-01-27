@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Web;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using SelecTunes.Backend.Data;
@@ -35,32 +37,42 @@ namespace SelecTunes.Backend.Controllers
         }
 
         [HttpPost]
-        public ActionResult<String> SearchBySong([FromBody]SearchQuery songToSearch)
+        public async Task<ActionResult<String>> SearchBySong([FromBody]SearchQuery songToSearch)
         {
             if (songToSearch == null)
             {
                 return new BadRequestObjectResult("Object is null");
             }
-            return Ok("Index");
-        }
 
-        [HttpPost]
-        public ActionResult<String> SearchByAlbum([FromBody]SearchQuery albumToSearch)
-        {
-            if (albumToSearch == null)
+            using (HttpClient c = _cf.CreateClient("spotify")) // create a new client to spotify, see Startup
             {
-                return new BadRequestObjectResult("Object is null");
+                using HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, string.Format("search?limit=10&market=US&type=track&q={0}", HttpUtility.UrlEncode(songToSearch.QueryString)));
+                r.Headers.Add("Authorization", "Bearer BQDUDCfofD74StCVenxbz10pLr4lxt6ipDp1QNQmd8phbPsDs1GX9SB646djq8jRlRu5oPbQhT7gZH3ZFzGHPwc2Wv26B3duKsgfN_ZPgnmR0mroYMkv9Yh2v0tUVENKcGswg7N-w9_-62Q141R_");
+                HttpResponseMessage s = await c.SendAsync(r).ConfigureAwait(false);
+
+                Console.WriteLine(await s.Content.ReadAsStringAsync().ConfigureAwait(false));
             }
+
             return Ok("Index");
         }
 
         [HttpPost]
-        public ActionResult<String> SearchByArtist([FromBody]SearchQuery artistToSearch)
+        public async Task<ActionResult<String>> SearchByArtist([FromBody]SearchQuery artistToSearch)
         {
             if (artistToSearch == null)
             {
                 return new BadRequestObjectResult("Object is null");
             }
+
+            using (HttpClient c = _cf.CreateClient("spotify")) // create a new client to spotify, see Startup
+            {
+                using HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, string.Format("search?limit=10&market=US&type=artist&q={0}", HttpUtility.UrlEncode(artistToSearch.QueryString)));
+                r.Headers.Add("Authorization", "Bearer BQDUDCfofD74StCVenxbz10pLr4lxt6ipDp1QNQmd8phbPsDs1GX9SB646djq8jRlRu5oPbQhT7gZH3ZFzGHPwc2Wv26B3duKsgfN_ZPgnmR0mroYMkv9Yh2v0tUVENKcGswg7N-w9_-62Q141R_");
+                HttpResponseMessage s = await c.SendAsync(r).ConfigureAwait(false);
+
+                Console.WriteLine(await s.Content.ReadAsStringAsync().ConfigureAwait(false));
+            }
+
             return Ok("Index");
         }
     }
