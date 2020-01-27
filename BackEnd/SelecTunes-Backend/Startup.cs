@@ -1,3 +1,4 @@
+using System;
 using SelecTunes.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +28,13 @@ namespace SelecTunes
             services.AddDistributedRedisCache(options =>
             {
                 options.Configuration = Configuration.GetConnectionString("Redis");
+            });
+
+            services.AddHttpClient("spotify", c =>
+            {
+                c.BaseAddress = new Uri("https://api.spotify.com/v1/");
+                c.DefaultRequestHeaders.Add("Accept", "application/json");
+                c.DefaultRequestHeaders.Add("User-Agent", "SelecTunes-Api");
             });
         }
 
