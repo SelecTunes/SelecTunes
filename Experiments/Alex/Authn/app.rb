@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'http'
-require 'json'
 require 'base64'
 
 set port: 8080
@@ -14,8 +13,6 @@ get '/' do
     File.open('response.txt', 'w') do |f|
       f.write(request.params)
     end
-
-    puts "YEET USER: #{@client_id} PASS: #{@client_secret}"
 
     r = HTTP.basic_auth(user: @client_id, pass: @client_secret)
       .post('https://accounts.spotify.com/api/token', form: {
