@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
-using SelecTunes.Data;
-using SelecTunes.Models;
+using SelecTunes.Backend.Data;
+using SelecTunes.Backend.Models;
 
-namespace SelecTunes.Controllers
+namespace SelecTunes.Backend.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -16,9 +16,9 @@ namespace SelecTunes.Controllers
     {
         private readonly ApplicationContext _context;
 
-        private IDistributedCache _cache;
+        private readonly IDistributedCache _cache;
 
-        private IHttpClientFactory _cf;
+        private readonly IHttpClientFactory _cf;
 
         public IndexController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory)
         {
@@ -57,12 +57,10 @@ namespace SelecTunes.Controllers
 
             using (HttpClient c = _cf.CreateClient("spotify"))
             {
-                HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, "me/player/devices");
-
+                using HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, "me/player/devices");
                 HttpResponseMessage s = await c.SendAsync(r).ConfigureAwait(false);
 
                 Console.WriteLine(await s.Content.ReadAsStringAsync().ConfigureAwait(false));
-                r.Dispose();
             }
 
             return Ok(p.Id);

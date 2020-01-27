@@ -1,6 +1,7 @@
 using NUnit.Framework;
+using SelecTunes.Backend;
 
-namespace SelecTunes.Test
+namespace SelecTunes.Backend.Test
 {
     public class ProgramTest
     {

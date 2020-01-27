@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SelecTunes.Models
+namespace SelecTunes.Backend.Models
 {
     public class User
     {
