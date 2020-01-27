@@ -34,14 +34,14 @@
 
     <EditText
         android:id="@+id/phone_number"
-        android:layout_width="243dp"
-        android:layout_height="91dp"
-        android:layout_marginStart="84dp"
-        android:layout_marginTop="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="99dp"
+        android:layout_marginTop="80dp"
         android:ems="10"
         android:inputType="phone"
-        android:paddingLeft="20px"
-        android:paddingTop="800px"
+        android:text="Phone:"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

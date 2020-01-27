@@ -15,7 +15,7 @@ class PhoneNumberExperiment : AppCompatActivity() {
         val sendNum = findViewById<Button>(R.id.button_id)
         sendNum.setOnClickListener {
             val changeActivity = Intent(this, experiment1::class.java)
-            changeActivity.putExtra("Phone Number: ", findViewById<EditText>(R.id.phone_number).text.toString())
+            changeActivity.putExtra("PhoneNumber", findViewById<EditText>(R.id.phone_number).text.toString())
             startActivity(changeActivity)
         }
     }

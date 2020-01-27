@@ -11,7 +11,7 @@ class experiment1 : AppCompatActivity()
         super.onCreate(instanceState)
         setContentView(R.layout.fragment_home)
         val textBox = findViewById<TextView>(R.id.text_home)
-        textBox.text = intent.getStringExtra("Phone Number:")
+        textBox.text = intent.getStringExtra("PhoneNumber")
     }
 
 
