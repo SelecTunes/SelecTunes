@@ -10,12 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="Type your phone # in here"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,20 +24,24 @@
         android:id="@+id/button_id"
         android:layout_width="194dp"
         android:layout_height="112dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginBottom="460dp"
         android:paddingLeft="20px"
-        android:paddingTop="150px"
+        android:paddingTop="1000px"
         android:text="Click Me"
-        tools:layout_editor_absoluteX="104dp"
-        tools:layout_editor_absoluteY="251dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/phone_number"
         android:layout_width="243dp"
         android:layout_height="91dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="60dp"
         android:ems="10"
         android:inputType="phone"
         android:paddingLeft="20px"
-        android:paddingTop="600px"
-        tools:layout_editor_absoluteX="99dp"
-        tools:layout_editor_absoluteY="392dp" />
+        android:paddingTop="800px"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
