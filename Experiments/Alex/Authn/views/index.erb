@@ -1,0 +1,17 @@
+<html>
+  <body>
+    <div>
+      <button id="login">Login</button>
+    </div>
+    <script>
+        (function () {
+            document.getElementById("login").onclick = function() {
+                window.location.href = 'https://accounts.spotify.com/authorize?response_type=code' +
+                    '&client_id=<%= @client_id %>' +
+                    '&scope=' + encodeURIComponent('user-read-private user-read-email') +
+                    '&redirect_uri=' + encodeURIComponent('http://localhost:8080/');
+            }
+        })()
+    </script>
+  </body>
+</html>
