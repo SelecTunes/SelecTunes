@@ -47,10 +47,8 @@ namespace SelecTunes.Backend.Controllers
                     UserName = random.Next().ToString(),
                     PhoneNumber = random.Next().ToString(),
                     IsBanned = false,
-                    IsHost = true
+                    IsHost = false
                 },
-                Name = random.Next().ToString(),
-                Id = random.Next()
             };
 
 
