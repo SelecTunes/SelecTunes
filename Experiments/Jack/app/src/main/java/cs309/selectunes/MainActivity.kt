@@ -26,7 +26,9 @@ class MainActivity : AppCompatActivity() {
         val button = findViewById<Button>(R.id.button)
         val textBox = findViewById<EditText>(R.id.editText5)
         button.setOnClickListener {
-            println(textBox.text.toString())
+            setContentView(R.layout.show_phone)
+            val text = findViewById<TextView>(R.id.editText)
+            text.text = textBox.text.toString()
         }
     }
 }
