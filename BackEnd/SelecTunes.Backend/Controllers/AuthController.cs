@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using SelecTunes.Backend.Models.Ingestion;
 using Microsoft.Extensions.Caching.Distributed;
 using SelecTunes.Backend.Data;
 using SelecTunes.Backend.Models;
@@ -26,19 +22,16 @@ namespace SelecTunes.Backend.Controllers
         }
 
         [HttpPost]
-        public ActionResult<RedirectResult> Login([FromBody]String newHost)
+        public ActionResult<String> Login([FromBody]HostUser newHost)
         {
             if (newHost == null)
             {
                 return new BadRequestObjectResult("Object is null");
             }
 
-            Console.WriteLine(newHost);
+            Console.WriteLine(JsonConvert.SerializeObject(newHost));
 
-            HostIngestion ingestionHost = JsonConvert.DeserializeObject<HostIngestion>(newHost);
-
-
-            return RedirectToAction("Index");
+            return Ok("Index");
         }
         
     }

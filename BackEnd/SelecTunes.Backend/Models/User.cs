@@ -8,19 +8,15 @@ namespace SelecTunes.Backend.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Required]
         public Guid Id { get; set; }
         
-        [Required]
         public string UserName { get; set; }
         
         [Required]
         public string PhoneNumber { get; set; }
         
-        [Required]
         public bool IsBanned { get; set; }
 
-        [Required]
         public bool IsHost { get; set; }
     }
 }
