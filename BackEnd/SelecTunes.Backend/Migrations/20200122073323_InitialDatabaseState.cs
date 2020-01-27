@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace SelecTunesBackend.Migrations
+namespace SelecTunes.Backend.Migrations
 {
     public partial class InitialDatabaseState : Migration
     {

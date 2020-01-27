@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using SelecTunes.Data;
+using SelecTunes.Backend.Data;
 
-namespace SelecTunesBackend.Migrations
+namespace SelecTunes.Backend.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
     [Migration("20200122073323_InitialDatabaseState")]

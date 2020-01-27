@@ -1,4 +1,4 @@
-﻿namespace SelecTunes.Models
+﻿namespace SelecTunes.Backend.Models
 {
     public class Song
     {

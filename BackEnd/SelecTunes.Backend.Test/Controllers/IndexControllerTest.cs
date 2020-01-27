@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
-using SelecTunes.Controllers;
+using SelecTunes.Backend.Controllers;
 using System;
 using System.Collections.Generic;
 
-namespace SelecTunes.Test.Controllers
+namespace SelecTunes.Backend.Test.Controllers
 {
     internal class IndexControllerTest
     {

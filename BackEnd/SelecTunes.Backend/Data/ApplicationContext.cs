@@ -1,11 +1,11 @@
-﻿using SelecTunes.Models;
+﻿using SelecTunes.Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SelecTunes.Data
+namespace SelecTunes.Backend.Data
 {
     public class ApplicationContext : DbContext
     {

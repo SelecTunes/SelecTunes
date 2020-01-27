@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SelecTunes-Backend\SelecTunes-Backend.csproj" />
+    <ProjectReference Include="..\SelecTunes-Backend\SelecTunes.Backend.csproj" />
   </ItemGroup>
 
 </Project>

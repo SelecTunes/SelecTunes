@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SelecTunes.Models
+namespace SelecTunes.Backend.Models
 {
     public class HostUser : User
     {
