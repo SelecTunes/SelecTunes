@@ -11,6 +11,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using System.Net;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -59,16 +60,18 @@ namespace SelecTunes.Backend.Controllers
                 throw new ArgumentNullException(nameof(login));
             }
 
+            string clientHeader = Convert.ToBase64String(
+                Encoding.ASCII.GetBytes(
+                    $"{_config.GetConnectionString("Spotify_ClientId")}:{_config.GetConnectionString("Spotify_ClientSecret")}"
+                )
+            );
+
             using (HttpClient c = _cf.CreateClient("spotify-accounts")) // create a new client to spotify, see Startup
             {
                 // Add the Authorization Header, now that it exists.
                 c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
                     "Basic",
-                    Convert.ToBase64String(
-                        Encoding.ASCII.GetBytes(
-                            $"{_config.GetConnectionString("Spotify_ClientId")}:{_config.GetConnectionString("Spotify_ClientSecret")}"
-                        )
-                    )
+                    clientHeader
                 );
 
                 using (FormUrlEncodedContent formContent = new FormUrlEncodedContent(new[]
@@ -81,11 +84,63 @@ namespace SelecTunes.Backend.Controllers
                     HttpResponseMessage r = await c.PostAsync("token", formContent).ConfigureAwait(false);
 
                     String s = await r.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    dynamic content = JsonConvert.DeserializeObject<dynamic>(s);
+                    Console.WriteLine("Got Response {0}", s);
+
+                    AccessAuthToken content = JsonConvert.DeserializeObject<AccessAuthToken>(s);
                     Console.WriteLine(content);
+                    int attempt = 0;
 
+                    RetryAuth:
+                    using (HttpClient x = _cf.CreateClient("spotify"))
+                    {
+                        Console.WriteLine("Trying with Access {0}", content.AccessToken);
+                        x.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                            "Bearer",
+                            content.AccessToken
+                        );
 
-                    return Ok(s);
+                        HttpResponseMessage w = await x.GetAsync("me").ConfigureAwait(false);
+
+                        Console.WriteLine(w.StatusCode);
+
+                        String b = await w.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                        Console.WriteLine("Response Message {0}", b);
+
+                        if (w.StatusCode == HttpStatusCode.Unauthorized)
+                        {
+                            using (FormUrlEncodedContent fc = new FormUrlEncodedContent(new[]
+                            {
+                                new KeyValuePair<string, string>("grant_type", "refresh_token"),
+                                new KeyValuePair<string, string>("refresh_token", "refresh_token")
+                            }))
+                            {
+                                HttpResponseMessage v = await c.PostAsync("token", fc).ConfigureAwait(false);
+
+                                String t = await r.Content.ReadAsStringAsync().ConfigureAwait(false);
+                                AccessAuthToken tok = JsonConvert.DeserializeObject<AccessAuthToken>(t);
+                                Console.WriteLine("Retrying Auth");
+                                Console.WriteLine(tok.AccessToken);
+                                Console.WriteLine(tok.ExpiresIn);
+                                Console.WriteLine(tok.Scope);
+                                Console.WriteLine(tok.TokenType);
+                                Console.WriteLine(content.RefreshToken);
+                                Console.WriteLine(attempt++);
+
+                                content.AccessToken = tok.AccessToken;
+                                content.ExpiresIn = tok.ExpiresIn;
+                                content.Scope = tok.Scope;
+                                content.TokenType = tok.TokenType;
+
+                                goto RetryAuth;
+                            }
+                        }
+
+                        SpotifyIdentity identity = JsonConvert.DeserializeObject<SpotifyIdentity>(b);
+                        Console.WriteLine(b);
+
+                        return Ok(identity.DisplayName);
+                    }
                 }
             }
         }
