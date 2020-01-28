@@ -7,12 +7,14 @@ using Microsoft.Extensions.Caching.Distributed;
 using SelecTunes.Backend.Data;
 using SelecTunes.Backend.Models.SongSearchIngestion;
 using SpotifyAPI.Web;
+using Newtonsoft.Json;
 
 
 namespace SelecTunes.Backend.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Produces("application/json")]
     public class SongController : ControllerBase
     {
 
@@ -37,23 +39,27 @@ namespace SelecTunes.Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<String>> SearchBySong([FromBody]SearchQuery songToSearch)
+        public async Task<ActionResult> SearchBySong([FromBody]SearchQuery songToSearch)
         {
             if (songToSearch == null)
             {
-                return new BadRequestObjectResult("Object is null");
+                return new BadRequestObjectResult(songToSearch);
             }
 
-            using (HttpClient c = _cf.CreateClient("spotify")) // create a new client to spotify, see Startup
+            using HttpClient c = _cf.CreateClient("spotify");
+            using HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, string.Format("search?limit=10&market=US&type=track&q={0}", HttpUtility.UrlEncode(songToSearch.QueryString)));
+            r.Headers.Add("Authorization", "Bearer BQCMlM1KBu-NaSQSoLBd1GwfrskKB521uVaCZqYnnkOK-EN2hSLRrIg3EgOFzpG_a4HmmYr4vN4A7yoMSpbZDEsLjMGBztphZ5m136DQOPx02nA1mnJ_xWvmPWZWOGltkQX72-DDkWPvJwd-WoEk");
+            HttpResponseMessage s = await c.SendAsync(r).ConfigureAwait(false);
+
+            var ToParse = s.Content.ReadAsStringAsync().Result;
+            var settings = new JsonSerializerSettings
             {
-                using HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, string.Format("search?limit=10&market=US&type=track&q={0}", HttpUtility.UrlEncode(songToSearch.QueryString)));
-                r.Headers.Add("Authorization", "Bearer BQDUDCfofD74StCVenxbz10pLr4lxt6ipDp1QNQmd8phbPsDs1GX9SB646djq8jRlRu5oPbQhT7gZH3ZFzGHPwc2Wv26B3duKsgfN_ZPgnmR0mroYMkv9Yh2v0tUVENKcGswg7N-w9_-62Q141R_");
-                HttpResponseMessage s = await c.SendAsync(r).ConfigureAwait(false);
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+            var SongReponses = JsonConvert.DeserializeObject<SpotifyTracksResponseBody>(ToParse, settings);
 
-                Console.WriteLine(await s.Content.ReadAsStringAsync().ConfigureAwait(false));
-            }
-
-            return Ok("Index");
+            return Ok(SongReponses);
         }
 
         [HttpPost]
@@ -64,16 +70,20 @@ namespace SelecTunes.Backend.Controllers
                 return new BadRequestObjectResult("Object is null");
             }
 
-            using (HttpClient c = _cf.CreateClient("spotify")) // create a new client to spotify, see Startup
+            using HttpClient c = _cf.CreateClient("spotify");
+            using HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, string.Format("search?limit=10&market=US&type=track&q={0}", HttpUtility.UrlEncode(artistToSearch.QueryString)));
+            r.Headers.Add("Authorization", "Bearer BQCMlM1KBu-NaSQSoLBd1GwfrskKB521uVaCZqYnnkOK-EN2hSLRrIg3EgOFzpG_a4HmmYr4vN4A7yoMSpbZDEsLjMGBztphZ5m136DQOPx02nA1mnJ_xWvmPWZWOGltkQX72-DDkWPvJwd-WoEk");
+            HttpResponseMessage s = await c.SendAsync(r).ConfigureAwait(false);
+
+            var ToParse = s.Content.ReadAsStringAsync().Result;
+            var settings = new JsonSerializerSettings
             {
-                using HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, string.Format("search?limit=10&market=US&type=artist&q={0}", HttpUtility.UrlEncode(artistToSearch.QueryString)));
-                r.Headers.Add("Authorization", "Bearer BQDUDCfofD74StCVenxbz10pLr4lxt6ipDp1QNQmd8phbPsDs1GX9SB646djq8jRlRu5oPbQhT7gZH3ZFzGHPwc2Wv26B3duKsgfN_ZPgnmR0mroYMkv9Yh2v0tUVENKcGswg7N-w9_-62Q141R_");
-                HttpResponseMessage s = await c.SendAsync(r).ConfigureAwait(false);
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+            var SongReponses = JsonConvert.DeserializeObject<SpotifyTracksResponseBody>(ToParse, settings);
 
-                Console.WriteLine(await s.Content.ReadAsStringAsync().ConfigureAwait(false));
-            }
-
-            return Ok("Index");
+            return Ok(SongReponses);
         }
     }
 }
