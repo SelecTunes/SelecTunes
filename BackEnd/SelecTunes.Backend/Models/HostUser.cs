@@ -6,5 +6,8 @@ namespace SelecTunes.Backend.Models
     {
         [Required]
         public string SpotifyHash { get; set; }
+
+        [Required]
+        public string Email { get; set; }
     }
 }

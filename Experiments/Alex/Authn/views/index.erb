@@ -9,7 +9,7 @@
                 window.location.href = 'https://accounts.spotify.com/authorize?response_type=code' +
                     '&client_id=<%= @client_id %>' +
                     '&scope=' + encodeURIComponent('user-read-private user-read-email') +
-                    '&redirect_uri=' + encodeURIComponent('http://localhost:8080/');
+                    '&redirect_uri=' + encodeURIComponent('https://localhost:44395/api/auth/callback');
             }
         })()
     </script>

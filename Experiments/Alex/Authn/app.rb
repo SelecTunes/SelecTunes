@@ -18,7 +18,7 @@ get '/' do
       .post('https://accounts.spotify.com/api/token', form: {
         grant_type: 'authorization_code',
         code: request.params['code'],
-        redirect_uri: 'http://localhost:8080/'
+        redirect_uri: 'https://localhost:44395/api/auth/callback'
       })
 
     File.open('id.txt', 'w') do |f|
