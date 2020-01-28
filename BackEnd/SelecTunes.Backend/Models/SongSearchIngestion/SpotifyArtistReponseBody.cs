@@ -15,7 +15,7 @@ namespace SelecTunes.Backend.Models.SongSearchIngestion
         public Uri Href { get; set; }
 
         [JsonProperty("items")]
-        public Item[] Items { get; set; }
+        public ArtistItem[] Items { get; set; }
 
         [JsonProperty("limit")]
         public long Limit { get; set; }
@@ -33,7 +33,7 @@ namespace SelecTunes.Backend.Models.SongSearchIngestion
         public long Total { get; set; }
     }
 
-    public partial class Item
+    public partial class ArtistItem
     {
         [JsonProperty("external_urls")]
         public ExternalUrls ExternalUrls { get; set; }
@@ -51,7 +51,7 @@ namespace SelecTunes.Backend.Models.SongSearchIngestion
         public string Id { get; set; }
 
         [JsonProperty("images")]
-        public Image[] Images { get; set; }
+        public ArtistImage[] Images { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -81,7 +81,7 @@ namespace SelecTunes.Backend.Models.SongSearchIngestion
         public long Total { get; set; }
     }
 
-    public partial class Image
+    public partial class ArtistImage
     {
         [JsonProperty("height")]
         public long Height { get; set; }
