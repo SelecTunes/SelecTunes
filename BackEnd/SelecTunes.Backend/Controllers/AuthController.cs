@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Caching.Distributed;
@@ -27,12 +27,19 @@ namespace SelecTunes.Backend.Controllers
 
         private readonly IConfiguration _config;
 
-        public AuthController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, IConfiguration config)
+        private readonly IOptions<AppSettings> _options;
+        public AuthController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, IConfiguration config, IOptions<AppSettings> options)
         {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             _context = context;
             _cache = cache;
             _cf = factory;
             _config = config;
+            _options = options;
         }
 
         [HttpPost]
