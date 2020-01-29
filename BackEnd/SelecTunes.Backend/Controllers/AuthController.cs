@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Caching.Distributed;
@@ -12,6 +12,8 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Net;
+using SelecTunes.Backend.Helper;
+using Microsoft.Extensions.Options;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -28,6 +30,9 @@ namespace SelecTunes.Backend.Controllers
         private readonly IConfiguration _config;
 
         private readonly IOptions<AppSettings> _options;
+
+        private readonly AuthHelper _auth;
+
         public AuthController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, IConfiguration config, IOptions<AppSettings> options)
         {
             if (options == null)
@@ -40,6 +45,15 @@ namespace SelecTunes.Backend.Controllers
             _cf = factory;
             _config = config;
             _options = options;
+
+            _auth = new AuthHelper()
+            {
+                ClientFactory = _cf,
+                ClientSecret = _options.Value.ClientId,
+                ClientId = _options.Value.ClientSecret,
+                RedirectUrl = _options.Value.RedirectUri,
+            };
+
         }
 
         [HttpPost]
@@ -119,7 +133,7 @@ namespace SelecTunes.Backend.Controllers
                             using (FormUrlEncodedContent fc = new FormUrlEncodedContent(new[]
                             {
                                 new KeyValuePair<string, string>("grant_type", "refresh_token"),
-                                new KeyValuePair<string, string>("refresh_token", "refresh_token")
+                                new KeyValuePair<string, string>("refresh_token", content.RefreshToken)
                             }))
                             {
                                 HttpResponseMessage v = await c.PostAsync("token", fc).ConfigureAwait(false);
