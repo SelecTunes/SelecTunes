@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Caching.Distributed;
@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Net;
 using SelecTunes.Backend.Helper;
 using Microsoft.Extensions.Options;
+using System.Linq;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -74,14 +75,14 @@ namespace SelecTunes.Backend.Controllers
         }
         
         [HttpGet]
-        public async Task<ActionResult<String>> CallbackAsync([FromQuery]SpotifyLogin login)
+        public async Task<ActionResult<String>> Callback([FromQuery]SpotifyLogin login)
         {
             if (login == null)
             {
                 throw new ArgumentNullException(nameof(login));
             }
 
-            string clientHeader = Convert.ToBase64String(
+            /*string clientHeader = Convert.ToBase64String(
                 Encoding.ASCII.GetBytes(
                     $"{_config.GetConnectionString("Spotify_ClientId")}:{_config.GetConnectionString("Spotify_ClientSecret")}"
                 )
@@ -163,7 +164,46 @@ namespace SelecTunes.Backend.Controllers
                         return Ok(identity.DisplayName);
                     }
                 }
+            }*/
+
+            AccessAuthToken tok = await _auth.TransmutAuthCode(login.Code).ConfigureAwait(false);
+
+            using HttpClient c = _cf.CreateClient("spotify");
+
+            c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                "Bearer",
+                tok.AccessToken
+            );
+
+            HttpResponseMessage me = await c.GetAsync(new Uri("me", UriKind.Relative)).ConfigureAwait(false);
+
+            string response = await me.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            var identify = JsonConvert.DeserializeObject<SpotifyIdentity>(response);
+
+            var host = _context.HostUsers.Where(x => x.Email == identify.Email).First();
+
+            if (host == null)
+            {
+                _context.HostUsers.Add(new HostUser
+                {
+                    Email = identify.Email,
+                    SpotifyAccessToken = tok.AccessToken,
+                    SpotifyRefreshToken = tok.RefreshToken,
+                    IsBanned = false,
+                    PhoneNumber = null,
+                    UserName = identify.DisplayName,
+                });
             }
+            else
+            {
+                host.SpotifyAccessToken = tok.AccessToken;
+                host.SpotifyRefreshToken = tok.RefreshToken;
+            }
+
+            _context.SaveChanges();
+
+            return Redirect($"http://localhost:8080?code={login.Code}");
         }
     }
 }
