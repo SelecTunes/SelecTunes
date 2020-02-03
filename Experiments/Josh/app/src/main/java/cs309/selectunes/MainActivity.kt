@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startActivity(Intent(this, PhoneNumberExperiment::class.java))
+        startActivity(Intent(this, HostMenuActivity::class.java))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
