@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Caching.Distributed;
@@ -49,8 +49,8 @@ namespace SelecTunes.Backend.Controllers
             _auth = new AuthHelper()
             {
                 ClientFactory = _cf,
-                ClientSecret = _options.Value.ClientId,
-                ClientId = _options.Value.ClientSecret,
+                ClientSecret = _options.Value.ClientSecret,
+                ClientId = _options.Value.ClientId,
                 RedirectUrl = _options.Value.RedirectUri,
             };
 
