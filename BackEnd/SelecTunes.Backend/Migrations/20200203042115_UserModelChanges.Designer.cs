@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SelecTunes.Backend.Data;
@@ -9,9 +10,10 @@ using SelecTunes.Backend.Data;
 namespace SelecTunes.Backend.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20200203042115_UserModelChanges")]
+    partial class UserModelChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,11 +81,7 @@ namespace SelecTunes.Backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("SpotifyAccessToken")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("SpotifyRefreshToken")
+                    b.Property<string>("SpotifyHash")
                         .IsRequired()
                         .HasColumnType("text");
 
