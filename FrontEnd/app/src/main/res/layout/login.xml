@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:columnCount="2"
+    android:orientation="vertical"
+    android:rowCount="1">
+
+    <EditText
+        android:id="@+id/editText5"
+        android:layout_width="wrap_content"
+        android:layout_height="57dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        android:background="@drawable/round_phone_input"
+        android:ems="10"
+        android:inputType="phone"
+        android:paddingTop="3dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="166dp"
+        android:layout_height="26dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/round_button"
+        android:text="Login" />
+</RelativeLayout>
