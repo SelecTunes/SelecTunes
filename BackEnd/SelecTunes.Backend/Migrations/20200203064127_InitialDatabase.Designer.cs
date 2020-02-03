@@ -10,8 +10,8 @@ using SelecTunes.Backend.Data;
 namespace SelecTunes.Backend.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20200203063049_SpotifyAccessTokens")]
-    partial class SpotifyAccessTokens
+    [Migration("20200203064127_InitialDatabase")]
+    partial class InitialDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
