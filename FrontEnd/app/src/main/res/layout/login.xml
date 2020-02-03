@@ -8,18 +8,40 @@
     android:rowCount="1">
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/phone"
         android:layout_width="wrap_content"
-        android:layout_height="57dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="200dp"
-        android:background="@drawable/round_phone_input"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/login_button"
+        android:layout_alignEnd="@+id/login_button"
+        android:layout_marginEnd="-19dp"
+        android:layout_marginBottom="82dp"
         android:ems="10"
+        android:hint="Phone Number"
         android:inputType="phone"
-        android:paddingTop="3dp" />
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textColorLink="#FFFFFF" />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/login_button"
+        android:layout_alignEnd="@+id/login_button"
+        android:layout_marginEnd="-21dp"
+        android:layout_marginBottom="160dp"
+        android:autoText="false"
+        android:ems="10"
+        android:hint="Username"
+        android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textColorLink="#FFFFFF" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/login_button"
         android:layout_width="166dp"
         android:layout_height="26dp"
         android:layout_centerInParent="true"

@@ -11,10 +11,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
-        val button = findViewById<Button>(R.id.button)
-        val textBox = findViewById<EditText>(R.id.editText5)
+        val button = findViewById<Button>(R.id.login_button)
+        val username = findViewById<EditText>(R.id.username)
+        val phoneNumber = findViewById<EditText>(R.id.phone)
         button.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.putExtra("number", phoneNumber.text)
+            intent.putExtra("username", username.text)
+            startActivity(intent)
         }
     }
 }
