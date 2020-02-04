@@ -10,8 +10,8 @@ using SelecTunes.Backend.Data;
 namespace SelecTunes.Backend.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20200122073323_InitialDatabaseState")]
-    partial class InitialDatabaseState
+    [Migration("20200203064127_InitialDatabase")]
+    partial class InitialDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace SelecTunes.Backend.Migrations
                 .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("SelecTunes.Models.Party", b =>
+            modelBuilder.Entity("SelecTunes.Backend.Models.Party", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,14 +31,8 @@ namespace SelecTunes.Backend.Migrations
                     b.Property<string>("JoinCode")
                         .HasColumnType("text");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
                     b.Property<Guid?>("PartyHostId")
                         .HasColumnType("uuid");
-
-                    b.Property<int>("PartyUID")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -47,7 +41,7 @@ namespace SelecTunes.Backend.Migrations
                     b.ToTable("Parties");
                 });
 
-            modelBuilder.Entity("SelecTunes.Models.User", b =>
+            modelBuilder.Entity("SelecTunes.Backend.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,9 +54,6 @@ namespace SelecTunes.Backend.Migrations
                     b.Property<bool>("IsBanned")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("IsHost")
-                        .HasColumnType("boolean");
-
                     b.Property<int?>("PartyId")
                         .HasColumnType("integer");
 
@@ -71,39 +62,46 @@ namespace SelecTunes.Backend.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PartyId");
 
-                    b.ToTable("User");
+                    b.ToTable("BannedUsers");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("User");
                 });
 
-            modelBuilder.Entity("SelecTunes.Models.HostUser", b =>
+            modelBuilder.Entity("SelecTunes.Backend.Models.HostUser", b =>
                 {
-                    b.HasBaseType("SelecTunes.Models.User");
+                    b.HasBaseType("SelecTunes.Backend.Models.User");
 
-                    b.Property<string>("SpotifyId")
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SpotifyAccessToken")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SpotifyRefreshToken")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasDiscriminator().HasValue("HostUser");
                 });
 
-            modelBuilder.Entity("SelecTunes.Models.Party", b =>
+            modelBuilder.Entity("SelecTunes.Backend.Models.Party", b =>
                 {
-                    b.HasOne("SelecTunes.Models.HostUser", "PartyHost")
+                    b.HasOne("SelecTunes.Backend.Models.HostUser", "PartyHost")
                         .WithMany()
                         .HasForeignKey("PartyHostId");
                 });
 
-            modelBuilder.Entity("SelecTunes.Models.User", b =>
+            modelBuilder.Entity("SelecTunes.Backend.Models.User", b =>
                 {
-                    b.HasOne("SelecTunes.Models.Party", null)
+                    b.HasOne("SelecTunes.Backend.Models.Party", null)
                         .WithMany("BannedMembers")
                         .HasForeignKey("PartyId");
                 });

@@ -14,5 +14,7 @@ namespace SelecTunes.Backend.Data
         public DbSet<HostUser> HostUsers { get; set; }
 
         public DbSet<Party> Parties { get; set; }
+
+        public DbSet<User> BannedUsers { get; set; }
     }
 }
