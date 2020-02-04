@@ -15,6 +15,7 @@ using System.Net;
 using SelecTunes.Backend.Helper;
 using Microsoft.Extensions.Options;
 using System.Linq;
+using System.Globalization;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -34,21 +35,18 @@ namespace SelecTunes.Backend.Controllers
 
         private readonly AuthHelper _auth;
 
+        private readonly Random _rand = new Random();
+
         public AuthController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, IConfiguration config, IOptions<AppSettings> options)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            _context = context;
-            _cache = cache;
-            _cf = factory;
-            _config = config;
-            _options = options;
+            _context = context ?? throw new ArgumentNullException(nameof(context)); // Throw nil arg expection if context is nil.
+            _cache = cache ?? throw new ArgumentNullException(nameof(cache)); // Throw nil arg expection if cache is nil.
+            _cf = factory ?? throw new ArgumentNullException(nameof(factory)); // Throw nil arg expection if factory is nil.
+            _config = config ?? throw new ArgumentNullException(nameof(config)); // Throw nil arg expection if config is nil.
+            _options = options ?? throw new ArgumentNullException(nameof(options)); // Throw nil arg expection if options is nil.
 
             _auth = new AuthHelper()
-            {
+            { // Initialize the Auth Helper.
                 ClientFactory = _cf,
                 ClientSecret = _options.Value.ClientSecret,
                 ClientId = _options.Value.ClientId,
@@ -57,6 +55,7 @@ namespace SelecTunes.Backend.Controllers
 
         }
 
+        // Lol Example Code.
         [HttpPost]
         public ActionResult<String> Login([FromBody]HostUser newHost)
         {
@@ -74,136 +73,77 @@ namespace SelecTunes.Backend.Controllers
             return Ok("Index");
         }
         
+
+        /**
+         * Func Callback(<SpotifyLogin> :login) -> async <ActionResult<String>>
+         * => Party.JoinCode
+         * 
+         * 1. Takes in a Spotify login token, and changes it into a accesstoken.
+         * 2. Then looks if there is this user already in the db. If not, create.
+         * 3. Creates a new party, with a NOT CRYPTOGRAPHICALLY SECURE join code.
+         * 
+         * 03/02/2020 D/M/Y - Alexander Young - Finalize
+         */
         [HttpGet]
         public async Task<ActionResult<String>> Callback([FromQuery]SpotifyLogin login)
         {
             if (login == null)
-            {
+            { // If login is nil, throw a nil arg expection.
                 throw new ArgumentNullException(nameof(login));
             }
 
-            /*string clientHeader = Convert.ToBase64String(
-                Encoding.ASCII.GetBytes(
-                    $"{_config.GetConnectionString("Spotify_ClientId")}:{_config.GetConnectionString("Spotify_ClientSecret")}"
-                )
-            );
+            AccessAuthToken tok = await _auth.TransmutAuthCode(login.Code).ConfigureAwait(false); // Change that login code to an access token and refresh token.
 
-            using (HttpClient c = _cf.CreateClient("spotify-accounts")) // create a new client to spotify, see Startup
-            {
-                // Add the Authorization Header, now that it exists.
-                c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-                    "Basic",
-                    clientHeader
-                );
+            Console.WriteLine(tok);
 
-                using (FormUrlEncodedContent formContent = new FormUrlEncodedContent(new[]
-                {
-                    new KeyValuePair<string, string>("grant_type", "authorization_code"),
-                    new KeyValuePair<string, string>("redirect_uri", "https://localhost:44395/api/auth/callback"),
-                    new KeyValuePair<string, string>("code", login.Code)
-                }))
-                {
-                    HttpResponseMessage r = await c.PostAsync("token", formContent).ConfigureAwait(false);
+            tok = await _auth.AssertValidLogin(tok).ConfigureAwait(false); // Make sure its valid.
 
-                    String s = await r.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    Console.WriteLine("Got Response {0}", s);
-
-                    AccessAuthToken content = JsonConvert.DeserializeObject<AccessAuthToken>(s);
-                    Console.WriteLine(content);
-                    int attempt = 0;
-
-                    RetryAuth:
-                    using (HttpClient x = _cf.CreateClient("spotify"))
-                    {
-                        Console.WriteLine("Trying with Access {0}", content.AccessToken);
-                        x.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-                            "Bearer",
-                            content.AccessToken
-                        );
-
-                        HttpResponseMessage w = await x.GetAsync("me").ConfigureAwait(false);
-
-                        Console.WriteLine(w.StatusCode);
-
-                        String b = await w.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-                        Console.WriteLine("Response Message {0}", b);
-
-                        if (w.StatusCode == HttpStatusCode.Unauthorized)
-                        {
-                            using (FormUrlEncodedContent fc = new FormUrlEncodedContent(new[]
-                            {
-                                new KeyValuePair<string, string>("grant_type", "refresh_token"),
-                                new KeyValuePair<string, string>("refresh_token", content.RefreshToken)
-                            }))
-                            {
-                                HttpResponseMessage v = await c.PostAsync("token", fc).ConfigureAwait(false);
-
-                                String t = await r.Content.ReadAsStringAsync().ConfigureAwait(false);
-                                AccessAuthToken tok = JsonConvert.DeserializeObject<AccessAuthToken>(t);
-                                Console.WriteLine("Retrying Auth");
-                                Console.WriteLine(tok.AccessToken);
-                                Console.WriteLine(tok.ExpiresIn);
-                                Console.WriteLine(tok.Scope);
-                                Console.WriteLine(tok.TokenType);
-                                Console.WriteLine(content.RefreshToken);
-                                Console.WriteLine(attempt++);
-
-                                content.AccessToken = tok.AccessToken;
-                                content.ExpiresIn = tok.ExpiresIn;
-                                content.Scope = tok.Scope;
-                                content.TokenType = tok.TokenType;
-
-                                goto RetryAuth;
-                            }
-                        }
-
-                        SpotifyIdentity identity = JsonConvert.DeserializeObject<SpotifyIdentity>(b);
-                        Console.WriteLine(b);
-
-                        return Ok(identity.DisplayName);
-                    }
-                }
-            }*/
-
-            AccessAuthToken tok = await _auth.TransmutAuthCode(login.Code).ConfigureAwait(false);
-
-            using HttpClient c = _cf.CreateClient("spotify");
+            using HttpClient c = _cf.CreateClient("spotify"); // Create a new client to spotify.
 
             c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
                 "Bearer",
                 tok.AccessToken
-            );
+            ); // Now you are thinking with Bearers.
 
-            HttpResponseMessage me = await c.GetAsync(new Uri("me", UriKind.Relative)).ConfigureAwait(false);
+            HttpResponseMessage me = await c.GetAsync(new Uri("me", UriKind.Relative)).ConfigureAwait(false); // Get the Auth Users information.
 
-            string response = await me.Content.ReadAsStringAsync().ConfigureAwait(false);
+            string response = await me.Content.ReadAsStringAsync().ConfigureAwait(false); // Make it a string.
 
-            var identify = JsonConvert.DeserializeObject<SpotifyIdentity>(response);
+            SpotifyIdentity identify = JsonConvert.DeserializeObject<SpotifyIdentity>(response); // Make it a SpotifyIdentity.
 
-            var host = _context.HostUsers.Where(x => x.Email == identify.Email).First();
+            HostUser host = _context.HostUsers.Where(x => x.Email == identify.Email).FirstOrDefault(); // See if the user exists already.
 
             if (host == null)
-            {
-                _context.HostUsers.Add(new HostUser
+            { // If not, make 'em.
+                host = new HostUser
                 {
                     Email = identify.Email,
                     SpotifyAccessToken = tok.AccessToken,
                     SpotifyRefreshToken = tok.RefreshToken,
                     IsBanned = false,
-                    PhoneNumber = null,
+                    PhoneNumber = "515-555-1234",
                     UserName = identify.DisplayName,
-                });
+                };
+
+                _context.HostUsers.Add(host);
             }
             else
-            {
+            { // If so, update the tokens.
                 host.SpotifyAccessToken = tok.AccessToken;
                 host.SpotifyRefreshToken = tok.RefreshToken;
             }
 
-            _context.SaveChanges();
+            Party party = new Party
+            { // Create a new party with this user as a host.
+                JoinCode = _rand.Next(0, 100000).ToString(CultureInfo.InvariantCulture).PadLeft(6, '0'),
+                PartyHost = host,
+            };
 
-            return Redirect($"http://localhost:8080?code={login.Code}");
+            _context.Parties.Add(party);
+
+            _context.SaveChanges(); // Kommit to DB.
+
+            return Ok(party.JoinCode); // Return Party Join Code.
         }
     }
 }
