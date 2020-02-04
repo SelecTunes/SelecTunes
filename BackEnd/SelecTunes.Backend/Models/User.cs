@@ -16,7 +16,5 @@ namespace SelecTunes.Backend.Models
         public string PhoneNumber { get; set; }
         
         public bool IsBanned { get; set; }
-
-        public bool IsHost { get; set; }
     }
 }
