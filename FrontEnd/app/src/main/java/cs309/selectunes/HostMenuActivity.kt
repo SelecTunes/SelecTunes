@@ -5,14 +5,14 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
-class HostMenuActivity : AppCompatActivity()
-{
-    override fun onCreate(instanceState: Bundle?)
-    {
+class HostMenuActivity : AppCompatActivity() {
+
+    override fun onCreate(instanceState: Bundle?) {
         super.onCreate(instanceState)
         setContentView(R.layout.host_menu_main)
         val guestList = findViewById<Button>(R.id.guestList_id)
         val songList = findViewById<Button>(R.id.songQueue_id)
+        val backButton = findViewById<Button>(R.id.return_id)
 
         guestList.setOnClickListener{
             val toGuestList = Intent(this, GuestListActivity::class.java)
@@ -22,6 +22,10 @@ class HostMenuActivity : AppCompatActivity()
         songList.setOnClickListener{
             val toSongList = Intent(this, SongListActivity::class.java)
             startActivity(toSongList)
+        }
+
+        backButton.setOnClickListener{
+            startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 }
