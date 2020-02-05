@@ -2,21 +2,14 @@ package cs309.selectunes
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.widget.Button
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
-import org.json.JSONObject
 
 class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(instanceState: Bundle?) {
         super.onCreate(instanceState)
-        setContentView(R.layout.login)
+        setContentView(R.layout.login_menu)
         val button = findViewById<Button>(R.id.login_button)
         button.setOnClickListener {
 //            val queue = Volley.newRequestQueue(this)
