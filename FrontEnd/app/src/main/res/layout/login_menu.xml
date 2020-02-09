@@ -47,4 +47,14 @@
         android:layout_centerInParent="true"
         android:background="@drawable/round_button"
         android:text="Login" />
+
+    <Switch
+        android:id="@+id/dark_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/username"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="167dp"
+        android:layout_marginBottom="113dp"
+        android:text="Dark mode" />
 </RelativeLayout>

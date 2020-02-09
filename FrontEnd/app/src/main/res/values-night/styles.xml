@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorSecondaryDark</item>
         <item name="colorAccent">@color/colorSecondaryDark</item>
-        <item name="host_background">@drawable/host_background</item>
+        <item name="host_background">@drawable/dark_host_bg</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -19,4 +19,5 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <attr name="host_background" format="reference"/>
+
 </resources>

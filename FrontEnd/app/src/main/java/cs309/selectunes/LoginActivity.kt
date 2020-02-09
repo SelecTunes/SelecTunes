@@ -3,7 +3,9 @@ package cs309.selectunes
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -11,6 +13,14 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(instanceState)
         setContentView(R.layout.login_menu)
         val button = findViewById<Button>(R.id.login_button)
+        val darkSlider = findViewById<Switch>(R.id.dark_mode)
+        darkSlider.setOnCheckedChangeListener { buttonView, isChecked ->
+            val settings = getSharedPreferences("UserInfo", 0)
+            val editor = settings.edit()
+            editor.putBoolean("dark_mode", isChecked)
+            editor.apply()
+        }
+
         button.setOnClickListener {
 //            val queue = Volley.newRequestQueue(this)
 //            val json = JSONObject()

@@ -5,12 +5,21 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+
 
 class HostMenuActivity : AppCompatActivity() {
 
     override fun onCreate(instanceState: Bundle?) {
         super.onCreate(instanceState)
         setContentView(R.layout.test_host_menu)
+
+        val settings = getSharedPreferences("UserInfo", 0)
+        if(settings.getBoolean("dark_mode", true)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
 
         val guestList = findViewById<Button>(R.id.guest_list)
         val songList = findViewById<Button>(R.id.song_list)
