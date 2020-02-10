@@ -7,7 +7,8 @@ import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 
-
+//https://colorhunt.co/palette/69667
+//https://colorhunt.co/palette/2763
 class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(instanceState: Bundle?) {
@@ -38,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
 //                println("There was an error with the response.")
 //            })
 //            //queue.add(authRequest)
-            startActivity(Intent(this, HostMenuActivity::class.java))
+            startActivity(Intent(this, ChooseActivity::class.java))
         }
     }
 

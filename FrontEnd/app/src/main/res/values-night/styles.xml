@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorSecondaryDark</item>
         <item name="host_background">@drawable/dark_host_bg</item>
         <item name="login_background">@drawable/dark_login_bg</item>
+        <item name="choose_background">@drawable/choose_menu_dark</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -21,4 +22,5 @@
 
     <attr name="host_background" format="reference"/>
     <attr name="login_background" format="reference"/>
+    <attr name="choose_background" format="reference"/>
 </resources>

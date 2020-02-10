@@ -7,4 +7,5 @@
     <color name="outlineColor">#005691</color>
     <color name="colorBright">#00adb5</color>
     <color name="loginButton">#005691</color>
+    <color name="loginButtonText">#FAFAFA</color>
 </resources>

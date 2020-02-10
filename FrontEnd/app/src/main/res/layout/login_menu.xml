@@ -8,23 +8,6 @@
     android:rowCount="1">
 
     <EditText
-        android:id="@+id/phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/login_button"
-        android:layout_alignEnd="@+id/login_button"
-        android:layout_marginEnd="-19dp"
-        android:layout_marginBottom="82dp"
-        android:backgroundTint="@color/outlineColor"
-        android:ems="10"
-        android:hint="Phone Number"
-        android:inputType="phone"
-        android:textColor="@color/colorText"
-        android:textColorHighlight="@color/colorText"
-        android:textColorHint="@color/colorText"
-        android:textColorLink="@color/colorText" />
-
-    <EditText
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,10 +16,27 @@
         android:layout_marginEnd="-21dp"
         android:layout_marginBottom="160dp"
         android:autoText="false"
-        android:backgroundTint="@color/outlineColor"
+        android:backgroundTint="@color/colorText"
         android:ems="10"
         android:hint="Username"
         android:inputType="textPersonName"
+        android:textColor="@color/colorText"
+        android:textColorHighlight="@color/colorText"
+        android:textColorHint="@color/colorText"
+        android:textColorLink="@color/colorText" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/login_button"
+        android:layout_alignEnd="@+id/username"
+        android:layout_marginEnd="-1dp"
+        android:layout_marginBottom="81dp"
+        android:backgroundTint="@color/colorText"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
         android:textColor="@color/colorText"
         android:textColorHighlight="@color/colorText"
         android:textColorHint="@color/colorText"
@@ -48,7 +48,8 @@
         android:layout_height="26dp"
         android:layout_centerInParent="true"
         android:background="@drawable/round_button"
-        android:text="Login" />
+        android:text="Login"
+        android:textColor="@color/loginButtonText" />
 
     <Switch
         android:id="@+id/dark_mode"
@@ -58,5 +59,6 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="148dp"
         android:layout_marginBottom="-306dp"
-        android:text="Dark mode" />
+        android:text="Dark mode"
+        android:textColor="@color/colorText" />
 </RelativeLayout>

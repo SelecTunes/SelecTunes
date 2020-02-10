@@ -7,4 +7,5 @@
     <color name="colorTextHost">#eeeeee</color>
     <color name="outlineColor">#393e46</color>
     <color name="loginButton">#393e46</color>
+    <color name="loginButtonText">#eeeeee</color>
 </resources>
