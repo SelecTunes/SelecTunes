@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 
 
 class LoginActivity : AppCompatActivity() {
@@ -14,8 +15,13 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.login_menu)
         val button = findViewById<Button>(R.id.login_button)
         val darkSlider = findViewById<Switch>(R.id.dark_mode)
+
+        val settings = getSharedPreferences("UserInfo", 0)
+        darkSlider.isChecked = settings.getBoolean("dark_mode", false)
+        checkDarkMode(darkSlider.isChecked)
         darkSlider.setOnCheckedChangeListener { buttonView, isChecked ->
-            val settings = getSharedPreferences("UserInfo", 0)
+            checkDarkMode(isChecked)
+            recreate()
             val editor = settings.edit()
             editor.putBoolean("dark_mode", isChecked)
             editor.apply()
@@ -33,6 +39,14 @@ class LoginActivity : AppCompatActivity() {
 //            })
 //            //queue.add(authRequest)
             startActivity(Intent(this, HostMenuActivity::class.java))
+        }
+    }
+
+    private fun checkDarkMode(isChecked: Boolean) {
+        if(isChecked) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
 }

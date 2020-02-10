@@ -14,13 +14,6 @@ class HostMenuActivity : AppCompatActivity() {
         super.onCreate(instanceState)
         setContentView(R.layout.test_host_menu)
 
-        val settings = getSharedPreferences("UserInfo", 0)
-        if(settings.getBoolean("dark_mode", true)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
-
         val guestList = findViewById<Button>(R.id.guest_list)
         val songList = findViewById<Button>(R.id.song_list)
         val backArrow = findViewById<Button>(R.id.back_arrow)

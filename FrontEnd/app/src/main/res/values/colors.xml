@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#344B8C</color>
-    <color name="colorSecondaryDark">#FFFFFF</color>
-    <color name="colorText">#344B8C</color>
-    <color name="outlineColor">#344B8C</color>
+    <color name="colorPrimary">#005691</color>
+    <color name="colorSecondaryDark">#FAFAFA</color>
+    <color name="colorText">#005691</color>
+    <color name="colorTextHost">#005691</color>
+    <color name="outlineColor">#005691</color>
+    <color name="colorBright">#00adb5</color>
+    <color name="loginButton">#005691</color>
 </resources>

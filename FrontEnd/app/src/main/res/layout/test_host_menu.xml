@@ -15,7 +15,7 @@
         android:background="@drawable/host_menu_button_bg"
         android:outlineProvider="none"
         android:text="End Party"
-        android:textColor="@color/colorText" />
+        android:textColor="@color/colorTextHost" />
 
     <Button
         android:id="@+id/song_list"
@@ -30,7 +30,7 @@
         android:background="@drawable/host_menu_button_bg"
         android:outlineProvider="none"
         android:text="Song List"
-        android:textColor="@color/colorText" />
+        android:textColor="@color/colorTextHost" />
 
     <Button
         android:id="@+id/moderators"
@@ -45,7 +45,7 @@
         android:background="@drawable/host_menu_button_bg"
         android:outlineProvider="none"
         android:text="moderators"
-        android:textColor="@color/colorText" />
+        android:textColor="@color/colorTextHost" />
 
     <Button
         android:id="@+id/explicit"
@@ -60,7 +60,7 @@
         android:background="@drawable/host_menu_button_bg"
         android:outlineProvider="none"
         android:text="Explicit"
-        android:textColor="@color/colorText" />
+        android:textColor="@color/colorTextHost" />
 
     <Button
         android:id="@+id/guest_list"
@@ -75,7 +75,7 @@
         android:background="@drawable/host_menu_button_bg"
         android:outlineProvider="none"
         android:text="Guest List"
-        android:textColor="@color/colorText" />
+        android:textColor="@color/colorTextHost" />
 
     <Button
         android:id="@+id/back_arrow"
@@ -97,7 +97,7 @@
         android:layout_marginEnd="21dp"
         android:layout_marginBottom="299dp"
         android:text="TextView"
-        android:textColor="@color/colorText"
+        android:textColor="@color/colorTextHost"
         android:textSize="59sp" />
 
 </RelativeLayout>
