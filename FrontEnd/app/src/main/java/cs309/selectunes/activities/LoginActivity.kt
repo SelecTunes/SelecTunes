@@ -1,4 +1,4 @@
-package cs309.selectunes
+package cs309.selectunes.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,10 +7,16 @@ import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.android.volley.NetworkResponse
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.gms.auth.api.credentials.Credential
+import com.google.android.gms.auth.api.credentials.Credentials
+import com.google.android.gms.auth.api.credentials.CredentialsClient
+import cs309.selectunes.R
 import cs309.selectunes.utils.NukeSSLCerts
+
 
 //https://colorhunt.co/palette/69667
 //https://colorhunt.co/palette/2763
@@ -55,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun login(email: String, password: String) {
-        val stringRequest = object: StringRequest(Method.POST, "https://coms-309-jr-2.cs.iastate.edu/api/auth/login", Response.Listener {
+            val stringRequest = object: StringRequest(Method.POST, "https://coms-309-jr-2.cs.iastate.edu/api/auth/login", Response.Listener {
             startActivity(Intent(this, ChooseActivity::class.java))
             println(it)
         }, Response.ErrorListener {
@@ -74,6 +80,16 @@ class LoginActivity : AppCompatActivity() {
                 headers["Content-Type"] = "application/x-www-form-urlencoded"
                 headers["Accept"] = "application/json, text/json"
                 return headers
+            }
+
+            override fun parseNetworkResponse(response: NetworkResponse?): Response<String> {
+                val responseHeaders = response?.headers
+                val rawCookies = responseHeaders?.get("Set-Cookie") ?: error("Cookie not found!")
+                val search = ".AspNetCore.Identity.Application="
+                val cookie = rawCookies.substring(rawCookies.indexOf(search) + search.length, rawCookies.indexOf(';'))
+                val settings = getSharedPreferences("Cookie", 0)
+                settings.edit().putString("cookie", cookie).apply()
+                return super.parseNetworkResponse(response)
             }
         }
         val requestQueue = Volley.newRequestQueue(this)

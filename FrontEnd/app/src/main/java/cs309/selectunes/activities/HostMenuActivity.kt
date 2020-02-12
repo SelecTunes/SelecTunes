@@ -1,11 +1,11 @@
-package cs309.selectunes
+package cs309.selectunes.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
+import cs309.selectunes.R
 
 
 class HostMenuActivity : AppCompatActivity() {

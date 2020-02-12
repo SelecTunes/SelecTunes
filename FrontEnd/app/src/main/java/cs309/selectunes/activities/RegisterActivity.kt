@@ -1,14 +1,14 @@
-package cs309.selectunes
+package cs309.selectunes.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import cs309.selectunes.R
 import cs309.selectunes.utils.NukeSSLCerts
 
 class RegisterActivity: AppCompatActivity() {
