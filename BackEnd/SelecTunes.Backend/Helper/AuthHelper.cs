@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SelecTunes.Backend.Helper.Exceptions;
 using SelecTunes.Backend.Models.Auth;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,6 @@ namespace SelecTunes.Backend.Helper
                     )
                 ); // Encode the Client ID and Client Secret to Base 64
 
-                
                 c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
                     "Basic",
                     clientHeader
@@ -66,7 +66,7 @@ namespace SelecTunes.Backend.Helper
             }
         }
 
-        public async Task<AccessAuthToken> AssertValidLogin(AccessAuthToken token)
+        public async Task<AccessAuthToken> AssertValidLogin(AccessAuthToken token, Boolean loopUntilSuccess)
         {
             if (token == null)
             {
@@ -80,7 +80,7 @@ namespace SelecTunes.Backend.Helper
 
             using HttpClient c = ClientFactory.CreateClient("spotify-accounts");
 
-            while (true)
+            do
             { // While the token is invalid, repeat.
                 using FormUrlEncodedContent formContent = new FormUrlEncodedContent(new[]
                 { // See https://developer.spotify.com/documentation/general/guides/authorization-guide/
@@ -93,6 +93,8 @@ namespace SelecTunes.Backend.Helper
                     formContent
                 ).ConfigureAwait(false); // Post it over to spotify.
 
+                var x = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
                 if (response.IsSuccessStatusCode)
                 { // If the response is successful, deserialize it to a AccessToken and return that.
                     string responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -104,12 +106,9 @@ namespace SelecTunes.Backend.Helper
 
                 // If not successful, sleep for 500 milliseconds, and retry.
                 Thread.Sleep(500);
-            } // POTENTIAL INFINITE LOOP CONDITION. If spotify never returns a succesful response, this code will loop forever.
-        }
+            } while (loopUntilSuccess); // POTENTIAL INFINITE LOOP CONDITION. If spotify never returns a succesful response AND loopUntilSuccess is true, this code will loop forever.
 
-        public string TryLogin(string x)
-        {
-            return x;
+            throw new InvalidAuthTokenRecievedException("Unable to assert authentication is valid");
         }
     }
 }
