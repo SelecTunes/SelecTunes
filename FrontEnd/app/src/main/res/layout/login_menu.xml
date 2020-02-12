@@ -74,4 +74,14 @@
         android:layout_marginBottom="-220dp"
         android:text="Register"
         android:textColor="@color/colorText" />
+
+    <TextView
+        android:id="@+id/login_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/login_email"
+        android:layout_alignEnd="@+id/login_email"
+        android:layout_marginEnd="-42dp"
+        android:layout_marginBottom="-155dp"
+        android:textColor="@color/colorText" />
 </RelativeLayout>

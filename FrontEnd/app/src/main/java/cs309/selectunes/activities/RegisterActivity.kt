@@ -9,6 +9,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import cs309.selectunes.R
+import cs309.selectunes.utils.JsonUtils
 import cs309.selectunes.utils.NukeSSLCerts
 
 class RegisterActivity: AppCompatActivity() {
@@ -29,7 +30,8 @@ class RegisterActivity: AppCompatActivity() {
 
     private fun register(email: String, password: String, passwordConfirmed: String) {
         val stringRequest = object: StringRequest(Method.POST, "https://coms-309-jr-2.cs.iastate.edu/api/auth/register", Response.Listener {
-            startActivity(Intent(this, LoginActivity::class.java))
+            val success = JsonUtils.parseRegisterResponse(this, it)
+            if (success) startActivity(Intent(this, LoginActivity::class.java))
             println(it)
         }, Response.ErrorListener {
             println("There was an error with the response. Code: ${it.networkResponse.statusCode}")
