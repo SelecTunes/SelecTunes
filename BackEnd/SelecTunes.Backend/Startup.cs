@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.HttpOverrides;
 using System.Net;
+using Microsoft.OpenApi.Models;
 
 namespace SelecTunes.Backend
 {
@@ -46,6 +47,11 @@ namespace SelecTunes.Backend
                 c.DefaultRequestHeaders.Add("User-Agent", "SelecTunes-Api");
             });
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SelecTunesApi", Version = "v1" });
+            });
+
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
             services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -74,6 +80,16 @@ namespace SelecTunes.Backend
                     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
                 });
             }
+
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
             app.UseHttpsRedirection();
 
             app.UseRouting();

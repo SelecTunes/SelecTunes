@@ -42,14 +42,14 @@ namespace SelecTunes.Backend.Controllers
         }
 
         [HttpPost]
-        public ActionResult<String> LeaveParty([FromBody]User newUser)
+        public ActionResult<String> LeaveParty([FromBody]User toLeave)
         {
-            if (newUser == null)
+            if (toLeave == null)
             {
                 return new BadRequestObjectResult("Object is null");
             }
 
-            Console.WriteLine(JsonConvert.SerializeObject(newUser));
+            Console.WriteLine(JsonConvert.SerializeObject(toLeave));
 
             return Ok("Index");
         }
