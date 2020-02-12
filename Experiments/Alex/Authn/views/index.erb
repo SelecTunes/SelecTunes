@@ -6,6 +6,22 @@
     <script>
         (function () {
             document.getElementById("login").onclick = function() {
+                // let request = new XMLHttpRequest();
+
+                //request.onreadystatechange = function () {
+                //  console.log(this);
+               // };
+
+                // request.open("GET",
+                //  'https://accounts.spotify.com/authorize?response_type=code' +
+                //    '&client_id=<%= @client_id %>' +
+                //    '&scope=' + encodeURIComponent('user-read-private user-read-email') +
+                    // '&redirect_uri=' + encodeURIComponent('http://localhost:8080');
+                //    '&redirect_uri=' + encodeURIComponent('https://localhost:44395/api/auth/callback')
+                // );
+
+                // request.send();
+
                 window.location.href = 'https://accounts.spotify.com/authorize?response_type=code' +
                     '&client_id=<%= @client_id %>' +
                     '&scope=' + encodeURIComponent('user-read-private user-read-email') +

@@ -16,11 +16,15 @@ using SelecTunes.Backend.Helper;
 using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace SelecTunes.Backend.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [AllowAnonymous]
     public class AuthController : ControllerBase
     {
         private readonly ApplicationContext _context;
@@ -37,13 +41,19 @@ namespace SelecTunes.Backend.Controllers
 
         private readonly Random _rand = new Random();
 
-        public AuthController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, IConfiguration config, IOptions<AppSettings> options)
+        private readonly UserManager<IdentityUser> _userManager;
+
+        private readonly SignInManager<IdentityUser> _signInManager;
+
+        public AuthController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, IConfiguration config, IOptions<AppSettings> options, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context)); // Throw nil arg expection if context is nil.
             _cache = cache ?? throw new ArgumentNullException(nameof(cache)); // Throw nil arg expection if cache is nil.
             _cf = factory ?? throw new ArgumentNullException(nameof(factory)); // Throw nil arg expection if factory is nil.
             _config = config ?? throw new ArgumentNullException(nameof(config)); // Throw nil arg expection if config is nil.
             _options = options ?? throw new ArgumentNullException(nameof(options)); // Throw nil arg expection if options is nil.
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager)); // "
+            _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager)); // "
 
             _auth = new AuthHelper()
             { // Initialize the Auth Helper.
@@ -52,25 +62,84 @@ namespace SelecTunes.Backend.Controllers
                 ClientId = _options.Value.ClientId,
                 RedirectUrl = _options.Value.RedirectUri,
             };
-
         }
 
-        // Lol Example Code.
+        /**
+         * Func Register(<InputModel> :model) -> async <ActionResult<String>>
+         * => SignInResult.Succeeded
+         * 
+         * 1. Takes a username and password.
+         * 2. Attempt Register with Identity.
+         * 3. Return Result.
+         * 
+         * 11/02/2020 D/M/Y - Alexander Young - Finalize
+         */
         [HttpPost]
-        public ActionResult<String> Login([FromBody]HostUser newHost)
+        public async Task<ActionResult<String>> Register([FromForm]InputModel model)
         {
-            if (newHost == null)
+            if (model == null)
             {
-                return new BadRequestObjectResult("Object is null");
+                throw new ArgumentNullException(nameof(model));
             }
 
-            Console.WriteLine(JsonConvert.SerializeObject(newHost));
+            if (ModelState.IsValid)
+            {
+                IdentityUser user = new IdentityUser { Email = model.Email, EmailConfirmed = true, UserName = model.Email };
+                IdentityResult x = await _userManager.CreateAsync(user, model.Password).ConfigureAwait(false);
 
-            // String serial = JsonConvert.SerializeObject(p); // Serialize the redis entries, as we only have one cache
+                if (x.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, true).ConfigureAwait(false);
+                    return new JsonResult(true);
+                }
 
-            // _cache.SetString($"$party:${p.Id}", serial, new DistributedCacheEntryOptions()); // Default never expire //TO TEST LATER
+                return new JsonResult(x.Errors);
+            }
 
-            return Ok("Index");
+            return new JsonResult(ModelState);
+        }
+
+        /**
+         * Func Login(<InputModel> :model) -> async <ActionResult<String>>
+         * => SignInResult.Succeeded
+         * 
+         * 1. Takes a username and password.
+         * 2. Attempt Login with Identity.
+         * 3. Return Result.
+         * 
+         * 11/02/2020 D/M/Y - Alexander Young - Finalize
+         */
+        [HttpPost]
+        public async Task<ActionResult<String>> Login([FromForm]InputModel model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            if (ModelState.IsValid)
+            {
+                Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, true, lockoutOnFailure: false).ConfigureAwait(false);
+                
+                if (result.Succeeded)
+                {
+                   return new JsonResult(new { Success = true });
+                }
+
+                if (result.IsNotAllowed)
+                {
+                    return new JsonResult(new { Success = false, Error = "Account Is Not Allowed Login" });
+                }
+
+                if (result.IsLockedOut)
+                {
+                    return new JsonResult(new { Success = false, Error = "Account Is Locked Out" });
+                }
+
+                return new JsonResult(new { Success = false, Error = "Login Failure" });
+            }
+
+            return new JsonResult(ModelState);
         }
         
 
@@ -85,7 +154,7 @@ namespace SelecTunes.Backend.Controllers
          * 03/02/2020 D/M/Y - Alexander Young - Finalize
          */
         [HttpGet]
-        public async Task<ActionResult<String>> Callback([FromQuery]SpotifyLogin login)
+        public async Task<JsonResult> Callback([FromQuery]SpotifyLogin login)
         {
             if (login == null)
             { // If login is nil, throw a nil arg expection.
@@ -96,7 +165,7 @@ namespace SelecTunes.Backend.Controllers
 
             Console.WriteLine(tok);
 
-            tok = await _auth.AssertValidLogin(tok).ConfigureAwait(false); // Make sure its valid.
+            tok = await _auth.AssertValidLogin(tok, false).ConfigureAwait(false); // Make sure its valid.
 
             using HttpClient c = _cf.CreateClient("spotify"); // Create a new client to spotify.
 
@@ -112,6 +181,8 @@ namespace SelecTunes.Backend.Controllers
             SpotifyIdentity identify = JsonConvert.DeserializeObject<SpotifyIdentity>(response); // Make it a SpotifyIdentity.
 
             HostUser host = _context.HostUsers.Where(x => x.Email == identify.Email).FirstOrDefault(); // See if the user exists already.
+
+            System.IO.File.WriteAllText("responses.txt", response);
 
             if (host == null)
             { // If not, make 'em.
@@ -143,7 +214,7 @@ namespace SelecTunes.Backend.Controllers
 
             _context.SaveChanges(); // Kommit to DB.
 
-            return Ok(party.JoinCode); // Return Party Join Code.
+            return new JsonResult(party.JoinCode); // Return Party Join Code.
         }
     }
 }

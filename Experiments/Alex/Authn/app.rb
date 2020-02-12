@@ -31,3 +31,7 @@ get '/' do
 
   erb :index
 end
+
+get '/auth' do
+  erb :auth
+end
