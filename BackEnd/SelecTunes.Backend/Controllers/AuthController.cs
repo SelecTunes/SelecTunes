@@ -8,23 +8,18 @@ using SelecTunes.Backend.Models.Auth;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
-using System.Text;
 using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using System.Net;
 using SelecTunes.Backend.Helper;
 using Microsoft.Extensions.Options;
-using System.Linq;
 using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace SelecTunes.Backend.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [AllowAnonymous]
     public class AuthController : ControllerBase
     {
         private readonly ApplicationContext _context;
@@ -41,11 +36,11 @@ namespace SelecTunes.Backend.Controllers
 
         private readonly Random _rand = new Random();
 
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<User> _userManager;
 
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public AuthController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, IConfiguration config, IOptions<AppSettings> options, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AuthController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, IConfiguration config, IOptions<AppSettings> options, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context)); // Throw nil arg expection if context is nil.
             _cache = cache ?? throw new ArgumentNullException(nameof(cache)); // Throw nil arg expection if cache is nil.
@@ -62,6 +57,17 @@ namespace SelecTunes.Backend.Controllers
                 ClientId = _options.Value.ClientId,
                 RedirectUrl = _options.Value.RedirectUri,
             };
+        }
+
+        // Example Code to get the Currently Logged In User.
+        [HttpGet]
+        public async Task<ActionResult<String>> GetCurrentUserEmail()
+        {
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
+
+            Console.WriteLine(user);
+
+            return user.Email;
         }
 
         /**
@@ -84,16 +90,16 @@ namespace SelecTunes.Backend.Controllers
 
             if (ModelState.IsValid)
             {
-                IdentityUser user = new IdentityUser { Email = model.Email, EmailConfirmed = true, UserName = model.Email };
-                IdentityResult x = await _userManager.CreateAsync(user, model.Password).ConfigureAwait(false);
+                User user = new User { Email = model.Email, EmailConfirmed = true, UserName = model.Email };
+                IdentityResult identityResult = await _userManager.CreateAsync(user, model.Password).ConfigureAwait(false);
 
-                if (x.Succeeded)
+                if (identityResult.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, true).ConfigureAwait(false);
                     return new JsonResult(true);
                 }
 
-                return new JsonResult(x.Errors);
+                return new JsonResult(identityResult.Errors);
             }
 
             return new JsonResult(ModelState);
@@ -119,7 +125,7 @@ namespace SelecTunes.Backend.Controllers
 
             if (ModelState.IsValid)
             {
-                Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, true, lockoutOnFailure: false).ConfigureAwait(false);
+                SignInResult result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, true, lockoutOnFailure: false).ConfigureAwait(false);
                 
                 if (result.Succeeded)
                 {
@@ -154,7 +160,8 @@ namespace SelecTunes.Backend.Controllers
          * 03/02/2020 D/M/Y - Alexander Young - Finalize
          */
         [HttpGet]
-        public async Task<JsonResult> Callback([FromQuery]SpotifyLogin login)
+        [Authorize]
+        public async Task<ActionResult<String>> Callback([FromQuery]SpotifyLogin login)
         {
             if (login == null)
             { // If login is nil, throw a nil arg expection.
@@ -180,29 +187,18 @@ namespace SelecTunes.Backend.Controllers
 
             SpotifyIdentity identify = JsonConvert.DeserializeObject<SpotifyIdentity>(response); // Make it a SpotifyIdentity.
 
-            HostUser host = _context.HostUsers.Where(x => x.Email == identify.Email).FirstOrDefault(); // See if the user exists already.
-
             System.IO.File.WriteAllText("responses.txt", response);
 
-            if (host == null)
-            { // If not, make 'em.
-                host = new HostUser
-                {
-                    Email = identify.Email,
-                    SpotifyAccessToken = tok.AccessToken,
-                    SpotifyRefreshToken = tok.RefreshToken,
-                    IsBanned = false,
-                    PhoneNumber = "515-555-1234",
-                    UserName = identify.DisplayName,
-                };
+            User host = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
-                _context.HostUsers.Add(host);
+            if (host == null)
+            { // If not, reject
+                return new BadRequestObjectResult(new { Success = false, Error = "User has not yet registered with the Identity Provider." });
             }
-            else
-            { // If so, update the tokens.
-                host.SpotifyAccessToken = tok.AccessToken;
-                host.SpotifyRefreshToken = tok.RefreshToken;
-            }
+            
+            // If so, update the tokens.
+            host.SpotifyAccessToken = tok.AccessToken;
+            host.SpotifyRefreshToken = tok.RefreshToken;
 
             Party party = new Party
             { // Create a new party with this user as a host.
@@ -214,7 +210,7 @@ namespace SelecTunes.Backend.Controllers
 
             _context.SaveChanges(); // Kommit to DB.
 
-            return new JsonResult(party.JoinCode); // Return Party Join Code.
+            return new JsonResult(new { JoinCode = party.JoinCode }); // Return Party Join Code.
         }
     }
 }
