@@ -62,12 +62,26 @@ namespace SelecTunes.Backend.Controllers
                 ClientId = _options.Value.ClientId,
                 RedirectUrl = _options.Value.RedirectUri,
             };
-
         }
 
+        /**
+         * Func Register(<InputModel> :model) -> async <ActionResult<String>>
+         * => SignInResult.Succeeded
+         * 
+         * 1. Takes a username and password.
+         * 2. Attempt Register with Identity.
+         * 3. Return Result.
+         * 
+         * 11/02/2020 D/M/Y - Alexander Young - Finalize
+         */
         [HttpPost]
         public async Task<ActionResult<String>> Register([FromForm]InputModel model)
         {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
             if (ModelState.IsValid)
             {
                 IdentityUser user = new IdentityUser { Email = model.Email, EmailConfirmed = true, UserName = model.Email };
@@ -85,22 +99,44 @@ namespace SelecTunes.Backend.Controllers
             return new JsonResult(ModelState);
         }
 
-        // Login.
+        /**
+         * Func Login(<InputModel> :model) -> async <ActionResult<String>>
+         * => SignInResult.Succeeded
+         * 
+         * 1. Takes a username and password.
+         * 2. Attempt Login with Identity.
+         * 3. Return Result.
+         * 
+         * 11/02/2020 D/M/Y - Alexander Young - Finalize
+         */
         [HttpPost]
         public async Task<ActionResult<String>> Login([FromForm]InputModel model)
         {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
             if (ModelState.IsValid)
             {
-                IdentityUser user = new IdentityUser { Email = model.Email, EmailConfirmed = true, UserName = model.Email };
-                //IdentityResult x = await _userManager.CreateAsync(user, model.Password).ConfigureAwait(false);
+                Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, true, lockoutOnFailure: false).ConfigureAwait(false);
+                
+                if (result.Succeeded)
+                {
+                   return new JsonResult(new { Success = true });
+                }
 
-                //if (x.Succeeded)
-                //{
-                    await _signInManager.SignInAsync(user, true).ConfigureAwait(false);
-                    return new JsonResult(true);
-                //}
+                if (result.IsNotAllowed)
+                {
+                    return new JsonResult(new { Success = false, Error = "Account Is Not Allowed Login" });
+                }
 
-                //return new JsonResult(x.Errors);
+                if (result.IsLockedOut)
+                {
+                    return new JsonResult(new { Success = false, Error = "Account Is Locked Out" });
+                }
+
+                return new JsonResult(new { Success = false, Error = "Login Failure" });
             }
 
             return new JsonResult(ModelState);
