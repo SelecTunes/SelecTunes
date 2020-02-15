@@ -70,6 +70,7 @@ namespace SelecTunes.Backend.Helper
         {
             if (token == null)
             {
+
                 throw new ArgumentNullException(nameof(token));
             }
 
