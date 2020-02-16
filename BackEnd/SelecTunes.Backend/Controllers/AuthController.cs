@@ -49,6 +49,7 @@ namespace SelecTunes.Backend.Controllers
             _options = options ?? throw new ArgumentNullException(nameof(options)); // Throw nil arg expection if options is nil.
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager)); // "
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager)); // "
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger)); // "
 
             _auth = new AuthHelper()
             { // Initialize the Auth Helper.
@@ -85,8 +86,12 @@ namespace SelecTunes.Backend.Controllers
         {
             if (model == null)
             {
+                _logger.LogError("INPUT MODEL IS NULL");
                 throw new ArgumentNullException(nameof(model));
             }
+
+            _logger.LogDebug("DEBUG");
+            _logger.LogDebug("REGISTERING USER: {}", model.Email);
 
             if (ModelState.IsValid)
             {
@@ -120,6 +125,7 @@ namespace SelecTunes.Backend.Controllers
         {
             if (model == null)
             {
+                _logger.LogError("LOGIN MODEL IS NULL");
                 throw new ArgumentNullException(nameof(model));
             }
 

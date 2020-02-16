@@ -4,8 +4,11 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/colorSecondaryDark</item>
+        <item name="colorAccent">@color/colorSecondaryDark</item>
+        <item name="host_background">@drawable/host_background</item>
+        <item name="login_background">@drawable/background</item>
+        <item name="choose_background">@drawable/choose_menu_dark</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -17,4 +20,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <attr name="host_background" format="reference"/>
+    <attr name="login_background" format="reference"/>
+    <attr name="choose_background" format="reference"/>
 </resources>
