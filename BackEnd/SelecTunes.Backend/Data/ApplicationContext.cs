@@ -8,11 +8,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace SelecTunes.Backend.Data
 {
-    public class ApplicationContext : IdentityDbContext
+    public class ApplicationContext : IdentityDbContext<User>
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
-
-        public DbSet<HostUser> HostUsers { get; set; }
 
         public DbSet<Party> Parties { get; set; }
 

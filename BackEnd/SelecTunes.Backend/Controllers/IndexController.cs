@@ -41,7 +41,7 @@ namespace SelecTunes.Backend.Controllers
             Party p = new Party
             {
                 // Create a new PartyHost with the following values
-                PartyHost = new HostUser
+                PartyHost = new User
                 {
                     SpotifyAccessToken = random.Next().ToString(),
                     UserName = random.Next().ToString(),
