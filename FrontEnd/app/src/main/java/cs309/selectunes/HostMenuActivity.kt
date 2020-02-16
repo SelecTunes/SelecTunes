@@ -16,6 +16,8 @@ import org.json.JSONObject
 
 class HostMenuActivity : AppCompatActivity()
 {
+
+    var songList = ArrayList<Song>()
     override fun onCreate(instanceState: Bundle?)
     {
         super.onCreate(instanceState)
@@ -42,6 +44,8 @@ class HostMenuActivity : AppCompatActivity()
             //val toSongList = Intent(this, SongListActivity::class.java)
             //startActivity(toSongList)
         }
+
+
 
     }
 
@@ -70,15 +74,35 @@ class HostMenuActivity : AppCompatActivity()
     private fun parseJson(jsonBack : JSONObject)
     {
         println("Parsing JSON")
-        val jsonTop = jsonBack.getJSONObject("tracks")
-        val jsonArr = jsonTop.getJSONArray("items")
-        for(x in 0..10)
+        val jsonTracks = jsonBack.getJSONObject("tracks")
+        val jsonItems = jsonTracks.getJSONArray("items")
+        for(x in 0..9)
         {
-            var thisSong = Song()
-            val song = jsonArr.getJSONObject(x)
-            val info = song.getJSONObject("name")
-            println(info.toString())
-            //thisSong.songName = info.
+            var newSong = Song()
+            val jsonSong = jsonItems.getJSONObject(x)
+            val song = jsonSong.get("name")
+            println(song)
+
+            newSong.songName = song.toString()
+
+            val explicit = jsonSong.getBoolean("explicit")
+            println(explicit)
+
+            newSong.explicitBool = explicit
+
+            val artist = jsonSong.get("artist")
+
+            newSong.artistName = artist.toString()
+
+            val jsonAlbum = jsonSong.getJSONObject("album")
+            val albumArt = jsonAlbum.getJSONArray("images")
+            val firstSize = albumArt.getJSONObject(0)
+            val imageUrl = firstSize.get("url")
+            println(imageUrl)
+
+            newSong.albumArtSrc = imageUrl.toString()
+
+            songList.add(newSong)
         }
 
     }
