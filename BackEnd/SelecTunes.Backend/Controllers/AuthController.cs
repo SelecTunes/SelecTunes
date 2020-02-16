@@ -77,13 +77,14 @@ namespace SelecTunes.Backend.Controllers
         [HttpPost]
         public async Task<ActionResult<String>> Register([FromForm]InputModel model)
         {
-            _logger.LogDebug("DEBUG");
-            _logger.LogDebug(String.Format("REGISTERING USER: {}"), model.Email);
             if (model == null)
             {
                 _logger.LogError("INPUT MODEL IS NULL");
                 throw new ArgumentNullException(nameof(model));
             }
+
+            _logger.LogDebug("DEBUG");
+            _logger.LogDebug("REGISTERING USER: {}", model.Email);
 
             if (ModelState.IsValid)
             {
@@ -117,7 +118,7 @@ namespace SelecTunes.Backend.Controllers
         {
             if (model == null)
             {
-                _logger.LogError(String.Format("LOGIN MODEL IS NULL {}"), model);
+                _logger.LogError("LOGIN MODEL IS NULL");
                 throw new ArgumentNullException(nameof(model));
             }
 
