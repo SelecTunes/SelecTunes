@@ -21,7 +21,7 @@ class ChooseActivity : AppCompatActivity() {
         val joinButton = findViewById<Button>(R.id.join_party_button)
 
         createButton.setOnClickListener {
-            startActivity(Intent(this, HostMenuActivity::class.java))
+            SpotifyUtils.login(this)
         }
 
         joinButton.setOnClickListener {
@@ -33,15 +33,13 @@ class ChooseActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, intent)
         if (requestCode == REQUEST_CODE) {
             val response = AuthenticationClient.getResponse(resultCode, intent)
-            when (response.type) {
-                AuthenticationResponse.Type.TOKEN -> {
-                    println("SPOTIFY RESPONSE: ${response.accessToken}")
-                }
-                AuthenticationResponse.Type.ERROR -> {
-                    println("SPOTIFY ERRORED")
-                }
-                else -> {
-                }
+            if (response.type == AuthenticationResponse.Type.CODE) {
+                println("SPOTIFY RESPONSE: ${response.code}")
+                // TODO: Send code
+                startActivity(Intent(this, HostMenuActivity::class.java))
+            }
+            else if (response.type == AuthenticationResponse.Type.ERROR) {
+                println("SPOTIFY ERRORED")
             }
         }
     }
