@@ -23,21 +23,30 @@ object JsonUtils {
         return success
     }
 
-    fun parseRegisterResponse(activity: AppCompatActivity, body: String): Boolean {
+    fun parseRegisterResponse(activity: AppCompatActivity, body: String?, status: Int): Boolean {
+        val registerError = activity.findViewById<TextView>(R.id.register_error)
         if (body == "true") {
+            registerError.text = ""
             return true
         }
-        val json = JSONArray(body)
-        val registerError = activity.findViewById<TextView>(R.id.register_error)
-        if (json.getJSONObject(0).has("errors")) {
-            registerError.text = json.getJSONObject(0).getJSONArray("ConfirmPassword").getString(0)
-            return false
-        } else if (json.getJSONObject(0).has("description")) {
-            registerError.text = json.getJSONObject(0).getString("description")
-            return false
-        } else {
-            registerError.text = ""
+        var json: JSONArray? = null
+        if (body != null) {
+            json = JSONArray(body)
         }
-        return true
+        return when {
+            status == 400 -> {
+                registerError.text = "The passwords don't match."
+                false
+            }
+            json?.getJSONObject(0)!!.has("errors") -> {
+                registerError.text = json.getJSONObject(0).getJSONArray("ConfirmPassword").getString(0)
+                false
+            }
+            json?.getJSONObject(0).has("description") -> {
+                registerError.text = json.getJSONObject(0).getString("description")
+                false
+            }
+            else -> true
+        }
     }
 }
