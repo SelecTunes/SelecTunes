@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import cs309.selectunes.Guest
 import cs309.selectunes.R
 
 class GuestListActivity : AppCompatActivity()
