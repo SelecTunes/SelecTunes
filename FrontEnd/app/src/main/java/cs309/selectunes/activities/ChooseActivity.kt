@@ -33,8 +33,8 @@ class ChooseActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, intent)
         if (requestCode == REQUEST_CODE) {
             val response = AuthenticationClient.getResponse(resultCode, intent)
-            if (response.type == AuthenticationResponse.Type.CODE) {
-                println("SPOTIFY RESPONSE: ${response.code}")
+            if (response.type == AuthenticationResponse.Type.TOKEN) {
+                println("SPOTIFY RESPONSE: ${response.accessToken}")
                 // TODO: Send code
                 startActivity(Intent(this, HostMenuActivity::class.java))
             }
