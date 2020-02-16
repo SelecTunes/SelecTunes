@@ -1,11 +1,13 @@
 <html>
   <body>
     <div>
-      <button id="login">Login</button>
+      <button id="loginSpotify">Login to Spotify</button>
+      <a href="/auth" id="register">Register</a>
+      <a href="/auth/login" id="login">Login</a>
     </div>
     <script>
         (function () {
-            document.getElementById("login").onclick = function() {
+            document.getElementById("loginSpotify").onclick = function() {
                 // let request = new XMLHttpRequest();
 
                 //request.onreadystatechange = function () {
@@ -26,7 +28,7 @@
                     '&client_id=<%= @client_id %>' +
                     '&scope=' + encodeURIComponent('user-read-private user-read-email') +
                     // '&redirect_uri=' + encodeURIComponent('http://localhost:8080');
-                    '&redirect_uri=' + encodeURIComponent('https://localhost:44395/api/auth/callback');
+                    '&redirect_uri=' + encodeURIComponent('https://coms-309-jr-2.cs.iastate.edu/api/auth/callback');
             }
         })()
     </script>

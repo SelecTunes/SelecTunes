@@ -80,6 +80,17 @@ namespace SelecTunes.Backend.Helper
 
             using HttpClient c = ClientFactory.CreateClient("spotify-accounts");
 
+            string clientHeader = Convert.ToBase64String(
+                Encoding.ASCII.GetBytes(
+                    $"{ClientId}:{ClientSecret}"
+                )
+            ); // Encode the Client ID and Client Secret to Base 64
+
+            c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                "Basic",
+                clientHeader
+            ); // Add the Authorization Header, now that it exists.
+
             do
             { // While the token is invalid, repeat.
                 using FormUrlEncodedContent formContent = new FormUrlEncodedContent(new[]
@@ -93,7 +104,7 @@ namespace SelecTunes.Backend.Helper
                     formContent
                 ).ConfigureAwait(false); // Post it over to spotify.
 
-                var x = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                String x = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
                 { // If the response is successful, deserialize it to a AccessToken and return that.

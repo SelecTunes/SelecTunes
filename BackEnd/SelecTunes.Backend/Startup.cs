@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.HttpOverrides;
 using System.Net;
 using Microsoft.OpenApi.Models;
-using Microsoft.Extensions.Logging;
+using SelecTunes.Backend.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace SelecTunes.Backend
 {
@@ -55,12 +56,41 @@ namespace SelecTunes.Backend
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
-            services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationContext>();
+            
+
+            services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 8;
+
+                options.Lockout.AllowedForNewUsers = false;
+                options.Lockout.MaxFailedAccessAttempts = 3;
+
+                options.User.RequireUniqueEmail = true;
+            }).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationContext>();
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.KnownProxies.Add(IPAddress.Parse("127.0.0.1"));
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.SlidingExpiration = true;
+
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+                options.Cookie.IsEssential = true;
+                options.Cookie.Name = "Holtzmann";
+                options.Cookie.SameSite = SameSiteMode.None;
+
+                options.LoginPath = "/api/Auth/Login";
+                options.AccessDeniedPath = "/Api/Auth/AccessDenied";
             });
         }
 
@@ -71,6 +101,7 @@ namespace SelecTunes.Backend
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
