@@ -1,13 +1,10 @@
-package cs309.selectunes
+package cs309.selectunes.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-
-private lateinit var linearLayoutManager: LinearLayoutManager
+import cs309.selectunes.R
 
 class SongListActivity : AppCompatActivity()
 {
@@ -15,10 +12,6 @@ class SongListActivity : AppCompatActivity()
     {
         super.onCreate(instanceState)
         setContentView(R.layout.song_list_layout)
-
-        linearLayoutManager = LinearLayoutManager(this)
-        var songRecycler = findViewById<RecyclerView>(R.id.song_recycler)
-        songRecycler.layoutManager = linearLayoutManager
 
         val returnButton = findViewById<Button>(R.id.return_id)
 

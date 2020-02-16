@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#222831</color>
+    <color name="colorSecondaryDark">#393e46</color>
+    <color name="colorText">#eeeeee</color>
+    <color name="colorBright">#00adb5</color>
+    <color name="colorTextHost">#eeeeee</color>
+    <color name="outlineColor">#393e46</color>
+    <color name="loginButton">#393e46</color>
+    <color name="loginButtonText">#eeeeee</color>
+</resources>
