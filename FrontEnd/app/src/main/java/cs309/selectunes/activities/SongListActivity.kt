@@ -1,9 +1,10 @@
-package cs309.selectunes
+package cs309.selectunes.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import cs309.selectunes.R
 
 class SongListActivity : AppCompatActivity()
 {

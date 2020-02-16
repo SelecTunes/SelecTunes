@@ -6,8 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorSecondaryDark</item>
         <item name="colorAccent">@color/colorSecondaryDark</item>
-        <item name="host_background">@drawable/host_background</item>
-        <item name="login_background">@drawable/background</item>
+        <item name="host_background">@drawable/dark_host_bg</item>
+        <item name="login_background">@drawable/dark_login_bg</item>
         <item name="choose_background">@drawable/choose_menu_dark</item>
     </style>
 
