@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/login_background"
+    android:columnCount="2"
+    android:orientation="vertical"
+    android:rowCount="1">
+
+    <EditText
+        android:id="@+id/register_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/register_button"
+        android:layout_alignEnd="@+id/register_email"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="97dp"
+        android:backgroundTint="@color/colorText"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textColor="@color/colorText"
+        android:textColorHighlight="@color/colorText"
+        android:textColorHint="@color/colorText"
+        android:textColorLink="@color/colorText" />
+
+    <EditText
+        android:id="@+id/register_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/register_button"
+        android:layout_alignEnd="@+id/register_button"
+        android:layout_marginEnd="-21dp"
+        android:layout_marginBottom="160dp"
+        android:autoText="false"
+        android:backgroundTint="@color/colorText"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:textColor="@color/colorText"
+        android:textColorHighlight="@color/colorText"
+        android:textColorHint="@color/colorText"
+        android:textColorLink="@color/colorText" />
+
+    <EditText
+        android:id="@+id/register_confirm_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/register_button"
+        android:layout_alignEnd="@+id/register_email"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="33dp"
+        android:backgroundTint="@color/colorText"
+        android:ems="10"
+        android:hint="Confirm Password"
+        android:inputType="textPassword"
+        android:textColor="@color/colorText"
+        android:textColorHighlight="@color/colorText"
+        android:textColorHint="@color/colorText"
+        android:textColorLink="@color/colorText" />
+
+    <Button
+        android:id="@+id/register_button"
+        android:layout_width="166dp"
+        android:layout_height="26dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/round_button"
+        android:text="Register"
+        android:textColor="@color/loginButtonText" />
+
+    <TextView
+        android:id="@+id/register_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/register_button"
+        android:layout_alignEnd="@+id/register_confirm_password"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="6dp"
+        android:textColor="@color/colorText" />
+
+</RelativeLayout>
