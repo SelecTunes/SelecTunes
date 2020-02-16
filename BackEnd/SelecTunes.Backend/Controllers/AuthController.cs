@@ -8,17 +8,14 @@ using SelecTunes.Backend.Models.Auth;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
-using System.Text;
 using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using System.Net;
 using SelecTunes.Backend.Helper;
 using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.Extensions.Logging;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -45,7 +42,9 @@ namespace SelecTunes.Backend.Controllers
 
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public AuthController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, IConfiguration config, IOptions<AppSettings> options, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        private readonly ILogger<AuthController> _logger;
+
+        public AuthController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, IConfiguration config, IOptions<AppSettings> options, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ILogger<AuthController> logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context)); // Throw nil arg expection if context is nil.
             _cache = cache ?? throw new ArgumentNullException(nameof(cache)); // Throw nil arg expection if cache is nil.
@@ -54,6 +53,7 @@ namespace SelecTunes.Backend.Controllers
             _options = options ?? throw new ArgumentNullException(nameof(options)); // Throw nil arg expection if options is nil.
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager)); // "
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager)); // "
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger)); // "
 
             _auth = new AuthHelper()
             { // Initialize the Auth Helper.
@@ -79,8 +79,12 @@ namespace SelecTunes.Backend.Controllers
         {
             if (model == null)
             {
+                _logger.LogError("INPUT MODEL IS NULL");
                 throw new ArgumentNullException(nameof(model));
             }
+
+            _logger.LogDebug("DEBUG");
+            _logger.LogDebug("REGISTERING USER: {}", model.Email);
 
             if (ModelState.IsValid)
             {
@@ -114,6 +118,7 @@ namespace SelecTunes.Backend.Controllers
         {
             if (model == null)
             {
+                _logger.LogError("LOGIN MODEL IS NULL");
                 throw new ArgumentNullException(nameof(model));
             }
 

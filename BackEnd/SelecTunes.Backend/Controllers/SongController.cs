@@ -8,6 +8,7 @@ using SelecTunes.Backend.Data;
 using SelecTunes.Backend.Models.SongSearchIngestion;
 using SpotifyAPI.Web;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
 
 
 namespace SelecTunes.Backend.Controllers
@@ -26,8 +27,11 @@ namespace SelecTunes.Backend.Controllers
 
         private readonly IHttpClientFactory _cf;
 
-        public SongController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory)
+        private readonly ILogger<SongController> _logger;
+
+        public SongController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, ILogger<SongController> logger)
         {
+            _logger = logger;
             _context = context;
             _cache = cache;
             _cf = factory;
@@ -38,19 +42,29 @@ namespace SelecTunes.Backend.Controllers
             };
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<ActionResult> SearchBySong([FromBody]SearchQuery songToSearch)
         {
+            _logger.LogDebug("DEBUG");
+            _logger.LogDebug(String.Format("Querying song with query: {}", songToSearch.QueryString));
             if (songToSearch == null)
             {
+                _logger.LogDebug("DEBUG");
+                _logger.LogDebug(String.Format("SEARCH OBJECT IS NULL: {}"), songToSearch);
                 return new BadRequestObjectResult(songToSearch);
             }
 
             using HttpClient c = _cf.CreateClient("spotify");
             using HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, string.Format("search?limit=10&market=US&type=track&q={0}", HttpUtility.UrlEncode(songToSearch.QueryString)));
-            r.Headers.Add("Authorization", "Bearer BQCMlM1KBu-NaSQSoLBd1GwfrskKB521uVaCZqYnnkOK-EN2hSLRrIg3EgOFzpG_a4HmmYr4vN4A7yoMSpbZDEsLjMGBztphZ5m136DQOPx02nA1mnJ_xWvmPWZWOGltkQX72-DDkWPvJwd-WoEk");
+            r.Headers.Add("Authorization", "Bearer BQCBSSO9dcOc4_4UL8F7SMkL_LuLIh6wI-umLaa26CRZiAGSjI8xY-dOpQl6v8DrpXKYXIGrPz9Iuq-1WjU4Ja0mrVqHb7srQXThMy_xG_I5vaz3stKvVs_dc-1zGMKHIgAloa2sZayLF7cny4ws");
             HttpResponseMessage s = await c.SendAsync(r).ConfigureAwait(false);
-
+            if (s.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                _logger.LogError("WARN");
+                _logger.LogError("403 UNAUTHORIZED");
+                return Unauthorized("Please try again");
+            }
+     
             var ToParse = s.Content.ReadAsStringAsync().Result;
             var settings = new JsonSerializerSettings
             {
@@ -58,23 +72,32 @@ namespace SelecTunes.Backend.Controllers
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
             var SongReponses = JsonConvert.DeserializeObject<SpotifyTracksResponseBody>(ToParse, settings);
-
+           
             return Ok(SongReponses);
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<ActionResult<String>> SearchByArtist([FromBody]SearchQuery artistToSearch)
         {
+            _logger.LogDebug("DEBUG");
+            _logger.LogDebug(String.Format("Querying artist with query: {}", artistToSearch.QueryString));
             if (artistToSearch == null)
             {
+                _logger.LogDebug("DEBUG");
+                _logger.LogDebug(String.Format("SEARCH OBJECT IS NULL: {}"), artistToSearch);
                 return new BadRequestObjectResult("Object is null");
             }
 
             using HttpClient c = _cf.CreateClient("spotify");
             using HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, string.Format("search?limit=10&market=US&type=track&q={0}", HttpUtility.UrlEncode(artistToSearch.QueryString)));
-            r.Headers.Add("Authorization", "Bearer BQCMlM1KBu-NaSQSoLBd1GwfrskKB521uVaCZqYnnkOK-EN2hSLRrIg3EgOFzpG_a4HmmYr4vN4A7yoMSpbZDEsLjMGBztphZ5m136DQOPx02nA1mnJ_xWvmPWZWOGltkQX72-DDkWPvJwd-WoEk");
+            r.Headers.Add("Authorization", "Bearer BQCBSSO9dcOc4_4UL8F7SMkL_LuLIh6wI-umLaa26CRZiAGSjI8xY-dOpQl6v8DrpXKYXIGrPz9Iuq-1WjU4Ja0mrVqHb7srQXThMy_xG_I5vaz3stKvVs_dc-1zGMKHIgAloa2sZayLF7cny4ws");
             HttpResponseMessage s = await c.SendAsync(r).ConfigureAwait(false);
-
+            if (s.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                _logger.LogError("WARN");
+                _logger.LogError("403 UNAUTHORIZED");
+                return Unauthorized("Please try again");
+            }
             var ToParse = s.Content.ReadAsStringAsync().Result;
             var settings = new JsonSerializerSettings
             {
