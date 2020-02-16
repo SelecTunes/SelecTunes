@@ -13,7 +13,5 @@ namespace SelecTunes.Backend.Data
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
 
         public DbSet<Party> Parties { get; set; }
-
-        public DbSet<User> BannedUsers { get; set; }
     }
 }
