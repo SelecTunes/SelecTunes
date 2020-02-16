@@ -34,7 +34,7 @@ class RegisterActivity: AppCompatActivity() {
             if (success) startActivity(Intent(this, LoginActivity::class.java))
             println(it)
         }, Response.ErrorListener {
-            val success = JsonUtils.parseRegisterResponse(this, null, it.networkResponse.statusCode)
+            JsonUtils.parseRegisterResponse(this, null, it.networkResponse.statusCode)
             println("There was an error with the response. Code: ${it.networkResponse.statusCode}")
         }) {
             override fun getParams(): Map<String, String> {

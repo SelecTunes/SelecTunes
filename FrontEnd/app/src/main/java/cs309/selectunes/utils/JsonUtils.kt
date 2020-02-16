@@ -38,11 +38,15 @@ object JsonUtils {
                 registerError.text = "The passwords don't match."
                 false
             }
+            status == 500 -> {
+                registerError.text = "The server is down."
+                false
+            }
             json?.getJSONObject(0)!!.has("errors") -> {
                 registerError.text = json.getJSONObject(0).getJSONArray("ConfirmPassword").getString(0)
                 false
             }
-            json?.getJSONObject(0).has("description") -> {
+            json.getJSONObject(0).has("description") -> {
                 registerError.text = json.getJSONObject(0).getString("description")
                 false
             }

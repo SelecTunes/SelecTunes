@@ -43,11 +43,6 @@ class HostMenuActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val textView = findViewById<TextView>(R.id.session_id)
-        val source = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789"
-        val randomString = (1..6)
-                .map { i -> kotlin.random.Random.nextInt(0, source.length) }
-                .map(source::get)
-                .joinToString("")
-        textView.text = randomString
+        textView.text = intent.getStringExtra("code")
     }
 }

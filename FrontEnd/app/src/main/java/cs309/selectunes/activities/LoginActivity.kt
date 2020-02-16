@@ -85,7 +85,8 @@ class LoginActivity : AppCompatActivity() {
                 val responseHeaders = response?.headers
                 val rawCookies = responseHeaders?.get("Set-Cookie")
                 if (rawCookies != null) {
-                    val search = ".AspNetCore.Identity.Application="
+                    println("Cookie Before: $rawCookies")
+                    val search = "Holtzmann="
                     val cookie = rawCookies.substring(rawCookies.indexOf(search) + search.length, rawCookies.indexOf(';'))
                     val settings = getSharedPreferences("Cookie", 0)
                     settings.edit().putString("cookie", cookie).apply()
