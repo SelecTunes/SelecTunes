@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using SelecTunes.Backend.Data;
 using SelecTunes.Backend.Models.SongSearchIngestion;
-using SpotifyAPI.Web;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Logging;
-
+using Microsoft.AspNetCore.Identity;
+using SelecTunes.Backend.Models;
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -18,9 +20,6 @@ namespace SelecTunes.Backend.Controllers
     [Produces("application/json")]
     public class SongController : ControllerBase
     {
-
-        private static SpotifyWebAPI _spotify;
-
         private readonly ApplicationContext _context;
 
         private readonly IDistributedCache _cache;
@@ -29,20 +28,20 @@ namespace SelecTunes.Backend.Controllers
 
         private readonly ILogger<SongController> _logger;
 
-        public SongController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, ILogger<SongController> logger)
+        private readonly UserManager<User> _userManager;
+
+        public SongController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, ILogger<SongController> logger, UserManager<User> userManager)
         {
-            _logger = logger;
-            _context = context;
-            _cache = cache;
-            _cf = factory;
-            _spotify = new SpotifyWebAPI()
-            {
-                AccessToken = "REEEEEE",
-                TokenType = "Bearer"
-            };
+
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+            _cf = factory ?? throw new ArgumentNullException(nameof(factory));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult> SearchBySong([FromBody]SearchQuery songToSearch)
         {
             _logger.LogDebug("DEBUG");
@@ -54,9 +53,13 @@ namespace SelecTunes.Backend.Controllers
                 return new BadRequestObjectResult(songToSearch);
             }
 
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false); // get the current user identity
+            Party MemberOf = _context.Parties.Where(p => p.PartyMembers.Contains(user)).FirstOrDefault(); // find which party they are a member of
+            string BearerCode = MemberOf.PartyHost.SpotifyAccessToken; // get the access token of that party's host
+
             using HttpClient c = _cf.CreateClient("spotify");
             using HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, string.Format("search?limit=10&market=US&type=track&q={0}", HttpUtility.UrlEncode(songToSearch.QueryString)));
-            r.Headers.Add("Authorization", "Bearer BQCBSSO9dcOc4_4UL8F7SMkL_LuLIh6wI-umLaa26CRZiAGSjI8xY-dOpQl6v8DrpXKYXIGrPz9Iuq-1WjU4Ja0mrVqHb7srQXThMy_xG_I5vaz3stKvVs_dc-1zGMKHIgAloa2sZayLF7cny4ws");
+            r.Headers.Add("Authorization", String.Format("Bearer {0}", BearerCode));
             HttpResponseMessage s = await c.SendAsync(r).ConfigureAwait(false);
             if (s.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
