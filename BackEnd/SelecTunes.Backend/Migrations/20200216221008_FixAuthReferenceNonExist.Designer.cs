@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SelecTunes.Backend.Data;
@@ -9,9 +10,10 @@ using SelecTunes.Backend.Data;
 namespace SelecTunes.Backend.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20200216221008_FixAuthReferenceNonExist")]
+    partial class FixAuthReferenceNonExist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,8 +166,7 @@ namespace SelecTunes.Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PartyHostId")
-                        .IsUnique();
+                    b.HasIndex("PartyHostId");
 
                     b.ToTable("Parties");
                 });
@@ -302,13 +303,13 @@ namespace SelecTunes.Backend.Migrations
             modelBuilder.Entity("SelecTunes.Backend.Models.Party", b =>
                 {
                     b.HasOne("SelecTunes.Backend.Models.User", "PartyHost")
-                        .WithOne()
-                        .HasForeignKey("SelecTunes.Backend.Models.Party", "PartyHostId");
+                        .WithMany()
+                        .HasForeignKey("PartyHostId");
                 });
 
             modelBuilder.Entity("SelecTunes.Backend.Models.User", b =>
                 {
-                    b.HasOne("SelecTunes.Backend.Models.Party", "Party")
+                    b.HasOne("SelecTunes.Backend.Models.Party", null)
                         .WithMany("PartyMembers")
                         .HasForeignKey("PartyId");
                 });

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using SelecTunes.Backend.Models;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using System.Net;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -44,8 +45,6 @@ namespace SelecTunes.Backend.Controllers
         [Authorize]
         public async Task<ActionResult> SearchBySong([FromBody]SearchQuery songToSearch)
         {
-            _logger.LogDebug("DEBUG");
-            _logger.LogDebug(String.Format("Querying song with query: {}", songToSearch.QueryString));
             if (songToSearch == null)
             {
                 _logger.LogDebug("DEBUG");
@@ -53,15 +52,26 @@ namespace SelecTunes.Backend.Controllers
                 return new BadRequestObjectResult(songToSearch);
             }
 
+            // _logger.LogDebug("DEBUG");
+            // _logger.LogDebug(String.Format("Querying song with query: {}", songToSearch.QueryString));
+
             User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false); // get the current user identity
-            Party MemberOf = _context.Parties.Where(p => p.PartyMembers.Contains(user)).FirstOrDefault(); // find which party they are a member of
-            string BearerCode = MemberOf.PartyHost.SpotifyAccessToken; // get the access token of that party's host
+            Party party = _context.Parties.Where(p => p.PartyMembers.Any(a => a.Id == user.Id) || p.PartyHost == user).FirstOrDefault(); // find which party they are a member of
+
+            if (party == null)
+            {
+                _logger.LogWarning("GTFO User. You ain't in no party.");
+
+                throw new InvalidOperationException("No search without party");
+            }
+
+            string bearerCode = party.PartyHost.SpotifyAccessToken; // get the access token of that party's host
 
             using HttpClient c = _cf.CreateClient("spotify");
             using HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, string.Format("search?limit=10&market=US&type=track&q={0}", HttpUtility.UrlEncode(songToSearch.QueryString)));
-            r.Headers.Add("Authorization", String.Format("Bearer {0}", BearerCode));
+            r.Headers.Add("Authorization", String.Format("Bearer {0}", bearerCode));
             HttpResponseMessage s = await c.SendAsync(r).ConfigureAwait(false);
-            if (s.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            if (s.StatusCode == HttpStatusCode.Unauthorized)
             {
                 _logger.LogError("WARN");
                 _logger.LogError("403 UNAUTHORIZED");

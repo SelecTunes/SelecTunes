@@ -14,6 +14,17 @@ namespace SelecTunes.Backend.Data
 
         public DbSet<Party> Parties { get; set; }
 
-        public DbSet<User> BannedUsers { get; set; }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            builder.Entity<Party>().HasMany(u => u.PartyMembers).WithOne(d => d.Party).HasForeignKey(d => d.PartyId);
+            builder.Entity<Party>().HasOne(e => e.PartyHost).WithOne().HasForeignKey<Party>(e => e.PartyHostId);
+
+            base.OnModelCreating(builder);
+        }
     }
 }
