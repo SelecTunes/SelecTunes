@@ -22,6 +22,5 @@ class SongListActivity : AppCompatActivity()
         }
 
 
-
     }
 }
