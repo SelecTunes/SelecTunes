@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,14 @@ namespace SelecTunes.Backend.Models.Auth
 {
     // These are the access token spotify returns to us from the user.
     //{"access_token":"...","token_type":"Bearer","expires_in":3600,"refresh_token":"...","scope":"user-read-email user-read-private"}
+    [Owned]
     public class AccessAuthToken
     {
+        public AccessAuthToken()
+        {
+            CreateDate = DateTime.Now;
+        }
+
         [JsonProperty("access_token")]
         public string AccessToken { get; set; }
 
@@ -24,5 +31,12 @@ namespace SelecTunes.Backend.Models.Auth
 
         [JsonProperty("expires_in")]
         public int ExpiresIn { get; set; }
+
+        public DateTime CreateDate { get; set; }
+
+        public bool IsExpired()
+        {
+            return CreateDate.Add(TimeSpan.FromSeconds(ExpiresIn)) <= DateTime.Now;
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace SelecTunes.Backend.Controllers
 
         private readonly ILogger<AuthController> _logger;
 
-        public AuthController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, IConfiguration config, IOptions<AppSettings> options, UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AuthController> logger)
+        public AuthController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, IConfiguration config, IOptions<AppSettings> options, UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AuthController> logger, AuthHelper auth)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context)); // Throw nil arg expection if context is nil.
             _cache = cache ?? throw new ArgumentNullException(nameof(cache)); // Throw nil arg expection if cache is nil.
@@ -54,14 +54,7 @@ namespace SelecTunes.Backend.Controllers
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager)); // "
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager)); // "
             _logger = logger ?? throw new ArgumentNullException(nameof(logger)); // "
-
-            _auth = new AuthHelper()
-            { // Initialize the Auth Helper.
-                ClientFactory = _cf,
-                ClientSecret = _options.Value.ClientSecret,
-                ClientId = _options.Value.ClientId,
-                RedirectUrl = _options.Value.RedirectUri,
-            };
+            _auth = auth ?? throw new ArgumentNullException(nameof(auth));
         }
 
         // Example Code to get the Currently Logged In User.
@@ -90,12 +83,11 @@ namespace SelecTunes.Backend.Controllers
         {
             if (model == null)
             {
-                _logger.LogError("INPUT MODEL IS NULL");
+                _logger.LogError("Input Model is NULL", model);
                 throw new ArgumentNullException(nameof(model));
             }
 
-            _logger.LogDebug("DEBUG");
-            _logger.LogDebug("REGISTERING USER: {}", model.Email);
+            _logger.LogDebug("Registering User with Email {}", model.Email);
 
             if (ModelState.IsValid)
             {
@@ -129,7 +121,7 @@ namespace SelecTunes.Backend.Controllers
         {
             if (model == null)
             {
-                _logger.LogError("LOGIN MODEL IS NULL");
+                _logger.LogError("Login Model is NULL", model);
                 throw new ArgumentNullException(nameof(model));
             }
 
@@ -175,12 +167,11 @@ namespace SelecTunes.Backend.Controllers
         {
             if (login == null)
             { // If login is nil, throw a nil arg expection.
+                _logger.LogError("Spotify Login Model is NULL", login);
                 throw new ArgumentNullException(nameof(login));
             }
 
             AccessAuthToken tok = await _auth.TransmutAuthCode(login.Code).ConfigureAwait(false); // Change that login code to an access token and refresh token.
-
-            Console.WriteLine(tok);
 
             tok = await _auth.AssertValidLogin(tok, false).ConfigureAwait(false); // Make sure its valid.
 
@@ -203,10 +194,10 @@ namespace SelecTunes.Backend.Controllers
             { // If not, reject
                 return new BadRequestObjectResult(new { Success = false, Error = "User has not yet registered with the Identity Provider." });
             }
-            
+
             // If so, update the tokens.
-            host.SpotifyAccessToken = tok.AccessToken;
-            host.SpotifyRefreshToken = tok.RefreshToken;
+            host.Token = tok;
+            _context.SaveChanges();
 
             return new JsonResult(new { Success = true });
         }
