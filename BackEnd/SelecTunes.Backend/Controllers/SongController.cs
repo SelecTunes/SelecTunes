@@ -52,9 +52,6 @@ namespace SelecTunes.Backend.Controllers
                 return new BadRequestObjectResult(songToSearch);
             }
 
-            // _logger.LogDebug("DEBUG");
-            // _logger.LogDebug(String.Format("Querying song with query: {}", songToSearch.QueryString));
-
             User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false); // get the current user identity
             Party party = _context.Parties.Where(p => p.PartyMembers.Any(a => a.Id == user.Id) || p.PartyHost == user).FirstOrDefault(); // find which party they are a member of
 
@@ -101,10 +98,22 @@ namespace SelecTunes.Backend.Controllers
                 return new BadRequestObjectResult("Object is null");
             }
 
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false); // get the current user identity
+            Party party = _context.Parties.Where(p => p.PartyMembers.Any(a => a.Id == user.Id) || p.PartyHost == user).FirstOrDefault(); // find which party they are a member of
+
+            if (party == null)
+            {
+                _logger.LogWarning("GTFO User. You ain't in no party.");
+
+                throw new InvalidOperationException("No search without party");
+            }
+
+            string bearerCode = party.PartyHost.SpotifyAccessToken; // get the access token of that party's host
+
             using HttpClient c = _cf.CreateClient("spotify");
-            using HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, string.Format("search?limit=10&market=US&type=track&q={0}", HttpUtility.UrlEncode(artistToSearch.QueryString)));
-            r.Headers.Add("Authorization", "Bearer BQCBSSO9dcOc4_4UL8F7SMkL_LuLIh6wI-umLaa26CRZiAGSjI8xY-dOpQl6v8DrpXKYXIGrPz9Iuq-1WjU4Ja0mrVqHb7srQXThMy_xG_I5vaz3stKvVs_dc-1zGMKHIgAloa2sZayLF7cny4ws");
-            HttpResponseMessage s = await c.SendAsync(r).ConfigureAwait(false);
+            using HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, string.Format("search?limit=10&market=US&type=track&q={0}", HttpUtility.UrlEncode(songToSearch.QueryString)));
+            r.Headers.Add("Authorization", String.Format("Bearer {0}", bearerCode));
+
             if (s.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
                 _logger.LogError("WARN");
