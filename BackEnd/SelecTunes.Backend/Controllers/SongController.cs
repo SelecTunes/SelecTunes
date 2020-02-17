@@ -111,7 +111,7 @@ namespace SelecTunes.Backend.Controllers
             string bearerCode = party.PartyHost.SpotifyAccessToken; // get the access token of that party's host
 
             using HttpClient c = _cf.CreateClient("spotify");
-            using HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, string.Format("search?limit=10&market=US&type=track&q={0}", HttpUtility.UrlEncode(songToSearch.QueryString)));
+            using HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, string.Format("search?limit=10&market=US&type=artist&q={0}", HttpUtility.UrlEncode(artistToSearch.QueryString)));
             r.Headers.Add("Authorization", String.Format("Bearer {0}", bearerCode));
 
             if (s.StatusCode == System.Net.HttpStatusCode.Unauthorized)
