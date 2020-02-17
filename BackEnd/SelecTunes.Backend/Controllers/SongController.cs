@@ -87,10 +87,9 @@ namespace SelecTunes.Backend.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<String>> SearchByArtist([FromBody]SearchQuery artistToSearch)
         {
-            _logger.LogDebug("DEBUG");
-            _logger.LogDebug(String.Format("Querying artist with query: {}", artistToSearch.QueryString));
             if (artistToSearch == null)
             {
                 _logger.LogDebug("DEBUG");
@@ -127,7 +126,7 @@ namespace SelecTunes.Backend.Controllers
                 NullValueHandling = NullValueHandling.Ignore,
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
-            var SongReponses = JsonConvert.DeserializeObject<SpotifyTracksResponseBody>(ToParse, settings);
+            var SongReponses = JsonConvert.DeserializeObject<SpotifyArtistResponseBody>(ToParse, settings);
 
             return Ok(SongReponses);
         }
