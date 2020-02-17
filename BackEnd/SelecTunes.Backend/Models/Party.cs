@@ -14,8 +14,9 @@ namespace SelecTunes.Backend.Models
         [NotMapped]
         public Queue<Song> SongQueue { get; set; }
 
-        public List<User> PartyMembers { get; set; }
+        public virtual ICollection<User> PartyMembers { get; set; }
 
         public User PartyHost { get; set; }
+        public string PartyHostId { get; set; }
     }
 }

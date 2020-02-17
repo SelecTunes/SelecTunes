@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -228,6 +229,7 @@ namespace SelecTunes.Backend.Controllers
             { // Create a new party with this user as a host.
                 JoinCode = _rand.Next(0, 100000).ToString(CultureInfo.InvariantCulture).PadLeft(6, '0'),
                 PartyHost = host,
+                // PartyMembers = new List<User> { host },
             };
 
             _context.Parties.Add(party);
