@@ -24,6 +24,8 @@ namespace SelecTunes.Backend.Controllers
         [HttpPost]
         public ActionResult<String> JoinParty([FromBody]User newUser)
         {
+            throw new NotImplementedException("This code has not yet been implemented");
+
             if (newUser == null)
             {
                 return new BadRequestObjectResult("Object is null");
@@ -44,6 +46,8 @@ namespace SelecTunes.Backend.Controllers
         [HttpPost]
         public ActionResult<String> LeaveParty([FromBody]User toLeave)
         {
+            throw new NotImplementedException("This code has not yet been implemented");
+
             if (toLeave == null)
             {
                 return new BadRequestObjectResult("Object is null");

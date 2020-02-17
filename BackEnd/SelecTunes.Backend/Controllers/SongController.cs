@@ -16,6 +16,7 @@ using System.Security.Claims;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Collections.Generic;
+using SelecTunes.Backend.Helper;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -34,13 +35,16 @@ namespace SelecTunes.Backend.Controllers
 
         private readonly UserManager<User> _userManager;
 
-        public SongController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, ILogger<SongController> logger, UserManager<User> userManager)
+        private readonly AuthHelper _auth;
+
+        public SongController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, ILogger<SongController> logger, UserManager<User> userManager, AuthHelper auth)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _cache = cache ?? throw new ArgumentNullException(nameof(cache));
             _cf = factory ?? throw new ArgumentNullException(nameof(factory));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _auth = auth ?? throw new ArgumentNullException(nameof(auth));
         }
 
         [HttpGet]
@@ -203,7 +207,10 @@ namespace SelecTunes.Backend.Controllers
                 throw new InvalidOperationException("No search without party");
             }
 
-            string bearerCode = party.PartyHost.SpotifyAccessToken; // get the access token of that party's host
+            User host = party.PartyHost = await _auth.UpdateUserTokens(party.PartyHost).ConfigureAwait(false);
+            _context.SaveChanges();
+
+            string bearerCode = host.Token.AccessToken; // get the access token of that party's host
 
             using HttpClient c = _cf.CreateClient("spotify");
 
@@ -225,7 +232,7 @@ namespace SelecTunes.Backend.Controllers
 
             if (s.StatusCode == HttpStatusCode.Unauthorized)
             {
-                _logger.LogError("403 UNAUTHORIZED RETURNED FROM SPOTIFY", response);
+                _logger.LogError("401 Unauthorized was returned from Spotify {}", response);
                 throw new UnauthorizedAccessException();
             }
 

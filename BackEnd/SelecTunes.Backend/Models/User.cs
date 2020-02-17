@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SelecTunes.Backend.Models.Auth;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,13 +11,11 @@ namespace SelecTunes.Backend.Models
 {
     public class User : IdentityUser
     {
-        public string SpotifyAccessToken { get; set; }
-
-        public string SpotifyRefreshToken { get; set; }
-
         public bool IsBanned { get; set; }
 
         public Party Party { get; set; }
         public int? PartyId { get; set; }
+
+        public AccessAuthToken Token { get; set; }
     }
 }
