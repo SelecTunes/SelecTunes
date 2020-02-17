@@ -51,7 +51,6 @@ class ChooseActivity : AppCompatActivity() {
 
     private fun createParty() {
         val httpclient = DefaultHttpClient()
-
         val cookieStore = BasicCookieStore()
         val settings = getSharedPreferences("Cookie", 0)
         val cookie = BasicClientCookie("Holtzmann", settings.getString("cookie", ""))

@@ -27,15 +27,17 @@ class HostMenuActivity : AppCompatActivity() {
         }
 
         songList.setOnClickListener{
-            val toSongList = Intent(this, SongListActivity::class.java)
+            val toSongList = Intent(this, TempHostMenuActivity::class.java)
             startActivity(toSongList)
         }
 
         backArrow.setOnClickListener{
-            startActivity(Intent(this, LoginActivity::class.java))
+            //TODO: Actually end party.
+            startActivity(Intent(this, ChooseActivity::class.java))
         }
 
         endParty.setOnClickListener{
+            //TODO: Actually end party.
             startActivity(Intent(this, LoginActivity::class.java))
         }
     }
