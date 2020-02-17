@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace SelecTunes.Backend.Models.SongSearchIngestion
 {
-    public partial class SpotifyAlbumRepsonseBody
+    public partial class SpotifyArtistResponseBody
     {
         [JsonProperty("artists")]
         public Artists Artists { get; set; }
