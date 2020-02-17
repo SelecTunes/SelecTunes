@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SelecTunes.Backend.Helper.Exceptions;
+using SelecTunes.Backend.Models;
 using SelecTunes.Backend.Models.Auth;
 using System;
 using System.Collections.Generic;
@@ -120,6 +121,23 @@ namespace SelecTunes.Backend.Helper
             } while (loopUntilSuccess); // POTENTIAL INFINITE LOOP CONDITION. If spotify never returns a succesful response AND loopUntilSuccess is true, this code will loop forever.
 
             throw new InvalidAuthTokenRecievedException("Unable to assert authentication is valid");
+        }
+
+        public async Task<User> UpdateUserTokens(User user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            if (!user.Token.IsExpired())
+            {
+                return user;
+            }
+
+            user.Token = await AssertValidLogin(user.Token, false).ConfigureAwait(false);
+
+            return user;
         }
     }
 }

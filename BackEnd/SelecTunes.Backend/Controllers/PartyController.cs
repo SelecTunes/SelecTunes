@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
@@ -21,37 +23,36 @@ namespace SelecTunes.Backend.Controllers
             _cache = cache;
         }
 
+        /**
+         * Func JoinParty(string :joinCode)
+         * => ActionResult<String>
+         * 
+         * Send a POST request to /api/party/joinparty with a join code
+         * The user that sent the request will be added to the party with that join code
+         *
+         * 15/02/2020 D/M/Y - Nathan Tucker - Stubbing
+         */
         [HttpPost]
-        public ActionResult<String> JoinParty([FromBody]User newUser)
+        [Authorize]
+        public ActionResult<String> JoinParty([FromBody]string joinCode)
         {
-            if (newUser == null)
-            {
-                return new BadRequestObjectResult("Object is null");
-            }
-            Console.WriteLine(JsonConvert.SerializeObject(newUser));
-
-            // String serial = JsonConvert.SerializeObject(p); // Serialize the redis entries, as we only have one cache
-
-            // _cache.SetString($"$party:${p.Id}", serial, new DistributedCacheEntryOptions()); // Default never expire //TO TEST LATER
-
-            String serial = JsonConvert.SerializeObject(newUser);
-
-            _cache.SetString($"$party:${newUser.PhoneNumber}", serial, new DistributedCacheEntryOptions());
-
-            return Ok("Index");
+            throw new NotImplementedException("This code has not yet been implemented");
         }
 
+        /**
+         * Func LeaveParty()
+         * => ActionResult<String>
+         * 
+         * Send a POST request to /api/party/leaveparty
+         * The user that sent the request will be removed from the party which they are currently in
+         *
+         * 15/02/2020 D/M/Y - Nathan Tucker - Stubbing
+         */
         [HttpPost]
-        public ActionResult<String> LeaveParty([FromBody]User toLeave)
+        [Authorize]
+        public ActionResult<String> LeaveParty()
         {
-            if (toLeave == null)
-            {
-                return new BadRequestObjectResult("Object is null");
-            }
-
-            Console.WriteLine(JsonConvert.SerializeObject(toLeave));
-
-            return Ok("Index");
+            throw new NotImplementedException("This code has not yet been implemented");
         }
     }
 }

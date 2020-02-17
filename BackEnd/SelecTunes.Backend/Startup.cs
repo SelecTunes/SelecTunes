@@ -12,6 +12,9 @@ using System.Net;
 using Microsoft.OpenApi.Models;
 using SelecTunes.Backend.Models;
 using Microsoft.AspNetCore.Http;
+using SelecTunes.Backend.Helper;
+using System.Net.Http;
+using Microsoft.Extensions.Options;
 
 namespace SelecTunes.Backend
 {
@@ -89,6 +92,19 @@ namespace SelecTunes.Backend
 
                 options.LoginPath = "/api/Auth/Login";
                 options.AccessDeniedPath = "/Api/Auth/AccessDenied";
+            });
+
+            services.AddScoped<AuthHelper>(options => {
+                IHttpClientFactory _cf = options.GetRequiredService<IHttpClientFactory>();
+                IOptions<AppSettings> _options = options.GetRequiredService<IOptions<AppSettings>>();
+
+                return new AuthHelper
+                {
+                    ClientFactory = _cf,
+                    ClientSecret = _options.Value.ClientSecret,
+                    ClientId = _options.Value.ClientId,
+                    RedirectUrl = _options.Value.RedirectUri,
+                };
             });
         }
 
