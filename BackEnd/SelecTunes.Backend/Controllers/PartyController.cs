@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SelecTunes.Backend.Data;
 using SelecTunes.Backend.Models;
+using System.Linq;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -17,10 +20,16 @@ namespace SelecTunes.Backend.Controllers
 
         private readonly IDistributedCache _cache;
 
-        public PartyController(ApplicationContext context, IDistributedCache cache)
+        private readonly UserManager<User> _userManager;
+
+        private readonly ILogger<PartyController> _logger;
+
+        public PartyController(ApplicationContext context, IDistributedCache cache, UserManager<User> userManager, ILogger<PartyController> logger)
         {
-            _context = context;
-            _cache = cache;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /**
@@ -36,7 +45,14 @@ namespace SelecTunes.Backend.Controllers
         [Authorize]
         public ActionResult<String> JoinParty([FromBody]string joinCode)
         {
-            throw new NotImplementedException("This code has not yet been implemented");
+            Party party = _context.Parties.Where(p => p.JoinCode == joinCode).FirstOrDefault();
+            if (party == null)
+            {
+                throw new InvalidOperationException("a party with that code does not exist");
+            }
+            party.PartyMembers.Add(_userManager.GetUserAsync(HttpContext.User).Result);
+
+            return null;
         }
 
         /**
