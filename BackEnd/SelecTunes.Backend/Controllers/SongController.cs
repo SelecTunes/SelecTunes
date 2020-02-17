@@ -113,13 +113,14 @@ namespace SelecTunes.Backend.Controllers
             using HttpClient c = _cf.CreateClient("spotify");
             using HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, string.Format("search?limit=10&market=US&type=artist&q={0}", HttpUtility.UrlEncode(artistToSearch.QueryString)));
             r.Headers.Add("Authorization", String.Format("Bearer {0}", bearerCode));
-
-            if (s.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            HttpResponseMessage s = await c.SendAsync(r).ConfigureAwait(false);
+            if (s.StatusCode == HttpStatusCode.Unauthorized)
             {
                 _logger.LogError("WARN");
                 _logger.LogError("403 UNAUTHORIZED");
                 return Unauthorized("Please try again");
             }
+
             var ToParse = s.Content.ReadAsStringAsync().Result;
             var settings = new JsonSerializerSettings
             {
