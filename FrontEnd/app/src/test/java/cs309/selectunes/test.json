@@ -1,0 +1,772 @@
+{
+  "tracks": {
+    "href": "https://api.spotify.com/v1/search?query=loving+someone&type=track&market=US&offset=0&limit=10",
+    "items": [
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3mIj9lX2MWuHmhNCA7LSCW"
+              },
+              "href": "https://api.spotify.com/v1/artists/3mIj9lX2MWuHmhNCA7LSCW",
+              "id": "3mIj9lX2MWuHmhNCA7LSCW",
+              "name": "The 1975",
+              "type": "artist",
+              "uri": "spotify:artist:3mIj9lX2MWuHmhNCA7LSCW"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/1JFmNyVPdBF1ECvv4fhpW4"
+          },
+          "href": "https://api.spotify.com/v1/albums/1JFmNyVPdBF1ECvv4fhpW4",
+          "id": "1JFmNyVPdBF1ECvv4fhpW4",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/31bbe2eefb4c72b48f956305e4c281452170ea4b",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/c54770e7f2e915ef779de6d5899943309a462da9",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/34091b30363f803e67f494c6f2ba8ac9c152ba12",
+              "width": 64
+            }
+          ],
+          "name": "I like it when you sleep, for you are so beautiful yet so unaware of it",
+          "release_date": "2016-02-26",
+          "release_date_precision": "day",
+          "total_tracks": 17,
+          "type": "album",
+          "uri": "spotify:album:1JFmNyVPdBF1ECvv4fhpW4"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/3mIj9lX2MWuHmhNCA7LSCW"
+            },
+            "href": "https://api.spotify.com/v1/artists/3mIj9lX2MWuHmhNCA7LSCW",
+            "id": "3mIj9lX2MWuHmhNCA7LSCW",
+            "name": "The 1975",
+            "type": "artist",
+            "uri": "spotify:artist:3mIj9lX2MWuHmhNCA7LSCW"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 260426,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "GBK3W1500427"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/4p1pxmqtPtPHqWbOd2RgXu"
+        },
+        "href": "https://api.spotify.com/v1/tracks/4p1pxmqtPtPHqWbOd2RgXu",
+        "id": "4p1pxmqtPtPHqWbOd2RgXu",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Loving Someone",
+        "popularity": 56,
+        "preview_url": null,
+        "track_number": 11,
+        "type": "track",
+        "uri": "spotify:track:4p1pxmqtPtPHqWbOd2RgXu"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3mIj9lX2MWuHmhNCA7LSCW"
+              },
+              "href": "https://api.spotify.com/v1/artists/3mIj9lX2MWuHmhNCA7LSCW",
+              "id": "3mIj9lX2MWuHmhNCA7LSCW",
+              "name": "The 1975",
+              "type": "artist",
+              "uri": "spotify:artist:3mIj9lX2MWuHmhNCA7LSCW"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/1s8VYzyi1ZNRgjke4AUwy0"
+          },
+          "href": "https://api.spotify.com/v1/albums/1s8VYzyi1ZNRgjke4AUwy0",
+          "id": "1s8VYzyi1ZNRgjke4AUwy0",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/58f741ede8a2e4b1e4761d8092f7043c7d113236",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/a96cd1793d87084e7abe374516ef3ab52afed28e",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/034b63684730c421cb04122c19193754ff669359",
+              "width": 64
+            }
+          ],
+          "name": "DH00278 (Live from The O2, London. 16.12.16)",
+          "release_date": "2017-12-15",
+          "release_date_precision": "day",
+          "total_tracks": 24,
+          "type": "album",
+          "uri": "spotify:album:1s8VYzyi1ZNRgjke4AUwy0"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/3mIj9lX2MWuHmhNCA7LSCW"
+            },
+            "href": "https://api.spotify.com/v1/artists/3mIj9lX2MWuHmhNCA7LSCW",
+            "id": "3mIj9lX2MWuHmhNCA7LSCW",
+            "name": "The 1975",
+            "type": "artist",
+            "uri": "spotify:artist:3mIj9lX2MWuHmhNCA7LSCW"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 415862,
+        "explicit": true,
+        "external_ids": {
+          "isrc": "GBK3W1700653"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/1XUWXwa7KFU6t58MHTntpL"
+        },
+        "href": "https://api.spotify.com/v1/tracks/1XUWXwa7KFU6t58MHTntpL",
+        "id": "1XUWXwa7KFU6t58MHTntpL",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Loving Someone - Live From The O2, London. 16.12.16",
+        "popularity": 29,
+        "preview_url": null,
+        "track_number": 12,
+        "type": "track",
+        "uri": "spotify:track:1XUWXwa7KFU6t58MHTntpL"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3CygdxquGHurS7f9LjNLkv"
+              },
+              "href": "https://api.spotify.com/v1/artists/3CygdxquGHurS7f9LjNLkv",
+              "id": "3CygdxquGHurS7f9LjNLkv",
+              "name": "Little Big Town",
+              "type": "artist",
+              "uri": "spotify:artist:3CygdxquGHurS7f9LjNLkv"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/2aQOzEjLzPkffXDwREXdAh"
+          },
+          "href": "https://api.spotify.com/v1/albums/2aQOzEjLzPkffXDwREXdAh",
+          "id": "2aQOzEjLzPkffXDwREXdAh",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ed99ccb9bf95645b71cda53c90514ad95f56fbf9",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/1a54bdb89fd7e06dbaa47343834a00a491a2fe08",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/20ed2b46923fd78d39082daac95724d67225958a",
+              "width": 64
+            }
+          ],
+          "name": "The Breaker",
+          "release_date": "2017-02-24",
+          "release_date_precision": "day",
+          "total_tracks": 12,
+          "type": "album",
+          "uri": "spotify:album:2aQOzEjLzPkffXDwREXdAh"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/3CygdxquGHurS7f9LjNLkv"
+            },
+            "href": "https://api.spotify.com/v1/artists/3CygdxquGHurS7f9LjNLkv",
+            "id": "3CygdxquGHurS7f9LjNLkv",
+            "name": "Little Big Town",
+            "type": "artist",
+            "uri": "spotify:artist:3CygdxquGHurS7f9LjNLkv"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 228373,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USUG11700040"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/7A55QoGK0vf8lGNtaWZm45"
+        },
+        "href": "https://api.spotify.com/v1/tracks/7A55QoGK0vf8lGNtaWZm45",
+        "id": "7A55QoGK0vf8lGNtaWZm45",
+        "is_local": false,
+        "is_playable": true,
+        "name": "When Someone Stops Loving You",
+        "popularity": 55,
+        "preview_url": null,
+        "track_number": 11,
+        "type": "track",
+        "uri": "spotify:track:7A55QoGK0vf8lGNtaWZm45"
+      },
+      {
+        "album": {
+          "album_type": "single",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3CygdxquGHurS7f9LjNLkv"
+              },
+              "href": "https://api.spotify.com/v1/artists/3CygdxquGHurS7f9LjNLkv",
+              "id": "3CygdxquGHurS7f9LjNLkv",
+              "name": "Little Big Town",
+              "type": "artist",
+              "uri": "spotify:artist:3CygdxquGHurS7f9LjNLkv"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/4zPHVMHOjOUvrNtvf3u2LW"
+          },
+          "href": "https://api.spotify.com/v1/albums/4zPHVMHOjOUvrNtvf3u2LW",
+          "id": "4zPHVMHOjOUvrNtvf3u2LW",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ed99ccb9bf95645b71cda53c90514ad95f56fbf9",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/1a54bdb89fd7e06dbaa47343834a00a491a2fe08",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/20ed2b46923fd78d39082daac95724d67225958a",
+              "width": 64
+            }
+          ],
+          "name": "When Someone Stops Loving You",
+          "release_date": "2017-02-17",
+          "release_date_precision": "day",
+          "total_tracks": 1,
+          "type": "album",
+          "uri": "spotify:album:4zPHVMHOjOUvrNtvf3u2LW"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/3CygdxquGHurS7f9LjNLkv"
+            },
+            "href": "https://api.spotify.com/v1/artists/3CygdxquGHurS7f9LjNLkv",
+            "id": "3CygdxquGHurS7f9LjNLkv",
+            "name": "Little Big Town",
+            "type": "artist",
+            "uri": "spotify:artist:3CygdxquGHurS7f9LjNLkv"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 228373,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USUG11700040"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/2B0Z4aGp33yw3oOz8r4Sqx"
+        },
+        "href": "https://api.spotify.com/v1/tracks/2B0Z4aGp33yw3oOz8r4Sqx",
+        "id": "2B0Z4aGp33yw3oOz8r4Sqx",
+        "is_local": false,
+        "is_playable": true,
+        "name": "When Someone Stops Loving You",
+        "popularity": 32,
+        "preview_url": null,
+        "track_number": 1,
+        "type": "track",
+        "uri": "spotify:track:2B0Z4aGp33yw3oOz8r4Sqx"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/64CuUOOirKmdAYLQSfaOyr"
+              },
+              "href": "https://api.spotify.com/v1/artists/64CuUOOirKmdAYLQSfaOyr",
+              "id": "64CuUOOirKmdAYLQSfaOyr",
+              "name": "The Emotions",
+              "type": "artist",
+              "uri": "spotify:artist:64CuUOOirKmdAYLQSfaOyr"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/4lebgv3ia7YVlZAz68jUa8"
+          },
+          "href": "https://api.spotify.com/v1/albums/4lebgv3ia7YVlZAz68jUa8",
+          "id": "4lebgv3ia7YVlZAz68jUa8",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b273b56930fea461c63fe30401f6",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e02b56930fea461c63fe30401f6",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d00004851b56930fea461c63fe30401f6",
+              "width": 64
+            }
+          ],
+          "name": "Flowers (Bonus Track Version)",
+          "release_date": "1976",
+          "release_date_precision": "year",
+          "total_tracks": 10,
+          "type": "album",
+          "uri": "spotify:album:4lebgv3ia7YVlZAz68jUa8"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/64CuUOOirKmdAYLQSfaOyr"
+            },
+            "href": "https://api.spotify.com/v1/artists/64CuUOOirKmdAYLQSfaOyr",
+            "id": "64CuUOOirKmdAYLQSfaOyr",
+            "name": "The Emotions",
+            "type": "artist",
+            "uri": "spotify:artist:64CuUOOirKmdAYLQSfaOyr"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 255040,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USSM17600536"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/4FRlk5asM8Flq0eDlMBDzP"
+        },
+        "href": "https://api.spotify.com/v1/tracks/4FRlk5asM8Flq0eDlMBDzP",
+        "id": "4FRlk5asM8Flq0eDlMBDzP",
+        "is_local": false,
+        "is_playable": true,
+        "name": "How Can You Stop Loving Someone",
+        "popularity": 15,
+        "preview_url": "https://p.scdn.co/mp3-preview/20002055be08de3c93188c537f4b46ee2f31753c?cid=774b29d4f13844c495f206cafdad9c86",
+        "track_number": 7,
+        "type": "track",
+        "uri": "spotify:track:4FRlk5asM8Flq0eDlMBDzP"
+      },
+      {
+        "album": {
+          "album_type": "single",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/70oQ8TFRIKaYALQLyxfxqz"
+              },
+              "href": "https://api.spotify.com/v1/artists/70oQ8TFRIKaYALQLyxfxqz",
+              "id": "70oQ8TFRIKaYALQLyxfxqz",
+              "name": "Rachel Ebanks",
+              "type": "artist",
+              "uri": "spotify:artist:70oQ8TFRIKaYALQLyxfxqz"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/183ghmnOD5kOimesTmTKez"
+          },
+          "href": "https://api.spotify.com/v1/albums/183ghmnOD5kOimesTmTKez",
+          "id": "183ghmnOD5kOimesTmTKez",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/473b234d025f4a105d5c4c5f669e8964a2f81e42",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/6fe8c6e5ba83fa2e2fb044a52f7823b17749be1d",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/b6d2d1a7a53c3ac48a6471d933d617011c01d6b3",
+              "width": 64
+            }
+          ],
+          "name": "L.S.D (Loving Someone Deeply)",
+          "release_date": "2019-09-10",
+          "release_date_precision": "day",
+          "total_tracks": 1,
+          "type": "album",
+          "uri": "spotify:album:183ghmnOD5kOimesTmTKez"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/70oQ8TFRIKaYALQLyxfxqz"
+            },
+            "href": "https://api.spotify.com/v1/artists/70oQ8TFRIKaYALQLyxfxqz",
+            "id": "70oQ8TFRIKaYALQLyxfxqz",
+            "name": "Rachel Ebanks",
+            "type": "artist",
+            "uri": "spotify:artist:70oQ8TFRIKaYALQLyxfxqz"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 209188,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "QZHN41987345"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/032ZO4B6o6WhXNQU5yjPZJ"
+        },
+        "href": "https://api.spotify.com/v1/tracks/032ZO4B6o6WhXNQU5yjPZJ",
+        "id": "032ZO4B6o6WhXNQU5yjPZJ",
+        "is_local": false,
+        "is_playable": true,
+        "name": "L.S.D (Loving Someone Deeply)",
+        "popularity": 13,
+        "preview_url": "https://p.scdn.co/mp3-preview/76286f42d939b22a1ec3627109dcff107003f47b?cid=774b29d4f13844c495f206cafdad9c86",
+        "track_number": 1,
+        "type": "track",
+        "uri": "spotify:track:032ZO4B6o6WhXNQU5yjPZJ"
+      },
+      {
+        "album": {
+          "album_type": "compilation",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/0LyfQWJT6nXafLPZqxe9Of"
+              },
+              "href": "https://api.spotify.com/v1/artists/0LyfQWJT6nXafLPZqxe9Of",
+              "id": "0LyfQWJT6nXafLPZqxe9Of",
+              "name": "Various Artists",
+              "type": "artist",
+              "uri": "spotify:artist:0LyfQWJT6nXafLPZqxe9Of"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/321LF0OisMH5uifCk4Cloy"
+          },
+          "href": "https://api.spotify.com/v1/albums/321LF0OisMH5uifCk4Cloy",
+          "id": "321LF0OisMH5uifCk4Cloy",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b27385bdb09f395d298a77c2636b",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e0285bdb09f395d298a77c2636b",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d0000485185bdb09f395d298a77c2636b",
+              "width": 64
+            }
+          ],
+          "name": "Country Cure",
+          "release_date": "2018-03-02",
+          "release_date_precision": "day",
+          "total_tracks": 35,
+          "type": "album",
+          "uri": "spotify:album:321LF0OisMH5uifCk4Cloy"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/3CygdxquGHurS7f9LjNLkv"
+            },
+            "href": "https://api.spotify.com/v1/artists/3CygdxquGHurS7f9LjNLkv",
+            "id": "3CygdxquGHurS7f9LjNLkv",
+            "name": "Little Big Town",
+            "type": "artist",
+            "uri": "spotify:artist:3CygdxquGHurS7f9LjNLkv"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 228588,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USUG11700040"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/7pzO77AEl6F5bMtETxJ9h7"
+        },
+        "href": "https://api.spotify.com/v1/tracks/7pzO77AEl6F5bMtETxJ9h7",
+        "id": "7pzO77AEl6F5bMtETxJ9h7",
+        "is_local": false,
+        "is_playable": true,
+        "name": "When Someone Stops Loving You",
+        "popularity": 11,
+        "preview_url": null,
+        "track_number": 16,
+        "type": "track",
+        "uri": "spotify:track:7pzO77AEl6F5bMtETxJ9h7"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/0LyfQWJT6nXafLPZqxe9Of"
+              },
+              "href": "https://api.spotify.com/v1/artists/0LyfQWJT6nXafLPZqxe9Of",
+              "id": "0LyfQWJT6nXafLPZqxe9Of",
+              "name": "Various Artists",
+              "type": "artist",
+              "uri": "spotify:artist:0LyfQWJT6nXafLPZqxe9Of"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/6hS50PV0K45RAjVnoJ4f2g"
+          },
+          "href": "https://api.spotify.com/v1/albums/6hS50PV0K45RAjVnoJ4f2g",
+          "id": "6hS50PV0K45RAjVnoJ4f2g",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/e7da870cbe8a38da1d8499d157f0551e2c75efa7",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/a2fe818b4b794fccff0ae625a716cc59cb196c73",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/fcaa7faaa134140dd474a935317a24e852bc9fa4",
+              "width": 64
+            }
+          ],
+          "name": "Best Country Of The Decade: 2010-2019",
+          "release_date": "2019-12-20",
+          "release_date_precision": "day",
+          "total_tracks": 144,
+          "type": "album",
+          "uri": "spotify:album:6hS50PV0K45RAjVnoJ4f2g"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/3CygdxquGHurS7f9LjNLkv"
+            },
+            "href": "https://api.spotify.com/v1/artists/3CygdxquGHurS7f9LjNLkv",
+            "id": "3CygdxquGHurS7f9LjNLkv",
+            "name": "Little Big Town",
+            "type": "artist",
+            "uri": "spotify:artist:3CygdxquGHurS7f9LjNLkv"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 228588,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USUG11700040"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/3RSf6agC5Cw4gPcT9FmY4c"
+        },
+        "href": "https://api.spotify.com/v1/tracks/3RSf6agC5Cw4gPcT9FmY4c",
+        "id": "3RSf6agC5Cw4gPcT9FmY4c",
+        "is_local": false,
+        "is_playable": true,
+        "name": "When Someone Stops Loving You",
+        "popularity": 11,
+        "preview_url": null,
+        "track_number": 94,
+        "type": "track",
+        "uri": "spotify:track:3RSf6agC5Cw4gPcT9FmY4c"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/64CuUOOirKmdAYLQSfaOyr"
+              },
+              "href": "https://api.spotify.com/v1/artists/64CuUOOirKmdAYLQSfaOyr",
+              "id": "64CuUOOirKmdAYLQSfaOyr",
+              "name": "The Emotions",
+              "type": "artist",
+              "uri": "spotify:artist:64CuUOOirKmdAYLQSfaOyr"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/7xUJI5qVdt8SymEI39kKEQ"
+          },
+          "href": "https://api.spotify.com/v1/albums/7xUJI5qVdt8SymEI39kKEQ",
+          "id": "7xUJI5qVdt8SymEI39kKEQ",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b273daf64505e5d6dc4d4c1e5a08",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e02daf64505e5d6dc4d4c1e5a08",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d00004851daf64505e5d6dc4d4c1e5a08",
+              "width": 64
+            }
+          ],
+          "name": "The Essential Emotions - The Columbia Years",
+          "release_date": "2018-06-29",
+          "release_date_precision": "day",
+          "total_tracks": 28,
+          "type": "album",
+          "uri": "spotify:album:7xUJI5qVdt8SymEI39kKEQ"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/64CuUOOirKmdAYLQSfaOyr"
+            },
+            "href": "https://api.spotify.com/v1/artists/64CuUOOirKmdAYLQSfaOyr",
+            "id": "64CuUOOirKmdAYLQSfaOyr",
+            "name": "The Emotions",
+            "type": "artist",
+            "uri": "spotify:artist:64CuUOOirKmdAYLQSfaOyr"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 256293,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USSM17600536"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/1RTPYHdDODuRvgDQpDzQdR"
+        },
+        "href": "https://api.spotify.com/v1/tracks/1RTPYHdDODuRvgDQpDzQdR",
+        "id": "1RTPYHdDODuRvgDQpDzQdR",
+        "is_local": false,
+        "is_playable": true,
+        "name": "How Can You Stop Loving Someone",
+        "popularity": 12,
+        "preview_url": "https://p.scdn.co/mp3-preview/4049bd30ca27d2c3295b57a48f5bb02f651cf577?cid=774b29d4f13844c495f206cafdad9c86",
+        "track_number": 3,
+        "type": "track",
+        "uri": "spotify:track:1RTPYHdDODuRvgDQpDzQdR"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/0UjRSf7rKEUjzGvjt7DtSL"
+              },
+              "href": "https://api.spotify.com/v1/artists/0UjRSf7rKEUjzGvjt7DtSL",
+              "id": "0UjRSf7rKEUjzGvjt7DtSL",
+              "name": "Metropolitan Recording Corporation",
+              "type": "artist",
+              "uri": "spotify:artist:0UjRSf7rKEUjzGvjt7DtSL"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/5Dx9Z4MIPpxoM6mLfJc1Rr"
+          },
+          "href": "https://api.spotify.com/v1/albums/5Dx9Z4MIPpxoM6mLfJc1Rr",
+          "id": "5Dx9Z4MIPpxoM6mLfJc1Rr",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b273eab4b5244f075974226f0546",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e02eab4b5244f075974226f0546",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d00004851eab4b5244f075974226f0546",
+              "width": 64
+            }
+          ],
+          "name": "Metropolitan Freestyleextravaganza",
+          "release_date": "2009-01-27",
+          "release_date_precision": "day",
+          "total_tracks": 2,
+          "type": "album",
+          "uri": "spotify:album:5Dx9Z4MIPpxoM6mLfJc1Rr"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/5Ehz0Qsyn0JWynFKZGxymb"
+            },
+            "href": "https://api.spotify.com/v1/artists/5Ehz0Qsyn0JWynFKZGxymb",
+            "id": "5Ehz0Qsyn0JWynFKZGxymb",
+            "name": "Sebastian, April, Margie Martinee, Joey Gold, Deniz, Cheree, Mark Milan",
+            "type": "artist",
+            "uri": "spotify:artist:5Ehz0Qsyn0JWynFKZGxymb"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 1623026,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "US37B0602217"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/6MT2KAX0CcZBWvNPjBDnDw"
+        },
+        "href": "https://api.spotify.com/v1/tracks/6MT2KAX0CcZBWvNPjBDnDw",
+        "id": "6MT2KAX0CcZBWvNPjBDnDw",
+        "is_local": false,
+        "is_playable": true,
+        "name": "The Nights We Shared, Right On Time, Leave Me This Way, Devil In My Heart, Why Can't You Love Me, Got Me Loving You, Foolish Pride, You Were The One, Someone To Hold",
+        "popularity": 10,
+        "preview_url": "https://p.scdn.co/mp3-preview/0b8e41bce471c09db7232b4a3f7befe25ddd1770?cid=774b29d4f13844c495f206cafdad9c86",
+        "track_number": 1,
+        "type": "track",
+        "uri": "spotify:track:6MT2KAX0CcZBWvNPjBDnDw"
+      }
+    ],
+    "limit": 10,
+    "next": "https://api.spotify.com/v1/search?query=loving+someone&type=track&market=US&offset=10&limit=10",
+    "offset": 0,
+    "previous": null,
+    "total": 106
+  }
+}
