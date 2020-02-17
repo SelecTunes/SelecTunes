@@ -48,7 +48,7 @@ namespace SelecTunes.Backend.Controllers
         }
 
         /**
-         * Func SearchByArtist(<SearchQuery> :songToSearch)
+         * Func SearchByArtist(<SearchQuery> :songToSearch) -> async <ActionResult<SpotifyTracksResponseBody>>
          * => SpotifyArtistResponseBody
          * 
          * GET request to /api/song/searchbysong with a JSON body of {"queryString":"name"}
@@ -57,7 +57,7 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult> SearchBySong([FromBody]SearchQuery songToSearch)
+        public async Task<ActionResult<SpotifyTracksResponseBody>> SearchBySong([FromBody]SearchQuery songToSearch)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace SelecTunes.Backend.Controllers
         }
 
         /**
-         * Func SearchByArtist(<SearchQuery> :artistToSearch)
+         * Func SearchByArtist(<SearchQuery> :artistToSearch) -> async <ActionResult<SpotifyArtistResponseBody>>
          * => SpotifyArtistResponseBody
          * 
          * GET request to /api/song/searchbyartist with a JSON body of {"queryString":"name"}
@@ -94,7 +94,7 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<String>> SearchByArtist([FromBody]SearchQuery artistToSearch)
+        public async Task<ActionResult<SpotifyArtistResponseBody>> SearchByArtist([FromBody]SearchQuery artistToSearch)
         {
             try
             {
