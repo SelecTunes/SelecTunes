@@ -312,6 +312,13 @@ namespace SelecTunes.Backend.Migrations
                         .WithMany("PartyMembers")
                         .HasForeignKey("PartyId");
                 });
+
+            modelBuilder.Entity("SelecTunes.Backend.Models.User", b =>
+                {
+                    b.HasOne("SelecTunes.Backend.Models.Party", null)
+                        .WithMany("PartyMembers")
+                        .HasForeignKey("PartyId");
+                });
 #pragma warning restore 612, 618
         }
     }

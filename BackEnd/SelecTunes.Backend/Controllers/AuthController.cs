@@ -161,7 +161,7 @@ namespace SelecTunes.Backend.Controllers
 
         /**
          * Func Callback(<SpotifyLogin> :login) -> async <ActionResult<String>>
-         * => Party.JoinCode
+         * => true
          * 
          * 1. Takes in a Spotify login token, and changes it into a accesstoken.
          * 2. Then looks if there is this user already in the db. If not, create.
@@ -197,8 +197,6 @@ namespace SelecTunes.Backend.Controllers
 
             SpotifyIdentity identify = JsonConvert.DeserializeObject<SpotifyIdentity>(response); // Make it a SpotifyIdentity.
 
-            System.IO.File.WriteAllText("responses.txt", response);
-
             User host = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
             if (host == null)
@@ -209,6 +207,23 @@ namespace SelecTunes.Backend.Controllers
             // If so, update the tokens.
             host.SpotifyAccessToken = tok.AccessToken;
             host.SpotifyRefreshToken = tok.RefreshToken;
+
+            return new JsonResult(new { Success = true });
+        }
+
+        /**
+         * Func OAuthIsDumb() -> async <ActionResult<String>>
+         * => Party.JoinCode
+         * 
+         * 3. Creates a new party, with a NOT CRYPTOGRAPHICALLY SECURE join code.
+         * 
+         * 16/02/2020 D/M/Y - Alexander Young - Finalize
+         */
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<String>> OAuthIsDumb()
+        {
+            User host = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
             Party party = new Party
             { // Create a new party with this user as a host.
