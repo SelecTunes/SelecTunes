@@ -30,10 +30,11 @@ class RegisterActivity: AppCompatActivity() {
 
     private fun register(email: String, password: String, passwordConfirmed: String) {
         val stringRequest = object: StringRequest(Method.POST, "https://coms-309-jr-2.cs.iastate.edu/api/auth/register", Response.Listener {
-            val success = JsonUtils.parseRegisterResponse(this, it)
+            val success = JsonUtils.parseRegisterResponse(this, it, 200)
             if (success) startActivity(Intent(this, LoginActivity::class.java))
             println(it)
         }, Response.ErrorListener {
+            JsonUtils.parseRegisterResponse(this, null, it.networkResponse.statusCode)
             println("There was an error with the response. Code: ${it.networkResponse.statusCode}")
         }) {
             override fun getParams(): Map<String, String> {
