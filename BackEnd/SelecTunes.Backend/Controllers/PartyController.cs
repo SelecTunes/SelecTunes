@@ -29,6 +29,8 @@ namespace SelecTunes.Backend.Controllers
          * 
          * Send a POST request to /api/party/joinparty with a join code
          * The user that sent the request will be added to the party with that join code
+         *
+         * 15/02/2020 D/M/Y - Nathan Tucker - Stubbing
          */
         [HttpPost]
         [Authorize]
@@ -43,6 +45,8 @@ namespace SelecTunes.Backend.Controllers
          * 
          * Send a POST request to /api/party/leaveparty
          * The user that sent the request will be removed from the party which they are currently in
+         *
+         * 15/02/2020 D/M/Y - Nathan Tucker - Stubbing
          */
         [HttpPost]
         [Authorize]
