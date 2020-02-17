@@ -27,15 +27,17 @@ class HostMenuActivity : AppCompatActivity() {
         }
 
         songList.setOnClickListener{
-            val toSongList = Intent(this, SongListActivity::class.java)
+            val toSongList = Intent(this, TempHostMenuActivity::class.java)
             startActivity(toSongList)
         }
 
         backArrow.setOnClickListener{
-            startActivity(Intent(this, LoginActivity::class.java))
+            //TODO: Actually end party.
+            startActivity(Intent(this, ChooseActivity::class.java))
         }
 
         endParty.setOnClickListener{
+            //TODO: Actually end party.
             startActivity(Intent(this, LoginActivity::class.java))
         }
     }
@@ -43,11 +45,6 @@ class HostMenuActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val textView = findViewById<TextView>(R.id.session_id)
-        val source = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789"
-        val randomString = (1..6)
-                .map { i -> kotlin.random.Random.nextInt(0, source.length) }
-                .map(source::get)
-                .joinToString("")
-        textView.text = randomString
+        textView.text = intent.getStringExtra("code")
     }
 }

@@ -3,6 +3,7 @@ package cs309.selectunes.utils
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import cs309.selectunes.R
+import org.json.JSONArray
 import org.json.JSONObject
 
 object JsonUtils {
@@ -22,18 +23,34 @@ object JsonUtils {
         return success
     }
 
-    fun parseRegisterResponse(activity: AppCompatActivity, body: String): Boolean {
-        val json = JSONObject(body)
-        val success = json.getBoolean("success")
+    fun parseRegisterResponse(activity: AppCompatActivity, body: String?, status: Int): Boolean {
         val registerError = activity.findViewById<TextView>(R.id.register_error)
-        if (!success) {
-            registerError.text = "There was an issue with the email or password."
-            if (json.has("errors")) {
-                registerError.text = json.getJSONObject("errors").getJSONArray("ConfirmPassword").getString(0)
-            }
-        } else {
+        if (body == "true") {
             registerError.text = ""
+            return true
         }
-        return success
+        var json: JSONArray? = null
+        if (body != null) {
+            json = JSONArray(body)
+        }
+        return when {
+            status == 400 -> {
+                registerError.text = "The passwords don't match."
+                false
+            }
+            status == 500 -> {
+                registerError.text = "The server is down."
+                false
+            }
+            json?.getJSONObject(0)!!.has("errors") -> {
+                registerError.text = json.getJSONObject(0).getJSONArray("ConfirmPassword").getString(0)
+                false
+            }
+            json.getJSONObject(0).has("description") -> {
+                registerError.text = json.getJSONObject(0).getString("description")
+                false
+            }
+            else -> true
+        }
     }
 }
