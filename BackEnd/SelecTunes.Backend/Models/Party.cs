@@ -6,6 +6,12 @@ namespace SelecTunes.Backend.Models
 {
     public class Party
     {
+        public Party()
+        {
+            PartyMembers = new List<User>();
+            SongQueue = new Queue<Song>();
+        }
+
         [Key]
         public int Id { get; set; }
 
