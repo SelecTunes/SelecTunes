@@ -79,7 +79,11 @@ namespace SelecTunes.Backend.Controllers
                 throw new InvalidOperationException("Trying to leave party that does not exist");
             }
 
-            return null;
+            PartyToLeave.PartyMembers.Remove(ToLeave);
+
+            _context.SaveChanges();
+
+            return new JsonResult(new { Success = true });
         }
 
         /**
@@ -98,8 +102,18 @@ namespace SelecTunes.Backend.Controllers
         public ActionResult<String> DisbandParty()
         {
             User PartyDisbander = _userManager.GetUserAsync(HttpContext.User).Result;
-            
-            return null;
+            Party PartyToDisband = _context.Parties.Where(p => p.Id == PartyDisbander.PartyId).FirstOrDefault();
+
+            if (PartyToDisband.PartyHost != PartyDisbander)
+            {
+                throw new InvalidOperationException("Attempting to disband party as non-host");
+            }
+
+            _context.Parties.Remove(PartyToDisband);
+
+            _context.SaveChanges();
+
+            return new JsonResult(new { Success = true });
         }
     }
 }
