@@ -223,6 +223,9 @@ namespace SelecTunes.Backend.Controllers
                 // PartyMembers = new List<User> { host },
             };
 
+            host.Party = party;
+            host.PartyId = party.Id;
+
             _context.Parties.Add(party);
 
             _context.SaveChanges(); // Kommit to DB.

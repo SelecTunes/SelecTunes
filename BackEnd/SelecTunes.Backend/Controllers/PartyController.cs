@@ -46,10 +46,11 @@ namespace SelecTunes.Backend.Controllers
             Party party = _context.Parties.Where(p => p.JoinCode == joinCode).FirstOrDefault(); // Find a corresponding party with the requested join code
             if (party == null) // no party with that join code
             {
-                throw new InvalidOperationException("a party with that code does not exist");
+                throw new InvalidOperationException("A party with that code does not exist");
             }
 
             party.PartyMembers.Add(ToJoin);
+            ToJoin.Party = party;
 
             _context.SaveChanges();
 
@@ -72,7 +73,7 @@ namespace SelecTunes.Backend.Controllers
             _logger.LogDebug("User {0} attempting to leave party", _userManager.GetUserAsync(HttpContext.User).Result);
 
             User ToLeave = _userManager.GetUserAsync(HttpContext.User).Result;
-            Party PartyToLeave = _context.Parties.Where(p => p.Id == ToLeave.PartyId).FirstOrDefault();
+            Party PartyToLeave = _context.Parties.Where(p => p == ToLeave.Party || p.Id == ToLeave.PartyId).FirstOrDefault();
 
             if (PartyToLeave == null)
             {
@@ -103,6 +104,11 @@ namespace SelecTunes.Backend.Controllers
         {
             User PartyDisbander = _userManager.GetUserAsync(HttpContext.User).Result;
             Party PartyToDisband = _context.Parties.Where(p => p.Id == PartyDisbander.PartyId).FirstOrDefault();
+
+            if (PartyToDisband == null)
+            {
+                throw new InvalidOperationException("Attempting to dispand invalid party!");
+            }
 
             if (PartyToDisband.PartyHost != PartyDisbander)
             {
