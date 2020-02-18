@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using SelecTunes.Backend.Data;
 using SelecTunes.Backend.Models;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -80,6 +81,14 @@ namespace SelecTunes.Backend.Controllers
                 throw new InvalidOperationException("Trying to leave party that does not exist");
             }
 
+            if (PartyToLeave.PartyHost == ToLeave)
+            {
+                if (DisbandCurrentParty(PartyToLeave))
+                {
+                    return new JsonResult(new { Success = true });
+                }
+            }
+
             PartyToLeave.PartyMembers.Remove(ToLeave);
 
             _context.SaveChanges();
@@ -116,11 +125,29 @@ namespace SelecTunes.Backend.Controllers
                 throw new InvalidOperationException("Attempting to disband party as non-host");
             }
 
+            if (DisbandCurrentParty(PartyToDisband))
+            {
+                return new JsonResult(new { Success = true });
+            }
+
+            return new JsonResult(new { Success = false });
+        }
+
+        /**
+         * Func DisbandCurrentParty(Party: PartyToDisband) -> bool
+         * => true
+         *
+         * Method that would get repeated in many instances.
+         * If the current user tries to leave the party and is host or disband the party
+         *  this method gets called
+         */
+        private bool DisbandCurrentParty(Party PartyToDisband)
+        {
             _context.Parties.Remove(PartyToDisband);
 
             _context.SaveChanges();
 
-            return new JsonResult(new { Success = true });
+            return true;
         }
     }
 }
