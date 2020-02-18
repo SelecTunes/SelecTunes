@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Identity;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -231,6 +232,35 @@ namespace SelecTunes.Backend.Controllers
             _context.SaveChanges(); // Kommit to DB.
 
             return new JsonResult(new { JoinCode = party.JoinCode }); // Return Party Join Code.
+        }
+
+        /**
+         * Func Logout() -> async <ActionResult<String>>
+         * => true
+         *
+         * Attempts to log out the current user from the service. If they are a member of any parties, remove them from the party
+         *
+         * No other operations need to be done server side at least
+         * 
+         * 18/02/2020 - Nathan Tucker
+         */
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<String>> Logout()
+        {
+            User ToLeave = _userManager.GetUserAsync(HttpContext.User).Result;
+            Party PartyToLeave = _context.Parties.Where(p => p == ToLeave.Party || p.Id == ToLeave.PartyId).FirstOrDefault();
+
+            if (PartyToLeave == null)
+            {
+                throw new InvalidOperationException("Trying to leave party that does not exist");
+            }
+
+            PartyToLeave.PartyMembers.Remove(ToLeave);
+
+            _context.SaveChanges();
+
+            return new JsonResult(new { Success = true });
         }
     }
 }

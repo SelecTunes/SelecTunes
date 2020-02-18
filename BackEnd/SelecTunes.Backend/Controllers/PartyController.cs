@@ -64,7 +64,7 @@ namespace SelecTunes.Backend.Controllers
          * The user that sent the request will be removed from the party which they are currently in
          *
          * 15/02/2020 D/M/Y - Nathan Tucker - Stubbing
-         * 17/02/2020 D/M/Y - Nathan Tucker - Finalizing
+         * 17/02/2020 D/M/Y - Alexander Young - Finalizing
          */
         [HttpPost]
         [Authorize]
@@ -97,6 +97,7 @@ namespace SelecTunes.Backend.Controllers
          * The host will be logged out and removed
          *
          * 17/02/2020 - Nathan Tucker - Stubbing
+         * 17/02/2020 - Alexander Young - Finalizing
          */
         [HttpDelete]
         [Authorize]
