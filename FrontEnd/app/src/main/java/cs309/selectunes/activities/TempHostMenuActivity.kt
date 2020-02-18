@@ -6,21 +6,18 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.Request
 import com.android.volley.Response
-import com.android.volley.toolbox.HttpClientStack
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import cs309.selectunes.R
 import cs309.selectunes.models.Song
-import org.apache.http.impl.client.BasicCookieStore
-import org.apache.http.impl.client.DefaultHttpClient
-import org.apache.http.impl.cookie.BasicClientCookie
+import cs309.selectunes.utils.HttpUtils
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
+import java.util.*
+import kotlin.collections.ArrayList
 
-class TempHostMenuActivity : AppCompatActivity()
-{
+class TempHostMenuActivity : AppCompatActivity() {
 
     var songList = ArrayList<Song>()
     override fun onCreate(instanceState: Bundle?) {
@@ -29,85 +26,76 @@ class TempHostMenuActivity : AppCompatActivity()
         val guestList = findViewById<Button>(R.id.guestList_id)
         val songList = findViewById<Button>(R.id.songQueue_id)
         val songSearch = findViewById<TextView>(R.id.song_search_id)
-
         songSearch.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                searchSong("{\"queryString\": \"${songSearch.text}\"}")
+                searchSong(songSearch.text.toString())
                 return@OnKeyListener true
             }
             false
         })
 
-        guestList.setOnClickListener{
+        guestList.setOnClickListener {
             //val toGuestList = Intent(this, GuestListActivity::class.java)
             //startActivity(toGuestList)
         }
 
-        songList.setOnClickListener{
+        songList.setOnClickListener {
             //val toSongList = Intent(this, SongListActivity::class.java)
             //startActivity(toSongList)
         }
 
 
-
     }
 
     private fun searchSong(songToSearch: String) {
-        val partyCodeBox = findViewById<TextView>(R.id.PartyCode)
-        val httpclient = DefaultHttpClient()
-        val cookieStore = BasicCookieStore()
-        val settings = getSharedPreferences("Cookie", 0)
-        val cookie = BasicClientCookie("Holtzmann", settings.getString("cookie", ""))
-        cookie.domain = "coms-309-jr-2.cs.iastate.edu"
-        cookieStore.addCookie(cookie)
-        httpclient.cookieStore = cookieStore
-        val httpStack = HttpClientStack(httpclient)
-
-        val json = JSONObject(songToSearch)
-        val url = "https://coms-309-jr-2.cs.iastate.edu/api/Song/SearchBySong"
-
-        val jsonObjectRequest = object : JsonObjectRequest(Request.Method.GET, url, json,
+        val json = JSONObject()
+        json.put("QueryString", songToSearch)
+        val jsonObjectRequest = object : JsonObjectRequest(Method.POST, "https://coms-309-jr-2.cs.iastate.edu/api/Song/SearchBySong", json,
                 Response.Listener {
-                    println("Attempting to fetch JSON")
                     parseJson(it)
                 },
                 Response.ErrorListener {
-
-                    println("Error fetching JSON object")
+                    println("Error fetching JSON object: ${it.networkResponse.statusCode}")
                     println(it.networkResponse.data.toString(StandardCharsets.UTF_8))
-
                 }) {
-            override fun getHeaders(): MutableMap<String, String> {
-                val headers = HashMap<String, String>()
+            override fun getParams(): Map<String, String> {
+                val params: MutableMap<String, String> = HashMap()
+                params["QueryString"] = songToSearch
+                return params
+            }
+
+            override fun getHeaders(): Map<String, String> {
+                val headers: MutableMap<String, String> = HashMap()
                 headers["Content-Type"] = "application/json"
+                headers["Accept"] = "application/json, text/json"
                 return headers
             }
         }
-        val requestQueue = Volley.newRequestQueue(this, httpStack)
+        val requestQueue = Volley.newRequestQueue(this, HttpUtils.createAuthCookie(this))
         requestQueue.add(jsonObjectRequest)
     }
 
     private fun parseJson(jsonBack: JSONObject) {
         val jsonItems = jsonBack.getJSONObject("tracks").getJSONArray("items")
-        for (x in 0..9) {
+        for (x in 0 until jsonItems.length()) {
             val jsonSong = jsonItems.getJSONObject(x)
             val song = jsonSong.get("name")
             val songName = song.toString()
             val explicit = jsonSong.getBoolean("explicit")
-            val artistName = jsonSong.getString("artist")
             val jsonAlbum = jsonSong.getJSONObject("album")
+            val artistName = jsonAlbum.getJSONArray("artists").getJSONObject(0).getString("name")
             val albumArt = jsonAlbum.getJSONArray("images")
             val firstSize = albumArt.getJSONObject(0)
             val albumArtSrc = firstSize.getString("url")
             println("Song $x: name: $songName, artist: $artistName, albumSrc: $albumArtSrc, explicit: $explicit")
             songList.add(
-                Song(
-                    songName,
-                    "",
-                    artistName,
-                    albumArtSrc,
-                    explicit
-                )
+                    Song(
+                            songName,
+                            "",
+                            artistName,
+                            albumArtSrc,
+                            explicit
+                    )
             )
         }
 

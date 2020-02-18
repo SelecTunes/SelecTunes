@@ -100,4 +100,18 @@
         android:textColor="@color/colorTextHost"
         android:textSize="59sp" />
 
+    <EditText
+        android:id="@+id/song_search_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="468dp"
+        android:layout_marginEnd="52dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Search Song:" />
+
 </RelativeLayout>

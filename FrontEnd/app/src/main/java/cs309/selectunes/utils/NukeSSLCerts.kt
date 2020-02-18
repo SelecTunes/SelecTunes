@@ -2,7 +2,11 @@ package cs309.selectunes.utils
 
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
-import javax.net.ssl.*
+import javax.net.ssl.HttpsURLConnection
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
+
 
 /**
  * This is to allow requests to ignore SSL certifications.
