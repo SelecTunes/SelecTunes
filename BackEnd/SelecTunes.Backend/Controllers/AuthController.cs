@@ -248,7 +248,7 @@ namespace SelecTunes.Backend.Controllers
         [Authorize]
         public async Task<ActionResult<String>> Logout()
         {
-            User ToLeave = _userManager.GetUserAsync(HttpContext.User).Result;
+            User ToLeave = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
             Party PartyToLeave = _context.Parties.Where(p => p == ToLeave.Party || p.Id == ToLeave.PartyId).FirstOrDefault();
 
             if (PartyToLeave == null)
