@@ -57,7 +57,7 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<SpotifyTracksResponseBody>> SearchBySong([FromForm]SearchQuery songToSearch)
+        public async Task<ActionResult<SpotifyTracksResponseBody>> SearchBySong([FromBody]SearchQuery songToSearch)
         {
             try
             {
@@ -94,7 +94,7 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<SpotifyArtistResponseBody>> SearchByArtist([FromForm]SearchQuery artistToSearch)
+        public async Task<ActionResult<SpotifyArtistResponseBody>> SearchByArtist([FromBody]SearchQuery artistToSearch)
         {
             try
             {
