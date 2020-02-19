@@ -7,13 +7,12 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import cs309.selectunes.R
+import cs309.selectunes.utils.HttpUtils
 import org.json.JSONObject
-import org.w3c.dom.Text
 
 
 class HostMenuActivity : AppCompatActivity() {
@@ -45,12 +44,12 @@ class HostMenuActivity : AppCompatActivity() {
         }
 
         backArrow.setOnClickListener{
-            //TODO: Actually end party.
+            HttpUtils.endParty(this)
             startActivity(Intent(this, ChooseActivity::class.java))
         }
 
         endParty.setOnClickListener{
-            //TODO: Actually end party.
+            HttpUtils.endParty(this)
             startActivity(Intent(this, LoginActivity::class.java))
         }
 
@@ -77,8 +76,6 @@ class HostMenuActivity : AppCompatActivity() {
         val json = JSONObject()
         json.put("queryString", songToSearch)
         val url = "https://coms-309-jr-2.cs.iastate.edu/api/song/searchbysong"
-        //val url = "https://postman-echo.com"
-
         val jsonObjectRequest = object: JsonObjectRequest(Method.GET, url, json,
                 Response.Listener {
                     println("Attempting to fetch JSON")
