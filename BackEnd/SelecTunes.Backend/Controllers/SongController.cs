@@ -55,7 +55,7 @@ namespace SelecTunes.Backend.Controllers
          * 
          * 15/02/2020 D/M/Y - Nathan Tucker - Creation
          */
-        [HttpGet]
+        [HttpPost]
         [Authorize]
         public async Task<ActionResult<SpotifyTracksResponseBody>> SearchBySong([FromBody]SearchQuery songToSearch)
         {
@@ -92,7 +92,7 @@ namespace SelecTunes.Backend.Controllers
          * 
          * 15/02/2020 D/M/Y - Nathan Tucker - Creation
          */
-        [HttpGet]
+        [HttpPost]
         [Authorize]
         public async Task<ActionResult<SpotifyArtistResponseBody>> SearchByArtist([FromBody]SearchQuery artistToSearch)
         {
