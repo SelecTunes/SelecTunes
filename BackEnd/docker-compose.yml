@@ -1,0 +1,15 @@
+services:
+  postgres:
+  - image: postgres
+    ports:
+      "5432:5432"
+    environment:
+        - POSTGRES_PASSWORD=selectunes
+        - POSTGRES_USER=selectunes
+        - POSTGRES_DB=selectunes
+  web:
+  - image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      443:443
