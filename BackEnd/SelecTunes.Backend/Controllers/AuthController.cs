@@ -262,5 +262,54 @@ namespace SelecTunes.Backend.Controllers
 
             return new JsonResult(new { Success = true });
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<String>> Ban([FromQuery]string email)
+        {
+            if (email == null)
+            {
+                throw new ArgumentNullException(nameof(email));
+            }
+
+            User u = await _userManager.FindByEmailAsync(email).ConfigureAwait(false);
+            User x = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
+
+            if (u == null)
+            {
+                throw new InvalidOperationException("User to banne is null.");
+            }
+
+            if (x == null)
+            {
+                throw new InvalidOperationException("Current User is null.");
+            }
+
+            if (u.PartyId == null || u.Party == null)
+            {
+                throw new InvalidOperationException("User to banne is not a part of a party.");
+            }
+
+            if (x.PartyId == null || x.Party == null)
+            {
+                throw new InvalidOperationException("Current User is not a part of a party.");
+            }
+
+            if (u.Party.PartyHost != x)
+            {
+                throw new InvalidOperationException("Current User is not the host of the User to banne's party.");
+            }
+
+            u.IsBanned = true;
+            u.LockoutEnabled = true;
+            u.LockoutEnd = DateTimeOffset.Now.AddDays(16);
+            u.Party = null;
+            u.PartyId = null;
+            x.Party.PartyMembers.Remove(u);
+
+            _context.SaveChanges();
+
+            return new JsonResult(new { Success = true });
+        }
     }
 }
