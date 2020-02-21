@@ -1,0 +1,49 @@
+---
+variables:
+  OBJECTS_DIRECTORY: 'obj'
+  NUGET_PACKAGES_DIRECTORY: '.nuget'
+  BACKEND_PATH: 'BackEnd'
+  SOURCE_CODE_PATH: '$BACKEND_PATH/*/*/'
+
+stages:
+  - build
+  - test
+  - deploy
+
+default:
+  image: mcr.microsoft.com/dotnet/core/sdk:3.1-buster
+  
+  cache:
+    key: "$CI_JOB_STAGE-$CI_COMMIT_REF_SLUG"
+    paths:
+      - '$SOURCE_CODE_PATH$OBJECTS_DIRECTORY/project.assets.json'
+      - '$SOURCE_CODE_PATH$OBJECTS_DIRECTORY/*.csproj.nuget.*'
+      - '$NUGET_PACKAGES_DIRECTORY'
+    policy: pull-push
+    
+  before_script:
+  - 'cd $BACKEND_PATH'
+  - 'apt update && apt install -y ruby'
+  - 'dotnet restore --packages $NUGET_PACKAGES_DIRECTORY'
+
+build:
+  stage: build
+  script:
+    - 'dotnet build --no-restore'
+
+tests:
+  stage: test
+  script:
+    - 'dotnet test --no-restore'
+
+deploy:
+  stage: deploy
+  only:
+    - tags
+  artifacts:
+    paths:
+      - '$BACKEND_PATH/build-*'
+  script:
+    - 'dotnet publish --self-contained -r linux-x64 -o build-linux SelecTunes.Backend'
+    - 'dotnet publish --self-contained -r win-x64 -o build-win SelecTunes.Backend'
+
