@@ -17,6 +17,7 @@ using System.Net.Http.Headers;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Collections.Generic;
 using SelecTunes.Backend.Helper;
+using System.Text;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -119,6 +120,54 @@ namespace SelecTunes.Backend.Controllers
 
                 return Unauthorized("Party Host not authorized to preform that action.");
             }
+        }
+
+        /**
+         * Func AddToQueue(<Song> :SongToAdd) -> async <ActionResult<String>>
+         * => true
+         *
+         * 
+         * Send a POST request to /api/song/addtoqueue with the unique spotify song id
+         * Find the current user, and then the party tied to the user
+         * Add to that party's cache
+         *
+         * 21/02/2020 - Nathan Tucker
+         */
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<String>> AddToQueue([FromBody]Song SongToAdd)
+        {
+            if (SongToAdd == null)
+            {
+                return new BadRequestObjectResult("Query is null.");
+            }
+
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false); // Find the current user asking to join a party
+            Party party = _context.Parties.Where(p => p == user.Party || p.Id == user.PartyId).FirstOrDefault(); // find the party that they are member of
+
+            if (party == null)
+            {
+                throw new InvalidOperationException("Yo party is nul");
+            }
+
+            // Pull the current song queue out of the redis cache. It's stored as a JSON string, so deserialize
+            Queue<Song> CurrentQueue = JsonConvert.DeserializeObject<Queue<Song>>(
+                (await _cache.GetAsync($"$queue:${party.JoinCode}").ConfigureAwait(false)).ToString()
+            );
+
+            // If a queue didn't exist for that party before
+            if (CurrentQueue == null)
+            {
+                CurrentQueue = new Queue<Song>();
+            }
+
+            // Append the requested song to the queue
+            CurrentQueue.Append(SongToAdd);
+
+            // Write the new queue to the redis cache. Because it used the old key from the key value pair, the old one will be written over
+            await _cache.SetStringAsync($"$queue:${party.JoinCode}", JsonConvert.SerializeObject(CurrentQueue)).ConfigureAwait(false);
+
+            return new JsonResult(new { Success = true });
         }
 
         /**
