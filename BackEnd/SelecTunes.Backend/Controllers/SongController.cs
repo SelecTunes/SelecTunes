@@ -145,19 +145,27 @@ namespace SelecTunes.Backend.Controllers
             User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false); // Find the current user asking to join a party
             Party party = _context.Parties.Where(p => p == user.Party || p.Id == user.PartyId).FirstOrDefault(); // find the party that they are member of
 
+            if (party == null)
+            {
+                throw new InvalidOperationException("Yo party is nul");
+            }
+
             // Pull the current song queue out of the redis cache. It's stored as a JSON string, so deserialize
-            Queue<Song> CurrentQueue = JsonConvert.DeserializeObject<Queue<Song>>(_cache.GetAsync("$" + party.JoinCode).Result.ToString());
+            Queue<Song> CurrentQueue = JsonConvert.DeserializeObject<Queue<Song>>(
+                (await _cache.GetAsync($"$queue:${party.JoinCode}").ConfigureAwait(false)).ToString()
+            );
 
             // If a queue didn't exist for that party before
             if (CurrentQueue == null)
             {
                 CurrentQueue = new Queue<Song>();
             }
+
             // Append the requested song to the queue
             CurrentQueue.Append(SongToAdd);
 
             // Write the new queue to the redis cache. Because it used the old key from the key value pair, the old one will be written over
-            await _cache.SetAsync("$" + party.JoinCode, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(CurrentQueue))).ConfigureAwait(false);
+            await _cache.SetStringAsync($"$queue:${party.JoinCode}", JsonConvert.SerializeObject(CurrentQueue)).ConfigureAwait(false);
 
             return new JsonResult(new { Success = true });
         }
