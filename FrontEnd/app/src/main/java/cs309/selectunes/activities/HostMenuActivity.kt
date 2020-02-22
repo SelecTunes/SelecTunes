@@ -9,11 +9,16 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.toolbox.HttpClientStack
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import cs309.selectunes.R
+import org.apache.http.impl.client.BasicCookieStore
+import org.apache.http.impl.client.DefaultHttpClient
+import org.apache.http.impl.cookie.BasicClientCookie
 import org.json.JSONObject
 import org.w3c.dom.Text
+import java.nio.charset.StandardCharsets
 
 
 class HostMenuActivity : AppCompatActivity() {
@@ -35,7 +40,7 @@ class HostMenuActivity : AppCompatActivity() {
         val searchBar = findViewById<TextView>(R.id.song_search_id)
 
         guestList.setOnClickListener{
-            val toGuestList = Intent(this, GuestListActivity::class.java)
+            val toGuestList = Intent(this, SongListActivity::class.java)
             startActivity(toGuestList)
         }
 
@@ -73,11 +78,18 @@ class HostMenuActivity : AppCompatActivity() {
 
     private fun getRequest(songToSearch : String){
 
-        val requestQueue = Volley.newRequestQueue(this)
         val json = JSONObject()
         json.put("queryString", songToSearch)
         val url = "https://coms-309-jr-2.cs.iastate.edu/api/song/searchbysong"
         //val url = "https://postman-echo.com"
+        val httpclient = DefaultHttpClient()
+        val cookieStore = BasicCookieStore()
+        val settings = getSharedPreferences("Cookie", 0)
+        val cookie = BasicClientCookie("Holtzmann", settings.getString("cookie", ""))
+        cookie.domain = "coms-309-jr-2.cs.iastate.edu"
+        cookieStore.addCookie(cookie)
+        httpclient.cookieStore = cookieStore
+        val httpStack = HttpClientStack(httpclient)
 
         val jsonObjectRequest = object: JsonObjectRequest(Method.GET, url, json,
                 Response.Listener {
@@ -85,7 +97,7 @@ class HostMenuActivity : AppCompatActivity() {
                     parseJson(it)
                 },
                 Response.ErrorListener {
-                    println("There was an error with the response. Code: ${it.networkResponse.statusCode}")
+                    println(it.networkResponse.data.toString(StandardCharsets.UTF_8))
                 }) {
 
             override fun getHeaders(): MutableMap<String, String> {
@@ -96,7 +108,7 @@ class HostMenuActivity : AppCompatActivity() {
             }
         }
 
-
+        val requestQueue = Volley.newRequestQueue(this, httpStack)
         requestQueue.add(jsonObjectRequest)
     }
 
