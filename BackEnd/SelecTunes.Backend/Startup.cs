@@ -143,6 +143,8 @@ namespace SelecTunes.Backend
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseUserDestroyer();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
