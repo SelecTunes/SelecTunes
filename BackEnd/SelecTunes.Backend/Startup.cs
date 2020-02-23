@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using SelecTunes.Backend.Helper;
 using System.Net.Http;
 using Microsoft.Extensions.Options;
+using SelecTunes.Backend.Helper.Hubs;
 
 namespace SelecTunes.Backend
 {
@@ -32,6 +33,8 @@ namespace SelecTunes.Backend
             {
                 options.UseNpgsql(Configuration.GetConnectionString("Default"));
             });
+
+            services.AddSignalR();
 
             services.AddDistributedRedisCache(options =>
             {
@@ -133,7 +136,7 @@ namespace SelecTunes.Backend
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "SelecTunes API v1");
             });
 
             app.UseHttpsRedirection();
@@ -148,6 +151,7 @@ namespace SelecTunes.Backend
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<QueueHub>("/queue");
             });
         }
     }
