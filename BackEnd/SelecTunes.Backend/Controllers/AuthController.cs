@@ -262,5 +262,69 @@ namespace SelecTunes.Backend.Controllers
 
             return new JsonResult(new { Success = true });
         }
+
+        /**
+         * Func Ban(string: email) -> async <ActionResult<String>>
+         * => true
+         *
+         * Bans the user specified by email address. This is a 2 week ban from using the app
+         * 
+         * This operation will only work if all conditions are met:
+         * 1. The UserToBan is in a party
+         * 2. The CurrentUser is a host
+         * 3. The CurrentUser is the host of the party of the UserToBan
+         *
+         * 
+         * 20/02/2020 - Alexander Young
+         */
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<String>> Ban([FromQuery]string email)
+        {
+            if (email == null)
+            {
+                throw new ArgumentNullException(nameof(email));
+            }
+
+            User ToBan = await _userManager.FindByEmailAsync(email).ConfigureAwait(false);
+            User CurrentUser = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
+
+            if (ToBan == null)
+            {
+                throw new InvalidOperationException("User to banne is null.");
+            }
+
+            if (CurrentUser == null)
+            {
+                throw new InvalidOperationException("Current User is null.");
+            }
+
+            if (ToBan.PartyId == null || ToBan.Party == null)
+            {
+                throw new InvalidOperationException("User to banne is not a part of a party.");
+            }
+
+            if (CurrentUser.PartyId == null || CurrentUser.Party == null)
+            {
+                throw new InvalidOperationException("Current User is not a part of a party.");
+            }
+
+            if (ToBan.Party.PartyHost != CurrentUser)
+            {
+                throw new InvalidOperationException("Current User is not the host of the User to banne's party.");
+            }
+
+            // Do all of the lockout features
+            ToBan.IsBanned = true;
+            ToBan.LockoutEnabled = true;
+            ToBan.LockoutEnd = DateTimeOffset.Now.AddDays(16);
+            ToBan.Party = null;
+            ToBan.PartyId = null;
+            CurrentUser.Party.PartyMembers.Remove(ToBan);
+
+            _context.SaveChanges();
+
+            return new JsonResult(new { Success = true });
+        }
     }
 }
