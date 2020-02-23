@@ -5,6 +5,17 @@ namespace SelecTunes.Backend.Helper.Hubs
 {
     public class QueueHub : Hub
     {
+
+        public async Task JoinQueue(string queueName)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, queueName).ConfigureAwait(false);
+        }
+
+        public Task LeaveQueue(string queueName)
+        {
+            return Groups.RemoveFromGroupAsync(Context.ConnectionId, queueName);
+        }
+
         public async Task UpvoteSong(string SpotifyID)
         {
             await Clients.All.SendAsync("ReceiveUpVote", SpotifyID).ConfigureAwait(false);
