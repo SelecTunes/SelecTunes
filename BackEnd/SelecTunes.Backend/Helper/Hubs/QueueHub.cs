@@ -11,9 +11,9 @@ namespace SelecTunes.Backend.Helper.Hubs
             await Groups.AddToGroupAsync(Context.ConnectionId, queueName).ConfigureAwait(false);
         }
 
-        public Task LeaveQueue(string queueName)
+        public async Task LeaveQueue(string queueName)
         {
-            return Groups.RemoveFromGroupAsync(Context.ConnectionId, queueName);
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, queueName).ConfigureAwait(falase);
         }
 
         public async Task UpvoteSong(string SpotifyID)

@@ -152,6 +152,7 @@ namespace SelecTunes.Backend
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<QueueHub>("/queue");
+                endpoints.MapHub<ChatHub>("/chat");
             });
         }
     }
