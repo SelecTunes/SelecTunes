@@ -43,6 +43,12 @@ namespace SelecTunes.Backend.Helper.Middleware
             {
                 User user = await userManager.GetUserAsync(p).ConfigureAwait(false);
 
+                if (user == null)
+                {
+                    await _next(httpContext).ConfigureAwait(false);
+                    return;
+                }
+
                 if (user.LockoutEnd > DateTimeOffset.Now)
                 {
                     //Log the user out and redirect back to homepage
@@ -50,7 +56,6 @@ namespace SelecTunes.Backend.Helper.Middleware
                     httpContext.Response.Redirect("/");
                 }
             }
-
             await _next(httpContext).ConfigureAwait(false);
         }
     }
