@@ -26,6 +26,10 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activities.JoinPartyActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activities.HostMenuActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
