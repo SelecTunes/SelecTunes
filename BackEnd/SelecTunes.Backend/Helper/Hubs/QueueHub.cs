@@ -13,7 +13,7 @@ namespace SelecTunes.Backend.Helper.Hubs
 
         public async Task LeaveQueue(string queueName)
         {
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, queueName).ConfigureAwait(falase);
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, queueName).ConfigureAwait(false);
         }
 
         public async Task UpvoteSong(string SpotifyID)
