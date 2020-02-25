@@ -1,0 +1,6 @@
+gitlab_uri: example
+gitlab_token: example
+gitlab_project_id: example
+gitlab_artifacts_url: example
+gitlab_job_name: example
+deploy_folder: example
