@@ -36,7 +36,7 @@ tests:
   script:
     - 'dotnet test --no-restore'
 
-deploy:
+build-deploy:
   stage: deploy
   only:
     - tags
@@ -47,3 +47,15 @@ deploy:
     - 'dotnet publish --self-contained -r linux-x64 -o build-linux SelecTunes.Backend'
     - 'dotnet publish --self-contained -r win-x64 -o build-win SelecTunes.Backend'
 
+deploy:
+  stage: deploy
+  only:
+    - tags
+  before_script:
+    - 'which ssh-agent || ( apt update -y && apt install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+  script:
+    - 'ssh root@"$SERVER" /sbin/st-update'
