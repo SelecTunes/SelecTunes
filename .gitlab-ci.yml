@@ -58,4 +58,4 @@ deploy:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
   script:
-    - 'ssh root@"$SERVER" /sbin/st-update -t "$CI_COMMIT_TAG" -u "$CI_JOB_TOKEN"'
+    - 'ssh root@"$SERVER" /usr/sbin/st-update -t "$CI_COMMIT_TAG" -u "$CI_JOB_TOKEN"'
