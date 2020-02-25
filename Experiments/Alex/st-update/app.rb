@@ -39,7 +39,9 @@ puts "Using platform !#{@platform}"
 
 @settings =
   if File.exist? '/etc/st-update/settings.yml'
-    YAML.load_file '/etc/st-update/settings.yml'
+    YAML.safe_load (File.read '/etc/st-update/settings.yml'),
+                   filename: '/etc/st-update/settings.yml',
+                   symbolize_names: true
   else
     {
       :gitlab_uri => 'https://git.linux.iastate.edu',
@@ -53,7 +55,9 @@ puts "Using platform !#{@platform}"
 
 @app_settings =
   if File.exist? '/etc/st-update/app-settings.yml'
-    YAML.load_file '/etc/st-update/app-settings.yml'
+    YAML.safe_load (File.read '/etc/st-update/app-settings.yml'),
+                   filename: '/etc/st-update/app-settings.yml',
+                   symbolize_names: true
   else
     {
       :client_id => '123123123123',
