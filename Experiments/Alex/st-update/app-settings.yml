@@ -1,0 +1,9 @@
+---
+client_id: example
+client_secret: example
+db_username: example
+db_password: example
+db_host: example
+db_name: example
+redis_url: example
+redirect_uri: example
