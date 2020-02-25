@@ -8,4 +8,4 @@ install:
     cp -n -t /etc/st-update/ settings.yml app-settings.yml
     cp app.rb /usr/sbin/st-update
 
-    chmod +x /usr/bin/st-update
+    chmod +x /usr/sbin/st-update
