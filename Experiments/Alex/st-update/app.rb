@@ -40,7 +40,6 @@ puts "Using platform !#{@platform}"
 @settings =
   if File.exist? '/etc/st-update/settings.yml'
     YAML.safe_load (File.read '/etc/st-update/settings.yml'),
-                   filename: '/etc/st-update/settings.yml',
                    symbolize_names: true
   else
     {
@@ -56,7 +55,6 @@ puts "Using platform !#{@platform}"
 @app_settings =
   if File.exist? '/etc/st-update/app-settings.yml'
     YAML.safe_load (File.read '/etc/st-update/app-settings.yml'),
-                   filename: '/etc/st-update/app-settings.yml',
                    symbolize_names: true
   else
     {
