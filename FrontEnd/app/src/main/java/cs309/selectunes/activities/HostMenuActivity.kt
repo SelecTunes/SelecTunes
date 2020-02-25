@@ -11,6 +11,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import cs309.selectunes.R
+import cs309.selectunes.models.Song
 import cs309.selectunes.utils.HttpUtils
 import org.json.JSONObject
 
@@ -99,37 +100,37 @@ class HostMenuActivity : AppCompatActivity() {
 
     private fun parseJson(jsonBack : JSONObject)
     {
-        println("Parsing JSON")
-        val jsonTracks = jsonBack.getJSONObject("tracks")
-        val jsonItems = jsonTracks.getJSONArray("items")
-        for(x in 0..9)
-        {
-            var newSong = Song()
-            val jsonSong = jsonItems.getJSONObject(x)
-            val song = jsonSong.get("name")
-            println(song)
-
-            newSong.songName = song.toString()
-
-            val explicit = jsonSong.getBoolean("explicit")
-            println(explicit)
-
-            newSong.explicitBool = explicit
-
-            val artist = jsonSong.get("artist")
-
-            newSong.artistName = artist.toString()
-
-            val jsonAlbum = jsonSong.getJSONObject("album")
-            val albumArt = jsonAlbum.getJSONArray("images")
-            val firstSize = albumArt.getJSONObject(0)
-            val imageUrl = firstSize.get("url")
-            println(imageUrl)
-
-            newSong.albumUrl = imageUrl.toString()
-
-            songArray.add(newSong)
-        }
+//        println("Parsing JSON")
+//        val jsonTracks = jsonBack.getJSONObject("tracks")
+//        val jsonItems = jsonTracks.getJSONArray("items")
+//        for(x in 0..9)
+//        {
+//            var newSong = Song()
+//            val jsonSong = jsonItems.getJSONObject(x)
+//            val song = jsonSong.get("name")
+//            println(song)
+//
+//            newSong.songName = song.toString()
+//
+//            val explicit = jsonSong.getBoolean("explicit")
+//            println(explicit)
+//
+//            newSong.explicitBool = explicit
+//
+//            val artist = jsonSong.get("artist")
+//
+//            newSong.artistName = artist.toString()
+//
+//            val jsonAlbum = jsonSong.getJSONObject("album")
+//            val albumArt = jsonAlbum.getJSONArray("images")
+//            val firstSize = albumArt.getJSONObject(0)
+//            val imageUrl = firstSize.get("url")
+//            println(imageUrl)
+//
+//            newSong.albumUrl = imageUrl.toString()
+//
+//            songArray.add(newSong)
+//        }
 
     }
 }
