@@ -36,7 +36,7 @@ tests:
   script:
     - 'dotnet test --no-restore'
 
-build-deploy:
+package:
   stage: deploy
   only:
     - tags
@@ -59,4 +59,4 @@ deploy:
     - chmod 700 ~/.ssh
     - ssh-keyscan "$SERVER" >> ~/.ssh/known_hosts
   script:
-    - 'ssh root@"$SERVER" /usr/sbin/st-update -t "$CI_COMMIT_TAG" -u "$CI_JOB_TOKEN"'
+    - 'ssh root@"$SERVER" /usr/sbin/st-update -t "$CI_COMMIT_TAG" -u "$CI_JOB_TOKEN" --job'

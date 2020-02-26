@@ -47,7 +47,7 @@ puts "Using platform !#{@platform}"
       :gitlab_token => '',
       :gitlab_project_id => '4397',
       :gitlab_artifacts_url => '/api/v4/projects/:id/jobs/artifacts/:tag/download?job=:job',
-      :gitlab_job_name => 'deploy',
+      :gitlab_job_name => 'package',
       :deploy_folder => '/srv/SelecTunes.Deploy'
     }
   end
@@ -84,7 +84,15 @@ puts "Using artifact uri !#{@artifacts_uri}", ''
 FileUtils.mkdir_p @settings[:deploy_folder]
 
 puts 'Downloading Build Artifacts'
-@response = HTTP.headers('PRIVATE-TOKEN': @settings[:gitlab_token])
+
+@header =
+  if ARGV.include? '--job'
+    'JOB-TOKEN'
+  else
+    'PRIVATE-TOKEN'
+  end
+
+@response = HTTP.headers(@header => @settings[:gitlab_token])
                 .get @artifacts_uri
 
 @artifacts_file = File.join @settings[:deploy_folder], 'artifacts.zip'
