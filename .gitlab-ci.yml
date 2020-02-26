@@ -8,6 +8,7 @@ variables:
 stages:
   - build
   - test
+  - package
   - deploy
 
 default:
@@ -37,7 +38,7 @@ tests:
     - 'dotnet test --no-restore'
 
 package:
-  stage: deploy
+  stage: package
   only:
     - tags
   artifacts:
