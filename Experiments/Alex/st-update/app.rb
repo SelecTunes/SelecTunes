@@ -21,6 +21,10 @@ def call_systemd(action, service)
   end
 end
 
+File.open '/tmp/arg.v', 'wb' do |f|
+  f.write (JSON.pretty_generate ARGV)
+end
+
 @tag =
   if (ARGV.length >= 2) && (ARGV.include? '-t')
     ARGV[(ARGV.index '-t') + 1] if ARGV.include? '-t'
@@ -29,8 +33,8 @@ end
   end
 
 @platform =
-  if (ARGV.length >= 2) && (ARGV.include? '-p')
-    ARGV[(ARGV.index '-p') + 1] if ARGV.include? '-p'
+  if (ARGV.length >= 2) && (ARGV.include? '-x')
+    ARGV[(ARGV.index '-x') + 1] if ARGV.include? '-x'
   else
     'linux'
   end
@@ -128,7 +132,7 @@ else
   puts "Error downloading artifacts. Server returned !#{@response.status} {#{@response.body}}"
   exit 1
 end
-exit 0
+
 puts '', 'Unzipping artifacts.zip'
 @build_folder = File.join @settings[:deploy_folder], 'build'
 
@@ -154,6 +158,7 @@ puts 'Copying application files to run directory'
 @run_folder = File.join @settings[:deploy_folder], 'run'
 FileUtils.mkdir_p @run_folder
 FileUtils.cp_r (File.join @build_folder, 'BackEnd', "build-#{@platform}/."), @run_folder
+FileUtils.chmod_R 0o744, @run_folder
 puts 'Files copied', ''
 
 puts 'Generating Config'
