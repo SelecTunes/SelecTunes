@@ -61,4 +61,4 @@ deploy:
     - ssh-keyscan "$SERVER" >> ~/.ssh/known_hosts
     - env
   script:
-    - 'ssh root@"$SERVER" /usr/sbin/st-update -l "$CI_PIPELINE_ID" -p "$CI_PROJECT_ID" -u "$CI_JOB_TOKEN" --job'
+    - 'ssh root@"$SERVER" /usr/sbin/st-update -l "$CI_PIPELINE_ID" -p "$CI_PROJECT_ID"'
