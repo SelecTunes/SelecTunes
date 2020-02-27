@@ -6,6 +6,7 @@ require 'yaml'
 require 'zip'
 require 'open3'
 require 'erb'
+require 'json'
 
 def call_systemd(action, service)
   begin
@@ -46,7 +47,8 @@ puts "Using platform !#{@platform}"
       :gitlab_uri => 'https://git.linux.iastate.edu',
       :gitlab_token => '',
       :gitlab_project_id => '4397',
-      :gitlab_artifacts_url => '/api/v4/projects/:id/jobs/artifacts/:tag/download?job=:job',
+      :gitlab_artifacts_url => '/api/v4/projects/:id/jobs/:job/artifacts',
+      :gitlab_pipeline_url => '/api/v4/projects/:id/pipelines/:pipeline_id/jobs',
       :gitlab_job_name => 'package',
       :deploy_folder => '/srv/SelecTunes.Deploy'
     }
@@ -69,28 +71,47 @@ puts "Using platform !#{@platform}"
     }
   end
 
-@settings[:gitlab_token] = ARGV[(ARGV.index '-u') + 1] if ARGV.include? '-u'
-
-puts "Using settings !#{@settings}"
-puts "Using app settings !#{@app_settings}"
-
-@artifacts_uri = "#{@settings[:gitlab_uri]}#{@settings[:gitlab_artifacts_url]}"
-@artifacts_uri.sub! ':id', @settings[:gitlab_project_id]
-@artifacts_uri.sub! ':tag', @tag
-@artifacts_uri.sub! ':job', @settings[:gitlab_job_name]
-
-puts "Using artifact uri !#{@artifacts_uri}", ''
-
-FileUtils.mkdir_p @settings[:deploy_folder]
-
-puts 'Downloading Build Artifacts'
-
 @header =
   if ARGV.include? '--job'
     'JOB-TOKEN'
   else
     'PRIVATE-TOKEN'
   end
+
+@settings[:gitlab_token] = ARGV[(ARGV.index '-u') + 1] if ARGV.include? '-u'
+@settings[:gitlab_job_name] = ARGV[(ARGV.index '-j') + 1] if ARGV.include? '-j'
+@settings[:gitlab_project_id] = ARGV[(ARGV.index '-p') + 1] if ARGV.include? '-p'
+@settings[:gitlab_pipeline_id] = ARGV[(ARGV.index '-l') + 1] if ARGV.include? '-l'
+
+puts "Using settings !#{@settings}"
+puts "Using app settings !#{@app_settings}"
+
+puts '', 'Contacting Pipeline API'
+
+@pipeline_url = "#{@settings[:gitlab_uri]}#{@settings[:gitlab_pipeline_url]}"
+@pipeline_url.sub! ':id', @settings[:gitlab_project_id]
+@pipeline_url.sub! ':pipeline_id', @settings[:gitlab_pipeline_id]
+
+puts "Using pipeline uri !#{@pipeline_url}"
+
+response = HTTP.headers(@header => @settings[:gitlab_token])
+               .get @pipeline_url
+
+json = JSON.parse(response.body, :symbolize_names => true)
+
+@id = json.detect { |x| x[:name] == @settings[:gitlab_job_name] }[:id]
+
+puts "Using Id !#{@id}", ''
+
+@artifacts_uri = "#{@settings[:gitlab_uri]}#{@settings[:gitlab_artifacts_url]}"
+@artifacts_uri.sub! ':id', @settings[:gitlab_project_id]
+@artifacts_uri.sub! ':job', @id.to_s
+
+puts "Using artifact uri !#{@artifacts_uri}", ''
+
+FileUtils.mkdir_p @settings[:deploy_folder]
+
+puts 'Downloading Build Artifacts'
 
 @response = HTTP.headers(@header => @settings[:gitlab_token])
                 .get @artifacts_uri
@@ -107,7 +128,7 @@ else
   puts "Error downloading artifacts. Server returned !#{@response.status} {#{@response.body}}"
   exit 1
 end
-
+exit 0
 puts '', 'Unzipping artifacts.zip'
 @build_folder = File.join @settings[:deploy_folder], 'build'
 
