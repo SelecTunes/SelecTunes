@@ -46,6 +46,7 @@
   <ItemGroup>
     <Folder Include="Helper\Hubs\" />
   </ItemGroup>
+  <ItemGroup>
     <None Update="appsettings.erb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
