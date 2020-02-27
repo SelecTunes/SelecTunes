@@ -7,6 +7,7 @@ using SelecTunes.Backend.Data;
 using SelecTunes.Backend.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -50,6 +51,11 @@ namespace SelecTunes.Backend.Controllers
                 throw new InvalidOperationException("A party with that code does not exist");
             }
 
+            if (ToJoin.Party != null || ToJoin.PartyId != null)
+            {
+                throw new InvalidOperationException("User attempting to join two parties");
+            }
+
             party.PartyMembers.Add(ToJoin);
             ToJoin.Party = party;
 
@@ -81,12 +87,13 @@ namespace SelecTunes.Backend.Controllers
                 throw new InvalidOperationException("Trying to leave party that does not exist");
             }
 
-            if (PartyToLeave.PartyHost == ToLeave)
+            if (PartyToLeave.PartyHost == ToLeave && PartyToLeave.PartyHost.PartyId == PartyToLeave.Id)
             {
                 if (DisbandCurrentParty(PartyToLeave))
                 {
                     return new JsonResult(new { Success = true });
                 }
+                return new JsonResult(new { Success = false });
             }
 
             PartyToLeave.PartyMembers.Remove(ToLeave);
@@ -145,8 +152,17 @@ namespace SelecTunes.Backend.Controllers
         {
             _context.Parties.Remove(PartyToDisband);
 
-            _context.SaveChanges();
-
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException e)
+            {
+                _logger.LogError("Error disbanding party");
+                Console.WriteLine(e.StackTrace);
+                return false;
+            }
+            
             return true;
         }
     }

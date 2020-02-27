@@ -10,6 +10,8 @@
     <RepositoryUrl>https://git.linux.iastate.edu/cs309/spring-2020/JR_2</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Company>CS 309 JR 2</Company>
+    <AssemblyVersion>1.4.0.1</AssemblyVersion>
+    <FileVersion>1.4.0.1</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -43,5 +45,9 @@
 
   <ItemGroup>
     <Folder Include="Helper\Hubs\" />
+  </ItemGroup>
+    <None Update="appsettings.erb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

@@ -8,6 +8,7 @@ variables:
 stages:
   - build
   - test
+  - package
   - deploy
 
 default:
@@ -36,10 +37,10 @@ tests:
   script:
     - 'dotnet test --no-restore'
 
-deploy:
-  stage: deploy
-  only:
-    - tags
+package:
+  stage: package
+#  only:
+#    - tags
   artifacts:
     paths:
       - '$BACKEND_PATH/build-*'
@@ -47,3 +48,17 @@ deploy:
     - 'dotnet publish --self-contained -r linux-x64 -o build-linux SelecTunes.Backend'
     - 'dotnet publish --self-contained -r win-x64 -o build-win SelecTunes.Backend'
 
+deploy:
+  stage: deploy
+#  only:
+#    - tags
+  before_script:
+    - 'which ssh-agent || ( apt update -y && apt install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan "$SERVER" >> ~/.ssh/known_hosts
+    - env
+  script:
+    - 'ssh root@"$SERVER" /usr/sbin/st-update -l "$CI_PIPELINE_ID" -p "$CI_PROJECT_ID"'
