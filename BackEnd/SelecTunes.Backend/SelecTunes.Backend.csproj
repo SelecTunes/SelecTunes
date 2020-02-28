@@ -4,14 +4,14 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>0a5f8979-ec4a-45da-99b1-77ab0dc4bf1f</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <Version>1.4.0</Version>
+    <Version>1.5.0</Version>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Authors>Alexander Young, Nate Tucker</Authors>
     <RepositoryUrl>https://git.linux.iastate.edu/cs309/spring-2020/JR_2</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Company>CS 309 JR 2</Company>
-    <AssemblyVersion>1.4.0.1</AssemblyVersion>
-    <FileVersion>1.4.0.1</FileVersion>
+    <AssemblyVersion>1.5.0.0</AssemblyVersion>
+    <FileVersion>1.5.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,12 +40,15 @@
     <PackageReference Include="SpotifyAPI.Web" Version="4.2.2" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Helper\Hubs\" />
+  </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.erb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
 </Project>
