@@ -17,7 +17,7 @@ class JoinPartyActivity : AppCompatActivity() {
 
     override fun onCreate(instanceState: Bundle?) {
         super.onCreate(instanceState)
-        setContentView(R.layout.login_menu)
+        setContentView(R.layout.join_party)
         val button = findViewById<Button>(R.id.join_button)
         val code = findViewById<TextView>(R.id.join_code)
         button.setOnClickListener {
@@ -29,7 +29,7 @@ class JoinPartyActivity : AppCompatActivity() {
         val json = JSONObject()
         json.put("joinCode", code)
         val joinPartyRequest = JsonObjectRequest(Request.Method.POST, "https://coms-309-jr-2.cs.iastate.edu/api/Party/JoinParty", json, Response.Listener {
-            startActivity(Intent(this, GuestMenu::class.java))
+            startActivity(Intent(this, GuestMenuActivity::class.java))
         }, Response.ErrorListener {
             println("There was an error with the join party response. Code: ${it.networkResponse.statusCode}")
         })

@@ -45,13 +45,11 @@ class HostMenuActivity : AppCompatActivity() {
         }
 
         backArrow.setOnClickListener{
-            HttpUtils.endParty(this)
-            startActivity(Intent(this, ChooseActivity::class.java))
+            HttpUtils.endParty(this, ChooseActivity::class.java)
         }
 
         endParty.setOnClickListener{
-            HttpUtils.endParty(this)
-            startActivity(Intent(this, LoginActivity::class.java))
+            HttpUtils.endParty(this, LoginActivity::class.java)
         }
 
         searchBar.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->

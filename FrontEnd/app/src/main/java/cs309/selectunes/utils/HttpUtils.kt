@@ -1,5 +1,6 @@
 package cs309.selectunes.utils
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.Response
@@ -24,14 +25,34 @@ object HttpUtils {
         return HttpClientStack(httpclient)
     }
 
-    fun endParty(activity: AppCompatActivity) {
+    fun endParty(activity: AppCompatActivity, switchedActivity: Class<out AppCompatActivity>?) {
         val stringRequest = StringRequest(Request.Method.DELETE,
             "https://coms-309-jr-2.cs.iastate.edu/api/Party/DisbandParty",
-            null,
-            Response.ErrorListener {
-                println("There was an error with the response. Code: ${it.networkResponse.statusCode}")
-                println("Response: ${it.networkResponse.data.toString(StandardCharsets.UTF_8)}")
-            })
+                Response.Listener {
+                    if (switchedActivity != null) {
+                        activity.startActivity(Intent(activity, switchedActivity))
+                    }
+                },
+                Response.ErrorListener {
+                    println("There was an error with the response. Code: ${it.networkResponse.statusCode}")
+                    println("Response: ${it.networkResponse.data.toString(StandardCharsets.UTF_8)}")
+                })
+        val requestQueue = Volley.newRequestQueue(activity, createAuthCookie(activity))
+        requestQueue.add(stringRequest)
+    }
+
+    fun leaveParty(activity: AppCompatActivity, switchedActivity: Class<out AppCompatActivity>?) {
+        val stringRequest = StringRequest(Request.Method.POST,
+                "https://coms-309-jr-2.cs.iastate.edu/api/Party/LeaveParty",
+                Response.Listener {
+                    if (switchedActivity != null) {
+                        activity.startActivity(Intent(activity, switchedActivity))
+                    }
+                },
+                Response.ErrorListener {
+                    println("There was an error with the response. Code: ${it.networkResponse.statusCode}")
+                    println("Response: ${it.networkResponse.data.toString(StandardCharsets.UTF_8)}")
+                })
         val requestQueue = Volley.newRequestQueue(activity, createAuthCookie(activity))
         requestQueue.add(stringRequest)
     }

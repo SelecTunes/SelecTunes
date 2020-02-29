@@ -18,6 +18,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        HttpUtils.endParty(this)
+        HttpUtils.endParty(this, null)
     }
 }
