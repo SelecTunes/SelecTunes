@@ -32,7 +32,7 @@ class ChooseActivity : AppCompatActivity() {
         }
 
         joinButton.setOnClickListener {
-            HttpUtils.endParty(this)
+            startActivity(Intent(this, JoinPartyActivity::class.java))
         }
     }
 
