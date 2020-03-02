@@ -7,33 +7,33 @@
 
     <ImageView
         android:id="@+id/album_cover"
-        android:layout_width="52dp"
-        android:layout_height="49dp"
+        android:layout_width="85dp"
+        android:layout_height="82dp"
         android:src="@mipmap/ic_launcher" />
 
     <LinearLayout
-        android:layout_width="277dp"
-        android:layout_height="56dp"
+        android:layout_width="299dp"
+        android:layout_height="79dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/songName"
-            android:layout_width="272dp"
-            android:layout_height="16dp"
+            android:layout_width="286dp"
+            android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="Main Title"
-            android:textColor="#000"
-            android:textSize="10sp"
+            android:textColor="@color/colorText"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/artistName"
-            android:layout_width="match_parent"
+            android:layout_width="286dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="Sub Title"
-            android:textColor="#a9a9a9"
-            android:textSize="8sp"
+            android:textColor="@color/colorText"
+            android:textSize="12sp"
             android:textStyle="bold" />
         <!--so our layout is set-->
 

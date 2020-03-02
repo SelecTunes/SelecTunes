@@ -20,10 +20,12 @@
             android:id="@+id/search_song_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="97dp"
-            android:layout_marginEnd="103dp"
+            android:layout_marginStart="98dp"
+            android:layout_marginTop="86dp"
+            android:layout_marginEnd="99dp"
             android:autoText="false"
             android:backgroundTint="@color/colorText"
             android:ems="10"
@@ -47,14 +49,16 @@
 
     <ListView
         android:id="@+id/song_search_list"
-        android:layout_width="238dp"
-        android:layout_height="558dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/above_list"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="168dp"
-        android:layout_marginEnd="91dp"
+        android:layout_marginEnd="0dp"
         android:layout_marginBottom="5dp" />
 
 </RelativeLayout>
