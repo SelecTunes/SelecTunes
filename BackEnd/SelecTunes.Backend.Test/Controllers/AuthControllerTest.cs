@@ -14,8 +14,9 @@ using Microsoft.AspNetCore.Identity;
 using SelecTunes.Backend.Models;
 using Microsoft.Extensions.Logging;
 using SelecTunes.Backend.Helper;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication;
+using System.Threading.Tasks;
 
 namespace SelecTunes.Backend.Test.Controllers
 {
@@ -23,19 +24,14 @@ namespace SelecTunes.Backend.Test.Controllers
     {
         private static readonly DbContextOptions contextOptions = new DbContextOptionsBuilder<ApplicationContext>().UseInMemoryDatabase(databaseName: "selectunes").Options;
 
-        private static readonly Mock<IUserStore<User>> userStoreMock = new Mock<IUserStore<User>>();
-
-        private static readonly Mock<IHttpContextAccessor> contextAccessor = new Mock<IHttpContextAccessor>();
-        private static readonly Mock<IUserClaimsPrincipalFactory<User>> userPrincipalFactory = new Mock<IUserClaimsPrincipalFactory<User>>();
-
         private readonly Mock<ApplicationContext> mockContext = new Mock<ApplicationContext>(contextOptions);
         private readonly Mock<IDistributedCache> mockCache = new Mock<IDistributedCache>();
         private readonly Mock<IHttpClientFactory> mockFactory = new Mock<IHttpClientFactory>();
         private readonly Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
         private readonly Mock<IOptions<AppSettings>> mockOptions = new Mock<IOptions<AppSettings>>();
         private readonly Mock<ILogger<AuthController>> mockLogger = new Mock<ILogger<AuthController>>();
-        private static readonly Mock<UserManager<User>> mockUserManager = new Mock<UserManager<User>>(userStoreMock.Object, null, null, null, null, null, null, null, null);
-        private static readonly Mock<SignInManager<User>> mockSignInManager = new Mock<SignInManager<User>>(mockUserManager.Object, contextAccessor.Object, userPrincipalFactory.Object, null, null, null);
+        private static readonly Mock<FakeUserManager> mockUserManager = new Mock<FakeUserManager>();
+        private static readonly Mock<FakeSignInManager> mockSignInManager = new Mock<FakeSignInManager>();
         private readonly Mock<AuthHelper> mockHelper = new Mock<AuthHelper>();
         private readonly AuthController controller;
 
@@ -45,6 +41,51 @@ namespace SelecTunes.Backend.Test.Controllers
         public void AssertThatInstantiatedControllerIsInstanceOfTheClass()
         {
             Assert.IsInstanceOf<AuthController>(controller);
+        }
+    }
+
+    public class FakeSignInManager : SignInManager<User>
+    {
+        public FakeSignInManager()
+                : base(new FakeUserManager(),
+                     new Mock<IHttpContextAccessor>().Object,
+                     new Mock<IUserClaimsPrincipalFactory<User>>().Object,
+                     new Mock<IOptions<IdentityOptions>>().Object,
+                     new Mock<ILogger<SignInManager<User>>>().Object,
+                     new Mock<IAuthenticationSchemeProvider>().Object,
+                     new Mock<IUserConfirmation<User>>().Object)
+        { }
+    }
+
+
+
+    public class FakeUserManager : UserManager<User>
+    {
+        public FakeUserManager()
+            : base(new Mock<IUserStore<User>>().Object,
+                  new Mock<IOptions<IdentityOptions>>().Object,
+                  new Mock<IPasswordHasher<User>>().Object,
+                  new IUserValidator<User>[0],
+                  new IPasswordValidator<User>[0],
+                  new Mock<ILookupNormalizer>().Object,
+                  new Mock<IdentityErrorDescriber>().Object,
+                  new Mock<IServiceProvider>().Object,
+                  new Mock<ILogger<UserManager<User>>>().Object)
+        { }
+
+        public override Task<User> FindByEmailAsync(string email)
+        {
+            return Task.FromResult(new User { Email = email });
+        }
+
+        public override Task<bool> IsEmailConfirmedAsync(User user)
+        {
+            return Task.FromResult(user.Email == "test@test.com");
+        }
+
+        public override Task<string> GeneratePasswordResetTokenAsync(User user)
+        {
+            return Task.FromResult("---------------");
         }
     }
 }
