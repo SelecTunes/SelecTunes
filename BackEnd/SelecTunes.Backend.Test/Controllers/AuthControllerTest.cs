@@ -14,19 +14,22 @@ using Microsoft.AspNetCore.Identity;
 using SelecTunes.Backend.Models;
 using Microsoft.Extensions.Logging;
 using SelecTunes.Backend.Helper;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace SelecTunes.Backend.Test.Controllers
 {
     internal class AuthControllerTest
     {
-        private static readonly DbContextOptions optionBuilder = new DbContextOptionsBuilder<ApplicationContext>().UseInMemoryDatabase(databaseName: "selectunes").Options;
+        private static readonly DbContextOptions contextOptions = new DbContextOptionsBuilder<ApplicationContext>().UseInMemoryDatabase(databaseName: "selectunes").Options;
+        private static readonly Mock<IUserStore<User>> userStore = new Mock<IUserStore<User>>();
 
-        private readonly Mock<ApplicationContext> mockContext = new Mock<ApplicationContext>(optionBuilder);
+        private static readonly Mock<UserManager<User>> mockUserManager = new Mock<UserManager<User>>(userStore.Object);
+
+        private readonly Mock<ApplicationContext> mockContext = new Mock<ApplicationContext>(contextOptions);
         private readonly Mock<IDistributedCache> mockCache = new Mock<IDistributedCache>();
         private readonly Mock<IHttpClientFactory> mockFactory = new Mock<IHttpClientFactory>();
         private readonly Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
         private readonly Mock<IOptions<AppSettings>> mockOptions = new Mock<IOptions<AppSettings>>();
-        private readonly Mock<UserManager<User>> mockUserManager = new Mock<UserManager<User>>();
         private readonly Mock<SignInManager<User>> mockSignInManager = new Mock<SignInManager<User>>();
         private readonly Mock<ILogger<AuthController>> mockLogger = new Mock<ILogger<AuthController>>();
 
