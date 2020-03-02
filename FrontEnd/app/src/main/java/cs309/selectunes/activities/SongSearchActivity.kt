@@ -15,6 +15,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import cs309.selectunes.R
 import cs309.selectunes.models.Song
+import cs309.selectunes.utils.BitmapCache
 import cs309.selectunes.utils.HttpUtils
 import org.json.JSONObject
 import java.net.URL
@@ -113,11 +114,16 @@ class SongSearchActivity : AppCompatActivity() {
             val artist = row.findViewById<TextView>(R.id.artistName)
             val song = row.findViewById<TextView>(R.id.songName)
             val image = row.findViewById<ImageView>(R.id.album_cover)
+            val songId = songList[position].id
             artist.text = "By: ${songList[position].artistName}"
             song.text = songList[position].songName
-            val url = URL(songList[position].albumArt)
-            val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream())
-            image.setImageBitmap(bmp)
+            var bitmap = BitmapCache.loadBitmap(songId)
+            if (bitmap == null) {
+                val url = URL(songList[position].albumArt)
+                bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream())
+                BitmapCache.store(songId, bitmap)
+            }
+            image.setImageBitmap(bitmap)
             return row
         }
     }
