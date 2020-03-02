@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace SelecTunes.Backend.Test.Controllers
 {
 
-    internal class IndexControllerTest
+    internal class AuthControllerTest
     {
         private static readonly DbContextOptions optionBuilder = new DbContextOptionsBuilder<ApplicationContext>().UseInMemoryDatabase(databaseName: "selectunes").Options;
 
@@ -22,30 +22,12 @@ namespace SelecTunes.Backend.Test.Controllers
 
         private readonly IndexController controller;
 
-        public IndexControllerTest() => controller = new IndexController(mockContext.Object, mockCache.Object, mockFactory.Object);
+        public AuthControllerTest() => controller = new IndexController(mockContext.Object, mockCache.Object, mockFactory.Object);
 
         [Test]
         public void AssertThatInstantiatedControllerIsInstanceOfTheClass()
         {
-            Assert.IsInstanceOf<IndexController>(controller);
-        }
-
-        [Test]
-        public void AssertIndexWhenCalledReturnsOkResult()
-        {
-            ActionResult<List<String>> response = controller.Index();
-
-            Assert.IsInstanceOf<OkObjectResult>(response.Result);
-        }
-
-        [Test]
-        public void AssertIndexWhenCalledReturnsListWithOneElement()
-        {
-            OkObjectResult result = (controller.Index()).Result as OkObjectResult;
-
-            Assert.IsInstanceOf<List<String>>(result.Value);
-
-            Assert.AreEqual(1, (result.Value as List<String>).Count);
+            Assert.IsInstanceOf<AuthController>(controller);
         }
     }
 }
