@@ -5,18 +5,18 @@ using System;
 using System.Collections.Generic;
 using Moq;
 using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
-using Newtonsoft.Json;
 using SelecTunes.Backend.Data;
-using SelecTunes.Backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace SelecTunes.Backend.Test.Controllers
 {
     
     internal class IndexControllerTest
     {
-        private readonly Mock<ApplicationContext> mockContext = new Mock<ApplicationContext>();
+        private static readonly DbContextOptions optionBuilder = new DbContextOptionsBuilder<ApplicationContext>().UseInMemoryDatabase(databaseName:"selectunes").Options;
+
+        private readonly Mock<ApplicationContext> mockContext = new Mock<ApplicationContext>(optionBuilder);
         private readonly Mock<IDistributedCache> mockCache = new Mock<IDistributedCache>();
         private readonly Mock<IHttpClientFactory> mockFactory = new Mock<IHttpClientFactory>();
 
