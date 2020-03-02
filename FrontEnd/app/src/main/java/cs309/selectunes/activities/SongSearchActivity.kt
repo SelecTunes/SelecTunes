@@ -1,10 +1,14 @@
 package cs309.selectunes.activities
 
+import android.content.Context
+import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
+import android.view.ViewGroup
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -13,19 +17,22 @@ import cs309.selectunes.R
 import cs309.selectunes.models.Song
 import cs309.selectunes.utils.HttpUtils
 import org.json.JSONObject
+import java.net.URL
 import java.nio.charset.StandardCharsets
 import java.util.*
-import kotlin.collections.ArrayList
 
-class TempHostMenuActivity : AppCompatActivity() {
 
-    var songList = ArrayList<Song>()
-    override fun onCreate(instanceState: Bundle?) {
-        super.onCreate(instanceState)
-        setContentView(R.layout.host_menu_main)
-        val guestList = findViewById<Button>(R.id.guestList_id)
-        val songList = findViewById<Button>(R.id.songQueue_id)
-        val songSearch = findViewById<TextView>(R.id.song_search_id)
+class SongSearchActivity : AppCompatActivity() {
+
+    private val songList = mutableListOf<Song>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_song_search)
+
+        val songSearch = findViewById<TextView>(R.id.search_song_input)
+        val backArrow = findViewById<Button>(R.id.back_arrow_song_search)
+
         songSearch.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 searchSong(songSearch.text.toString())
@@ -34,17 +41,9 @@ class TempHostMenuActivity : AppCompatActivity() {
             false
         })
 
-        guestList.setOnClickListener {
-            //val toGuestList = Intent(this, GuestListActivity::class.java)
-            //startActivity(toGuestList)
+        backArrow.setOnClickListener {
+            startActivity(Intent(this, HostMenuActivity::class.java))
         }
-
-        songList.setOnClickListener {
-            //val toSongList = Intent(this, SongListActivity::class.java)
-            //startActivity(toSongList)
-        }
-
-
     }
 
     private fun searchSong(songToSearch: String) {
@@ -76,6 +75,7 @@ class TempHostMenuActivity : AppCompatActivity() {
     }
 
     private fun parseJson(jsonBack: JSONObject) {
+        songList.clear()
         val jsonItems = jsonBack.getJSONObject("tracks").getJSONArray("items")
         for (x in 0 until jsonItems.length()) {
             val jsonSong = jsonItems.getJSONObject(x)
@@ -99,5 +99,26 @@ class TempHostMenuActivity : AppCompatActivity() {
             )
         }
 
+        val listView = findViewById<ListView>(R.id.song_search_list)
+        val adapter = SongAdapter(this, songList)
+        listView.adapter = adapter
+    }
+
+
+    class SongAdapter(private val ctx: Context, private val songList: List<Song>) : ArrayAdapter<String>(ctx, R.layout.activity_song_search, songList as List<String>) {
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+            val layoutInflater = ctx.applicationContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val row = layoutInflater.inflate(R.layout.song_row, parent, false)
+            val artist = row.findViewById<TextView>(R.id.artistName)
+            val song = row.findViewById<TextView>(R.id.songName)
+            val image = row.findViewById<ImageView>(R.id.album_cover)
+            artist.text = "By: ${songList[position].artistName}"
+            song.text = songList[position].songName
+            val url = URL(songList[position].albumArt)
+            val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream())
+            image.setImageBitmap(bmp)
+            return row
+        }
     }
 }

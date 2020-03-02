@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/guest_menu_background"
+    tools:context=".activities.SongSearchActivity">
+
+    <RelativeLayout
+        android:id="@+id/above_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="0dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/search_song_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="97dp"
+            android:layout_marginEnd="103dp"
+            android:autoText="false"
+            android:backgroundTint="@color/colorText"
+            android:ems="10"
+            android:hint="Song to Search"
+            android:inputType="text"
+            android:textColor="@color/colorText"
+            android:textColorHighlight="@color/colorText"
+            android:textColorHint="@color/colorText"
+            android:textColorLink="@color/colorText" />
+
+        <Button
+            android:id="@+id/back_arrow_song_search"
+            android:layout_width="15dp"
+            android:layout_height="11dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="380dp"
+            android:layout_marginBottom="700dp"
+            android:background="@drawable/arrow" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/song_search_list"
+        android:layout_width="238dp"
+        android:layout_height="558dp"
+        android:layout_below="@id/above_list"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="168dp"
+        android:layout_marginEnd="91dp"
+        android:layout_marginBottom="5dp" />
+
+</RelativeLayout>

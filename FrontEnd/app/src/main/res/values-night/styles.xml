@@ -9,7 +9,7 @@
         <item name="host_background">@drawable/dark_host_bg</item>
         <item name="login_background">@drawable/dark_login_bg</item>
         <item name="choose_background">@drawable/choose_menu_dark</item>
-        <item name="guest_menu_background">@drawable/guest_light</item>
+        <item name="guest_menu_background">@drawable/guest</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
