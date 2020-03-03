@@ -1,5 +1,6 @@
 package cs309.selectunes.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,12 @@ class GuestMenuActivity : AppCompatActivity() {
 
         backArrow.setOnClickListener {
             HttpUtils.leaveParty(this, JoinPartyActivity::class.java)
+        }
+
+        songSearch.setOnClickListener {
+            val intent = Intent(this, SongSearchActivity::class.java)
+            intent.putExtra("previousActivity", "guest")
+            startActivity(intent)
         }
     }
 }

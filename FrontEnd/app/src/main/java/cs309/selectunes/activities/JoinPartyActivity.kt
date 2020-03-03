@@ -17,7 +17,7 @@ class JoinPartyActivity : AppCompatActivity() {
 
     override fun onCreate(instanceState: Bundle?) {
         super.onCreate(instanceState)
-        setContentView(R.layout.join_party)
+        setContentView(R.layout.join_party_menu)
         val button = findViewById<Button>(R.id.join_button)
         val code = findViewById<TextView>(R.id.join_code)
         button.setOnClickListener {
