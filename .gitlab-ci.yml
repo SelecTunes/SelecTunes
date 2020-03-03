@@ -1,0 +1,64 @@
+---
+variables:
+  OBJECTS_DIRECTORY: 'obj'
+  NUGET_PACKAGES_DIRECTORY: '.nuget'
+  BACKEND_PATH: 'BackEnd'
+  SOURCE_CODE_PATH: '$BACKEND_PATH/*/*/'
+
+stages:
+  - build
+  - test
+  - package
+  - deploy
+
+default:
+  image: mcr.microsoft.com/dotnet/core/sdk:3.1-buster
+  
+  cache:
+    key: "$CI_JOB_STAGE-$CI_COMMIT_REF_SLUG"
+    paths:
+      - '$SOURCE_CODE_PATH$OBJECTS_DIRECTORY/project.assets.json'
+      - '$SOURCE_CODE_PATH$OBJECTS_DIRECTORY/*.csproj.nuget.*'
+      - '$NUGET_PACKAGES_DIRECTORY'
+    policy: pull-push
+    
+  before_script:
+  - 'cd $BACKEND_PATH'
+  - 'apt update && apt install -y ruby'
+  - 'dotnet restore --packages $NUGET_PACKAGES_DIRECTORY'
+
+build:
+  stage: build
+  script:
+    - 'dotnet build --no-restore'
+
+tests:
+  stage: test
+  script:
+    - 'dotnet test --no-restore'
+
+package:
+  stage: package
+#  only:
+#    - tags
+  artifacts:
+    paths:
+      - '$BACKEND_PATH/build-*'
+  script:
+    - 'dotnet publish --self-contained -r linux-x64 -o build-linux SelecTunes.Backend'
+    - 'dotnet publish --self-contained -r win-x64 -o build-win SelecTunes.Backend'
+
+deploy:
+  stage: deploy
+#  only:
+#    - tags
+  before_script:
+    - 'which ssh-agent || ( apt update -y && apt install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan "$SERVER" >> ~/.ssh/known_hosts
+    - env
+  script:
+    - 'ssh root@"$SERVER" /usr/sbin/st-update -l "$CI_PIPELINE_ID" -p "$CI_PROJECT_ID"'

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace SelecTunes.Backend.Models.SongSearchIngestion
 {
-    public partial class SpotifyAlbumRepsonseBody
+    public partial class SpotifyArtistResponseBody
     {
         [JsonProperty("artists")]
         public Artists Artists { get; set; }
@@ -15,22 +16,22 @@ namespace SelecTunes.Backend.Models.SongSearchIngestion
         public Uri Href { get; set; }
 
         [JsonProperty("items")]
-        public ArtistItem[] Items { get; set; }
+        public ICollection<ArtistItem> Items { get; set; }
 
         [JsonProperty("limit")]
-        public long Limit { get; set; }
+        public int Limit { get; set; }
 
         [JsonProperty("next")]
         public object Next { get; set; }
 
         [JsonProperty("offset")]
-        public long Offset { get; set; }
+        public int Offset { get; set; }
 
         [JsonProperty("previous")]
         public object Previous { get; set; }
 
         [JsonProperty("total")]
-        public long Total { get; set; }
+        public int Total { get; set; }
     }
 
     public partial class ArtistItem
@@ -42,7 +43,7 @@ namespace SelecTunes.Backend.Models.SongSearchIngestion
         public Followers Followers { get; set; }
 
         [JsonProperty("genres")]
-        public object[] Genres { get; set; }
+        public ICollection<String> Genres { get; set; }
 
         [JsonProperty("href")]
         public Uri Href { get; set; }
@@ -51,13 +52,13 @@ namespace SelecTunes.Backend.Models.SongSearchIngestion
         public string Id { get; set; }
 
         [JsonProperty("images")]
-        public ArtistImage[] Images { get; set; }
+        public ICollection<ArtistImage> Images { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
 
         [JsonProperty("popularity")]
-        public long Popularity { get; set; }
+        public int Popularity { get; set; }
 
         [JsonProperty("type")]
         public string Type { get; set; }
@@ -78,18 +79,18 @@ namespace SelecTunes.Backend.Models.SongSearchIngestion
         public object Href { get; set; }
 
         [JsonProperty("total")]
-        public long Total { get; set; }
+        public int Total { get; set; }
     }
 
     public partial class ArtistImage
     {
         [JsonProperty("height")]
-        public long Height { get; set; }
+        public int Height { get; set; }
 
         [JsonProperty("url")]
         public Uri Url { get; set; }
 
         [JsonProperty("width")]
-        public long Width { get; set; }
+        public int Width { get; set; }
     }
 }

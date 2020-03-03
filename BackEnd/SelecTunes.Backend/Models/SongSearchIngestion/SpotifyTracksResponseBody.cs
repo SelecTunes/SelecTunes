@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace SelecTunes.Backend.Models.SongSearchIngestion
@@ -15,22 +16,22 @@ namespace SelecTunes.Backend.Models.SongSearchIngestion
         public Uri Href { get; set; }
 
         [JsonProperty("items")]
-        public TrackItem[] Items { get; set; }
+        public ICollection<TrackItem> Items { get; set;  }
 
         [JsonProperty("limit")]
-        public long Limit { get; set; }
+        public int Limit { get; set; }
 
         [JsonProperty("next")]
         public Uri Next { get; set; }
 
         [JsonProperty("offset")]
-        public long Offset { get; set; }
+        public int Offset { get; set; }
 
         [JsonProperty("previous")]
         public object Previous { get; set; }
 
         [JsonProperty("total")]
-        public long Total { get; set; }
+        public int Total { get; set; }
     }
 
     public partial class TrackItem
@@ -39,10 +40,10 @@ namespace SelecTunes.Backend.Models.SongSearchIngestion
         public Album Album { get; set; }
 
         [JsonProperty("artists")]
-        public Artist[] Artists { get; set; }
+        public ICollection<Artist> Artists { get; set; }
 
         [JsonProperty("disc_number")]
-        public long DiscNumber { get; set; }
+        public int DiscNumber { get; set; }
 
         [JsonProperty("explicit")]
         public bool Explicit { get; set; }
@@ -63,13 +64,13 @@ namespace SelecTunes.Backend.Models.SongSearchIngestion
     public partial class Album
     { 
         [JsonProperty("artists")]
-        public Artist[] Artists { get; set; }
+        public ICollection<Artist> Artists { get; set; }
 
         [JsonProperty("id")]
         public string Id { get; set; }
 
         [JsonProperty("images")]
-        public TrackImage[] Images { get; set; }
+        public ICollection<TrackImage> Images { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -84,12 +85,12 @@ namespace SelecTunes.Backend.Models.SongSearchIngestion
     public partial class TrackImage
     {
         [JsonProperty("height")]
-        public long Height { get; set; }
+        public int Height { get; set; }
 
         [JsonProperty("url")]
         public Uri Url { get; set; }
 
         [JsonProperty("width")]
-        public long Width { get; set; }
+        public int Width { get; set; }
     }
 }

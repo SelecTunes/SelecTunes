@@ -6,6 +6,12 @@ namespace SelecTunes.Backend.Models
 {
     public class Party
     {
+        public Party()
+        {
+            PartyMembers = new List<User>();
+            SongQueue = new Queue<Song>();
+        }
+
         [Key]
         public int Id { get; set; }
 
@@ -14,11 +20,9 @@ namespace SelecTunes.Backend.Models
         [NotMapped]
         public Queue<Song> SongQueue { get; set; }
 
-        [NotMapped]
-        public List<User> PartyMembers { get; set; }
+        public virtual ICollection<User> PartyMembers { get; set; }
 
-        public List<User> BannedMembers { get; }
-
-        public HostUser PartyHost { get; set; }
+        public User PartyHost { get; set; }
+        public string PartyHostId { get; set; }
     }
 }

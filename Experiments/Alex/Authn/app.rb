@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sinatra'
 require 'http'
 require 'base64'
@@ -14,17 +16,18 @@ get '/' do
       f.write(request.params)
     end
 
-    r = HTTP.basic_auth(user: @client_id, pass: @client_secret)
-      .post('https://accounts.spotify.com/api/token', form: {
-        grant_type: 'authorization_code',
-        code: request.params['code'],
-        # redirect_uri: 'http://localhost:8080'
-        redirect_uri: 'https://localhost:44395/api/auth/callback'
-      })
-
-    File.open('id.txt', 'w') do |f|
-      f.write(r)
-    end
+    # r = HTTP.basic_auth(user: @client_id, pass: @client_secret)
+    #   .post('https://accounts.spotify.com/api/token', form:
+    #   {
+    #     grant_type: 'authorization_code',
+    #     code: request.params['code'],
+    #     # redirect_uri: 'http://localhost:8080'
+    #     redirect_uri: 'https://localhost:44395/api/auth/callback'
+    #   })
+    #
+    # File.open('id.txt', 'w') do |f|
+    #   f.write(r)
+    # end
 
     return erb :play
   end
@@ -33,5 +36,9 @@ get '/' do
 end
 
 get '/auth' do
-  erb :auth
+  erb :register
+end
+
+get '/auth/login' do
+  erb :login
 end

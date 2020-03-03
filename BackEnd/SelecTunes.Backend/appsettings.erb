@@ -1,0 +1,18 @@
+﻿{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "ConnectionStrings": {
+    "Default": "User ID=<%= db_username %>;Password=<%= db_password %>;Host=<%= db_host %>;Port=5432;Database=<%= db_name %>;Pooling=true;",
+    "Redis": "<%= redis_url %>"
+  },
+  "AppSettings": {
+    "ClientId": "<%= client_id %>",
+    "ClientSecret": "<%= client_secret %>",
+    "RedirectUri": "<%= redirect_uri %>"
+  }
+}

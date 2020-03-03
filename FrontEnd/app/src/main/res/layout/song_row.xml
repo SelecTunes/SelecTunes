@@ -1,40 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
 
     <ImageView
-        android:id="@+id/albumArt_id"
-        android:layout_width="36dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:contentDescription="albumArt"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:id="@+id/album_cover"
+        android:layout_width="85dp"
+        android:layout_height="82dp"
+        android:src="@mipmap/ic_launcher" />
 
-    <TextView
-        android:id="@+id/songName"
-        android:layout_width="76dp"
-        android:layout_height="28dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="8dp"
-        android:editable="false"
-        android:text="songName"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="299dp"
+        android:layout_height="79dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/artistName"
-        android:layout_width="67dp"
-        android:layout_height="21dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="36dp"
-        android:text="artistName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/songName"
+            android:layout_width="286dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Main Title"
+            android:textColor="@color/colorText"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/artistName"
+            android:layout_width="286dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Sub Title"
+            android:textColor="@color/colorText"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+        <!--so our layout is set-->
+
+    </LinearLayout>
+
+</LinearLayout>

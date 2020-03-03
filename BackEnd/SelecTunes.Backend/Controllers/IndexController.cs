@@ -27,6 +27,14 @@ namespace SelecTunes.Backend.Controllers
             _cf = factory;
         }
 
+        /**
+         * Func Index() -> async <ActionResult<List<String>>>
+         * => List { "" }
+         * 
+         * Returns an Empty List
+         * 
+         * 16/02/2020 D/M/Y - Alexander Young - Cleanup
+         */
         [HttpGet]
         public ActionResult<List<String>> Index() => Ok(new List<String> { "" });
 
@@ -37,13 +45,14 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpGet]
         public async Task<ActionResult<int>> Ack() {
+            throw new NotImplementedException("This code has not yet been implemented");
+
             Random random = new Random();
             Party p = new Party
             {
                 // Create a new PartyHost with the following values
-                PartyHost = new HostUser
+                PartyHost = new User
                 {
-                    SpotifyAccessToken = random.Next().ToString(),
                     UserName = random.Next().ToString(),
                     PhoneNumber = random.Next().ToString(),
                     IsBanned = false,

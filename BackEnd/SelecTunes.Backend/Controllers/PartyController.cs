@@ -1,9 +1,13 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
 using SelecTunes.Backend.Data;
 using SelecTunes.Backend.Models;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -13,45 +17,153 @@ namespace SelecTunes.Backend.Controllers
     {
         private readonly ApplicationContext _context;
 
-        private readonly IDistributedCache _cache;
+        private readonly UserManager<User> _userManager;
 
-        public PartyController(ApplicationContext context, IDistributedCache cache)
+        private readonly ILogger<PartyController> _logger;
+
+        public PartyController(ApplicationContext context, UserManager<User> userManager, ILogger<PartyController> logger)
         {
-            _context = context;
-            _cache = cache;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        /**
+         * Func JoinParty(string :joinCode) -> ActionResult<String>
+         * => party join code
+         * 
+         * Send a POST request to /api/party/joinparty with a join code
+         * The user that sent the request will be added to the party with that join code
+         *
+         * 15/02/2020 D/M/Y - Nathan Tucker - Stubbing
+         * 17/02/2020 D/M/Y - Nathan Tucker - Finalizing
+         */
         [HttpPost]
-        public ActionResult<String> JoinParty([FromBody]User newUser)
+        [Authorize]
+        public ActionResult<String> JoinParty([FromForm]string joinCode)
         {
-            if (newUser == null)
+            _logger.LogDebug("User {0} attempting to join party with join code {1}", _userManager.GetUserAsync(HttpContext.User).Result, joinCode);
+
+            User ToJoin = _userManager.GetUserAsync(HttpContext.User).Result; // Find the current user asking to join a party
+            Party party = _context.Parties.Where(p => p.JoinCode == joinCode).FirstOrDefault(); // Find a corresponding party with the requested join code
+            if (party == null) // no party with that join code
             {
-                return new BadRequestObjectResult("Object is null");
+                throw new InvalidOperationException("A party with that code does not exist");
             }
-            Console.WriteLine(JsonConvert.SerializeObject(newUser));
 
-            // String serial = JsonConvert.SerializeObject(p); // Serialize the redis entries, as we only have one cache
+            if (ToJoin.Party != null || ToJoin.PartyId != null)
+            {
+                throw new InvalidOperationException("User attempting to join two parties");
+            }
 
-            // _cache.SetString($"$party:${p.Id}", serial, new DistributedCacheEntryOptions()); // Default never expire //TO TEST LATER
+            party.PartyMembers.Add(ToJoin);
+            ToJoin.Party = party;
 
-            String serial = JsonConvert.SerializeObject(newUser);
+            _context.SaveChanges();
 
-            _cache.SetString($"$party:${newUser.PhoneNumber}", serial, new DistributedCacheEntryOptions());
-
-            return Ok("Index");
+            return new JsonResult(new { Success = true });
         }
 
+        /**
+         * Func LeaveParty() -> ActionResult<String>
+         *
+         * Send a POST request to /api/party/leaveparty
+         * The user that sent the request will be removed from the party which they are currently in
+         *
+         * 15/02/2020 D/M/Y - Nathan Tucker - Stubbing
+         * 17/02/2020 D/M/Y - Alexander Young - Finalizing
+         */
         [HttpPost]
-        public ActionResult<String> LeaveParty([FromBody]User toLeave)
+        [Authorize]
+        public ActionResult<String> LeaveParty()
         {
-            if (toLeave == null)
+            _logger.LogDebug("User {0} attempting to leave party", _userManager.GetUserAsync(HttpContext.User).Result);
+
+            User ToLeave = _userManager.GetUserAsync(HttpContext.User).Result;
+            Party PartyToLeave = _context.Parties.Where(p => p == ToLeave.Party || p.Id == ToLeave.PartyId).FirstOrDefault();
+
+            if (PartyToLeave == null)
             {
-                return new BadRequestObjectResult("Object is null");
+                throw new InvalidOperationException("Trying to leave party that does not exist");
             }
 
-            Console.WriteLine(JsonConvert.SerializeObject(toLeave));
+            if (PartyToLeave.PartyHost == ToLeave && PartyToLeave.PartyHost.PartyId == PartyToLeave.Id)
+            {
+                if (DisbandCurrentParty(PartyToLeave))
+                {
+                    return new JsonResult(new { Success = true });
+                }
+                return new JsonResult(new { Success = false });
+            }
 
-            return Ok("Index");
+            PartyToLeave.PartyMembers.Remove(ToLeave);
+
+            _context.SaveChanges();
+
+            return new JsonResult(new { Success = true });
+        }
+
+        /**
+         * Func DisbandParty -> ActionResult<String>
+         *
+         * Send a DELTE request to /api/party/disband
+         * 
+         * The current party will be removed from the database
+         * All of its members will be left partyless
+         * The host will be logged out and removed
+         *
+         * 17/02/2020 - Nathan Tucker - Stubbing
+         * 17/02/2020 - Alexander Young - Finalizing
+         */
+        [HttpDelete]
+        [Authorize]
+        public ActionResult<String> DisbandParty()
+        {
+            User PartyDisbander = _userManager.GetUserAsync(HttpContext.User).Result;
+            Party PartyToDisband = _context.Parties.Where(p => p.Id == PartyDisbander.PartyId).FirstOrDefault();
+
+            if (PartyToDisband == null)
+            {
+                throw new InvalidOperationException("Attempting to dispand invalid party!");
+            }
+
+            if (PartyToDisband.PartyHost != PartyDisbander)
+            {
+                throw new InvalidOperationException("Attempting to disband party as non-host");
+            }
+
+            if (DisbandCurrentParty(PartyToDisband))
+            {
+                return new JsonResult(new { Success = true });
+            }
+
+            return new JsonResult(new { Success = false });
+        }
+
+        /**
+         * Func DisbandCurrentParty(Party: PartyToDisband) -> bool
+         * => true
+         *
+         * Method that would get repeated in many instances.
+         * If the current user tries to leave the party and is host or disband the party
+         *  this method gets called
+         */
+        private bool DisbandCurrentParty(Party PartyToDisband)
+        {
+            _context.Parties.Remove(PartyToDisband);
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException e)
+            {
+                _logger.LogError("Error disbanding party");
+                Console.WriteLine(e.StackTrace);
+                return false;
+            }
+            
+            return true;
         }
     }
 }

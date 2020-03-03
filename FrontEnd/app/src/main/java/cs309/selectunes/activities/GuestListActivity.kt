@@ -18,7 +18,7 @@ class GuestListActivity : AppCompatActivity()
 
 
         super.onCreate(instanceState)
-        setContentView(R.layout.guest_list_layout)
+        setContentView(R.layout.guest_list_menu)
 
         //var listView  = findViewById<ListView>(R.id.guest_listView)
 

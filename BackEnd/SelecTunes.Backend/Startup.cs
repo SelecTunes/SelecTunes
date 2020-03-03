@@ -10,6 +10,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.HttpOverrides;
 using System.Net;
 using Microsoft.OpenApi.Models;
+using SelecTunes.Backend.Models;
+using Microsoft.AspNetCore.Http;
+using SelecTunes.Backend.Helper;
+using System.Net.Http;
+using Microsoft.Extensions.Options;
+using SelecTunes.Backend.Helper.Hubs;
 
 namespace SelecTunes.Backend
 {
@@ -27,6 +33,8 @@ namespace SelecTunes.Backend
             {
                 options.UseNpgsql(Configuration.GetConnectionString("Default"));
             });
+
+            services.AddSignalR();
 
             services.AddDistributedRedisCache(options =>
             {
@@ -54,12 +62,52 @@ namespace SelecTunes.Backend
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
-            services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationContext>();
+            services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 8;
+
+                options.Lockout.AllowedForNewUsers = false;
+                options.Lockout.MaxFailedAccessAttempts = 3;
+
+                options.User.RequireUniqueEmail = true;
+            }).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationContext>();
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.KnownProxies.Add(IPAddress.Parse("127.0.0.1"));
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.SlidingExpiration = true;
+
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+                options.Cookie.IsEssential = true;
+                options.Cookie.Name = "Holtzmann";
+                options.Cookie.SameSite = SameSiteMode.None;
+
+                options.LoginPath = "/api/Auth/Login";
+                options.AccessDeniedPath = "/Api/Auth/AccessDenied";
+            });
+
+            services.AddScoped<AuthHelper>(options => {
+                IHttpClientFactory _cf = options.GetRequiredService<IHttpClientFactory>();
+                IOptions<AppSettings> _options = options.GetRequiredService<IOptions<AppSettings>>();
+
+                return new AuthHelper
+                {
+                    ClientFactory = _cf,
+                    ClientSecret = _options.Value.ClientSecret,
+                    ClientId = _options.Value.ClientId,
+                    RedirectUrl = _options.Value.RedirectUri,
+                };
             });
         }
 
@@ -69,6 +117,7 @@ namespace SelecTunes.Backend
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -87,7 +136,7 @@ namespace SelecTunes.Backend
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "SelecTunes API v1");
             });
 
             app.UseHttpsRedirection();
@@ -97,9 +146,13 @@ namespace SelecTunes.Backend
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseUserDestroyer();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<QueueHub>("/queue");
+                endpoints.MapHub<ChatHub>("/chat");
             });
         }
     }

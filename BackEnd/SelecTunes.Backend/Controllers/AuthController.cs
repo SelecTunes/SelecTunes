@@ -8,23 +8,21 @@ using SelecTunes.Backend.Models.Auth;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
-using System.Text;
 using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using System.Net;
 using SelecTunes.Backend.Helper;
 using Microsoft.Extensions.Options;
-using System.Linq;
 using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SelecTunes.Backend.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [AllowAnonymous]
     public class AuthController : ControllerBase
     {
         private readonly ApplicationContext _context;
@@ -41,11 +39,13 @@ namespace SelecTunes.Backend.Controllers
 
         private readonly Random _rand = new Random();
 
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<User> _userManager;
 
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public AuthController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, IConfiguration config, IOptions<AppSettings> options, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        private readonly ILogger<AuthController> _logger;
+
+        public AuthController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, IConfiguration config, IOptions<AppSettings> options, UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AuthController> logger, AuthHelper auth)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context)); // Throw nil arg expection if context is nil.
             _cache = cache ?? throw new ArgumentNullException(nameof(cache)); // Throw nil arg expection if cache is nil.
@@ -54,14 +54,19 @@ namespace SelecTunes.Backend.Controllers
             _options = options ?? throw new ArgumentNullException(nameof(options)); // Throw nil arg expection if options is nil.
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager)); // "
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager)); // "
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger)); // "
+            _auth = auth ?? throw new ArgumentNullException(nameof(auth));
+        }
 
-            _auth = new AuthHelper()
-            { // Initialize the Auth Helper.
-                ClientFactory = _cf,
-                ClientSecret = _options.Value.ClientSecret,
-                ClientId = _options.Value.ClientId,
-                RedirectUrl = _options.Value.RedirectUri,
-            };
+        // Example Code to get the Currently Logged In User.
+        [HttpGet]
+        public async Task<ActionResult<String>> GetCurrentUserEmail()
+        {
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
+
+            Console.WriteLine(user);
+
+            return user.Email;
         }
 
         /**
@@ -79,21 +84,24 @@ namespace SelecTunes.Backend.Controllers
         {
             if (model == null)
             {
+                _logger.LogError("Input Model is NULL", model);
                 throw new ArgumentNullException(nameof(model));
             }
 
+            _logger.LogDebug("Registering User with Email {}", model.Email);
+
             if (ModelState.IsValid)
             {
-                IdentityUser user = new IdentityUser { Email = model.Email, EmailConfirmed = true, UserName = model.Email };
-                IdentityResult x = await _userManager.CreateAsync(user, model.Password).ConfigureAwait(false);
+                User user = new User { Email = model.Email, EmailConfirmed = true, UserName = model.Email };
+                IdentityResult identityResult = await _userManager.CreateAsync(user, model.Password).ConfigureAwait(false);
 
-                if (x.Succeeded)
+                if (identityResult.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, true).ConfigureAwait(false);
                     return new JsonResult(true);
                 }
 
-                return new JsonResult(x.Errors);
+                return new JsonResult(identityResult.Errors);
             }
 
             return new JsonResult(ModelState);
@@ -114,12 +122,13 @@ namespace SelecTunes.Backend.Controllers
         {
             if (model == null)
             {
+                _logger.LogError("Login Model is NULL", model);
                 throw new ArgumentNullException(nameof(model));
             }
 
             if (ModelState.IsValid)
             {
-                Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, true, lockoutOnFailure: false).ConfigureAwait(false);
+                SignInResult result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, true, lockoutOnFailure: false).ConfigureAwait(false);
                 
                 if (result.Succeeded)
                 {
@@ -152,18 +161,19 @@ namespace SelecTunes.Backend.Controllers
          * 3. Creates a new party, with a NOT CRYPTOGRAPHICALLY SECURE join code.
          * 
          * 03/02/2020 D/M/Y - Alexander Young - Finalize
+         * 28/02/2020 D/M/Y - Alexander Young - Merge OAuthIsDumb into this method
          */
         [HttpGet]
-        public async Task<JsonResult> Callback([FromQuery]SpotifyLogin login)
+        [Authorize]
+        public async Task<ActionResult<String>> Callback([FromQuery]SpotifyLogin login)
         {
             if (login == null)
             { // If login is nil, throw a nil arg expection.
+                _logger.LogError("Spotify Login Model is NULL", login);
                 throw new ArgumentNullException(nameof(login));
             }
 
             AccessAuthToken tok = await _auth.TransmutAuthCode(login.Code).ConfigureAwait(false); // Change that login code to an access token and refresh token.
-
-            Console.WriteLine(tok);
 
             tok = await _auth.AssertValidLogin(tok, false).ConfigureAwait(false); // Make sure its valid.
 
@@ -180,41 +190,124 @@ namespace SelecTunes.Backend.Controllers
 
             SpotifyIdentity identify = JsonConvert.DeserializeObject<SpotifyIdentity>(response); // Make it a SpotifyIdentity.
 
-            HostUser host = _context.HostUsers.Where(x => x.Email == identify.Email).FirstOrDefault(); // See if the user exists already.
-
-            System.IO.File.WriteAllText("responses.txt", response);
+            User host = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
             if (host == null)
-            { // If not, make 'em.
-                host = new HostUser
-                {
-                    Email = identify.Email,
-                    SpotifyAccessToken = tok.AccessToken,
-                    SpotifyRefreshToken = tok.RefreshToken,
-                    IsBanned = false,
-                    PhoneNumber = "515-555-1234",
-                    UserName = identify.DisplayName,
-                };
+            { // If not, reject
+                return new BadRequestObjectResult(new { Success = false, Error = "User has not yet registered with the Identity Provider." });
+            }
 
-                _context.HostUsers.Add(host);
-            }
-            else
-            { // If so, update the tokens.
-                host.SpotifyAccessToken = tok.AccessToken;
-                host.SpotifyRefreshToken = tok.RefreshToken;
-            }
+            // If so, update the tokens.
+            host.Token = tok;
 
             Party party = new Party
             { // Create a new party with this user as a host.
                 JoinCode = _rand.Next(0, 100000).ToString(CultureInfo.InvariantCulture).PadLeft(6, '0'),
                 PartyHost = host,
+                // PartyMembers = new List<User> { host },
             };
+
+            host.Party = party;
+            host.PartyId = party.Id;
 
             _context.Parties.Add(party);
 
             _context.SaveChanges(); // Kommit to DB.
 
-            return new JsonResult(party.JoinCode); // Return Party Join Code.
+            return new JsonResult(new { Success = true, JoinCode = party.JoinCode }); // Return Party Join Code.
+        }
+
+        /**
+         * Func Logout() -> async <ActionResult<String>>
+         * => true
+         *
+         * Attempts to log out the current user from the service. If they are a member of any parties, remove them from the party
+         *
+         * No other operations need to be done server side at least
+         * 
+         * 18/02/2020 - Nathan Tucker
+         */
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<String>> Logout()
+        {
+            User ToLeave = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
+            Party PartyToLeave = _context.Parties.Where(p => p == ToLeave.Party || p.Id == ToLeave.PartyId).FirstOrDefault();
+
+            if (PartyToLeave == null)
+            {
+                throw new InvalidOperationException("Trying to leave party that does not exist");
+            }
+
+            PartyToLeave.PartyMembers.Remove(ToLeave);
+
+            _context.SaveChanges();
+
+            return new JsonResult(new { Success = true });
+        }
+
+        /**
+         * Func Ban(string: email) -> async <ActionResult<String>>
+         * => true
+         *
+         * Bans the user specified by email address. This is a 2 week ban from using the app
+         * 
+         * This operation will only work if all conditions are met:
+         * 1. The UserToBan is in a party
+         * 2. The CurrentUser is a host
+         * 3. The CurrentUser is the host of the party of the UserToBan
+         *
+         * 
+         * 20/02/2020 - Alexander Young
+         */
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<String>> Ban([FromQuery]string email)
+        {
+            if (email == null)
+            {
+                throw new ArgumentNullException(nameof(email));
+            }
+
+            User ToBan = await _userManager.FindByEmailAsync(email).ConfigureAwait(false);
+            User CurrentUser = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
+
+            if (ToBan == null)
+            {
+                throw new InvalidOperationException("User to banne is null.");
+            }
+
+            if (CurrentUser == null)
+            {
+                throw new InvalidOperationException("Current User is null.");
+            }
+
+            if (ToBan.PartyId == null || ToBan.Party == null)
+            {
+                throw new InvalidOperationException("User to banne is not a part of a party.");
+            }
+
+            if (CurrentUser.PartyId == null || CurrentUser.Party == null)
+            {
+                throw new InvalidOperationException("Current User is not a part of a party.");
+            }
+
+            if (ToBan.Party.PartyHost != CurrentUser)
+            {
+                throw new InvalidOperationException("Current User is not the host of the User to banne's party.");
+            }
+
+            // Do all of the lockout features
+            ToBan.IsBanned = true;
+            ToBan.LockoutEnabled = true;
+            ToBan.LockoutEnd = DateTimeOffset.Now.AddDays(16);
+            ToBan.Party = null;
+            ToBan.PartyId = null;
+            CurrentUser.Party.PartyMembers.Remove(ToBan);
+
+            _context.SaveChanges();
+
+            return new JsonResult(new { Success = true });
         }
     }
 }
