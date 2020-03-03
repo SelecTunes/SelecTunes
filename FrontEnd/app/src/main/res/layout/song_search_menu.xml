@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/guest_menu_background"
+    android:background="?attr/guest_host_menu_background"
     tools:context=".activities.SongSearchActivity">
 
     <RelativeLayout
@@ -38,12 +38,12 @@
 
         <Button
             android:id="@+id/back_arrow_song_search"
-            android:layout_width="15dp"
-            android:layout_height="11dp"
+            android:layout_width="16dp"
+            android:layout_height="13dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="380dp"
-            android:layout_marginBottom="700dp"
+            android:layout_marginEnd="372dp"
+            android:layout_marginBottom="698dp"
             android:background="@drawable/arrow" />
     </RelativeLayout>
 

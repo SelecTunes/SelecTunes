@@ -20,7 +20,7 @@ class ChooseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_choose)
+        setContentView(R.layout.choose_menu)
 
         val createButton = findViewById<Button>(R.id.create_party_button)
         val joinButton = findViewById<Button>(R.id.join_party_button)
@@ -51,10 +51,11 @@ class ChooseActivity : AppCompatActivity() {
         val url = "https://coms-309-jr-2.cs.iastate.edu/api/Auth/Callback?Code=$auth"
         val jsonObjectRequest = object : JsonObjectRequest(Method.GET, url, null,
                 Response.Listener {
-                    val joinCode = it.getString("joinCode")
-                    val hostIntent = Intent(this, HostMenuActivity::class.java)
-                    hostIntent.putExtra("code", joinCode)
-                    startActivity(hostIntent)
+                    val settings = getSharedPreferences("PartyInfo", 0)
+                    val editor = settings.edit()
+                    editor.putString("join_code", it.getString("joinCode"))
+                    editor.apply()
+                    startActivity(Intent(this, HostMenuActivity::class.java))
                 },
                 Response.ErrorListener {
                     println("Error adding spotify login and creating party: ${it.networkResponse.statusCode}")

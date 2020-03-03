@@ -29,7 +29,7 @@ class SongSearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_song_search)
+        setContentView(R.layout.song_search_menu)
 
         val songSearch = findViewById<TextView>(R.id.search_song_input)
         val backArrow = findViewById<Button>(R.id.back_arrow_song_search)
@@ -43,7 +43,10 @@ class SongSearchActivity : AppCompatActivity() {
         })
 
         backArrow.setOnClickListener {
-            startActivity(Intent(this, HostMenuActivity::class.java))
+            if (intent.getStringExtra("previousActivity") == "host")
+                startActivity(Intent(this, HostMenuActivity::class.java))
+            else
+                startActivity(Intent(this, GuestMenuActivity::class.java))
         }
     }
 
@@ -106,7 +109,7 @@ class SongSearchActivity : AppCompatActivity() {
     }
 
 
-    class SongAdapter(private val ctx: Context, private val songList: List<Song>) : ArrayAdapter<String>(ctx, R.layout.activity_song_search, songList as List<String>) {
+    class SongAdapter(private val ctx: Context, private val songList: List<Song>) : ArrayAdapter<String>(ctx, R.layout.song_search_menu, songList as List<String>) {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val layoutInflater = ctx.applicationContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater

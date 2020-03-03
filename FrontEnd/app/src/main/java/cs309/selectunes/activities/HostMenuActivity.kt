@@ -3,7 +3,6 @@ package cs309.selectunes.activities
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import cs309.selectunes.R
 import cs309.selectunes.utils.HttpUtils
@@ -16,6 +15,7 @@ class HostMenuActivity : AppCompatActivity() {
 
         val guestList = findViewById<Button>(R.id.guest_list)
         val songList = findViewById<Button>(R.id.song_list)
+        val songSearch = findViewById<Button>(R.id.host_song_search_button)
         val backArrow = findViewById<Button>(R.id.back_arrow)
         val endParty = findViewById<Button>(R.id.end_party)
         val moderators = findViewById<Button>(R.id.moderators)
@@ -31,6 +31,12 @@ class HostMenuActivity : AppCompatActivity() {
             startActivity(toSongList)
         }
 
+        songSearch.setOnClickListener {
+            val intent = Intent(this, SongSearchActivity::class.java)
+            intent.putExtra("previousActivity", "host")
+            startActivity(intent)
+        }
+
         backArrow.setOnClickListener{
             HttpUtils.endParty(this, ChooseActivity::class.java)
         }
@@ -42,7 +48,8 @@ class HostMenuActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        val textView = findViewById<TextView>(R.id.session_id)
-        textView.text = intent.getStringExtra("code")
+        val joinCode = findViewById<Button>(R.id.join_code_button)
+        val settings = getSharedPreferences("PartyInfo", 0)
+        joinCode.text = settings.getString("join_code", "Code not found.")
     }
 }
