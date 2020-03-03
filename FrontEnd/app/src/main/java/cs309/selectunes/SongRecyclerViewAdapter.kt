@@ -37,7 +37,7 @@ class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view)
     private var artistName : TextView? = null
 
     init{
-        albumPic = view.findViewById(R.id.albumArt_id)
+        albumPic = view.findViewById(R.id.album_cover)
         songName = view.findViewById(R.id.songName)
         artistName = view.findViewById(R.id.artistName)
     }
