@@ -65,8 +65,8 @@ namespace SelecTunes.Backend.Test.Controllers
             : base(new Mock<IUserStore<User>>().Object,
                   new Mock<IOptions<IdentityOptions>>().Object,
                   new Mock<IPasswordHasher<User>>().Object,
-                  new IUserValidator<User>[0],
-                  new IPasswordValidator<User>[0],
+                  Array.Empty<IUserValidator<User>>(),
+                  Array.Empty<IPasswordValidator<User>>(),
                   new Mock<ILookupNormalizer>().Object,
                   new Mock<IdentityErrorDescriber>().Object,
                   new Mock<IServiceProvider>().Object,
@@ -80,6 +80,10 @@ namespace SelecTunes.Backend.Test.Controllers
 
         public override Task<bool> IsEmailConfirmedAsync(User user)
         {
+            if (user == null)
+            {
+                throw new ArgumentNullException("User user is null");
+            }
             return Task.FromResult(user.Email == "test@test.com");
         }
 
