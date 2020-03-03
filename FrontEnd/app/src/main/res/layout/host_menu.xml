@@ -2,7 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/host_background">
+    android:background="?attr/guest_host_menu_background">
+
+    <Button
+        android:id="@+id/host_song_search_button"
+        android:layout_width="307dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="207dp"
+        android:layout_marginEnd="52dp"
+        android:background="@drawable/host_menu_button_bg"
+        android:outlineProvider="none"
+        android:text="Song Search"
+        android:textColor="@color/colorTextHost" />
 
     <Button
         android:id="@+id/end_party"
@@ -29,7 +44,7 @@
         android:layout_marginEnd="52dp"
         android:background="@drawable/host_menu_button_bg"
         android:outlineProvider="none"
-        android:text="Song List"
+        android:text="Song queue"
         android:textColor="@color/colorTextHost" />
 
     <Button
@@ -40,7 +55,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="206dp"
+        android:layout_marginTop="267dp"
         android:layout_marginEnd="52dp"
         android:background="@drawable/host_menu_button_bg"
         android:outlineProvider="none"
@@ -55,12 +70,28 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="266dp"
+        android:layout_marginTop="327dp"
         android:layout_marginEnd="52dp"
         android:background="@drawable/host_menu_button_bg"
         android:outlineProvider="none"
         android:text="Explicit"
         android:textColor="@color/colorTextHost" />
+
+    <Button
+        android:id="@+id/join_code_button"
+        android:layout_width="wrap_content"
+        android:layout_height="102dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="51dp"
+        android:layout_marginTop="408dp"
+        android:layout_marginEnd="53dp"
+        android:background="@drawable/host_menu_button_bg"
+        android:outlineProvider="none"
+        android:text="Join Code"
+        android:textColor="@color/colorTextHost"
+        android:textSize="40dp" />
 
     <Button
         android:id="@+id/guest_list"
@@ -83,35 +114,8 @@
         android:layout_height="13dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="360dp"
-        android:layout_marginBottom="701dp"
+        android:layout_marginEnd="372dp"
+        android:layout_marginBottom="698dp"
         android:background="@drawable/arrow" />
-
-    <TextView
-        android:id="@+id/session_id"
-        android:layout_width="285dp"
-        android:layout_height="80dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="21dp"
-        android:layout_marginBottom="299dp"
-        android:text="TextView"
-        android:textColor="@color/colorTextHost"
-        android:textSize="59sp" />
-
-    <EditText
-        android:id="@+id/song_search_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="468dp"
-        android:layout_marginEnd="52dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Search Song:" />
 
 </RelativeLayout>
