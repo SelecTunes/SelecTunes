@@ -67,7 +67,7 @@ package-android:
     - 'echo y | android-sdk-linux/tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --install "platform-tools" >/dev/null'
     - 'echo y | android-sdk-linux/tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --install "build-tools;${ANDROID_BUILD_TOOLS}" >/dev/null'
     - 'set +o pipefail'
-    - 'yes | android-sdk-linux/tools/bin/sdkmanager --licenses'
+    - 'yes | android-sdk-linux/tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --licenses'
     - 'set -o pipefail'
     - 'cd $FRONTEND_PATH'
     - 'chmod +x ./gradlew'
