@@ -3,7 +3,9 @@ variables:
   OBJECTS_DIRECTORY: 'obj'
   NUGET_PACKAGES_DIRECTORY: '.nuget'
   BACKEND_PATH: 'BackEnd'
+  FRONTEND_PATH: 'FrontEnd'
   SOURCE_CODE_PATH: '$BACKEND_PATH/*/*/'
+  ANDROID_SDK_VERSION: '6200805'
 
 stages:
   - build
@@ -24,7 +26,7 @@ default:
     
   before_script:
   - 'cd $BACKEND_PATH'
-  - 'apt update && apt install -y ruby'
+  - 'apt -q update -y && apt -q install -y ruby'
   - 'dotnet restore --packages $NUGET_PACKAGES_DIRECTORY'
 
 build:
@@ -39,8 +41,8 @@ tests:
 
 package:
   stage: package
-#  only:
-#    - tags
+  only:
+    - tags
   artifacts:
     paths:
       - '$BACKEND_PATH/build-*'
@@ -48,10 +50,34 @@ package:
     - 'dotnet publish --self-contained -r linux-x64 -o build-linux SelecTunes.Backend'
     - 'dotnet publish --self-contained -r win-x64 -o build-win SelecTunes.Backend'
 
+package-android:
+  stage: package
+  image: openjdk:13.0.2-jdk-slim
+  before_script:
+    - 'apt -q update -y'
+    - 'apt -q install -y curl tar unzip lib32stdc++6 lib32z1'
+    - 'curl -sSLo android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_VERSION}_latest.zip'
+    - 'unzip -d andoid-sdk-linux android-sdk.zip'
+    - 'echo y | android-sdk-linux/tools/bin/sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}" >/dev/null'
+    - 'echo y | android-sdk-linux/tools/bin/sdkmanager "platform-tools" >/dev/null'
+    - 'echo y | android-sdk-linux/tools/bin/sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}" >/dev/null'
+    - 'export ANDROID_HOME=$PWD/android-sdk-linux'
+    - 'export PATH=$PATH:$PWD/android-sdk-linux/platform-tools/'
+    - 'set +o pipefail'
+    - 'yes | android-sdk-linux/tools/bin/sdkmanager --licenses'
+    - 'set -o pipefail'
+    - 'cd $FRONTEND_PATH'
+    - 'chmod +x ./gradlew'
+  script:
+    - './gradlew assemble'
+  artifacts:
+    paths:
+      - 'app/build/outputs/'
+
 deploy:
   stage: deploy
-#  only:
-#    - tags
+  only:
+    - tags
   before_script:
     - 'which ssh-agent || ( apt update -y && apt install openssh-client -y )'
     - eval $(ssh-agent -s)
