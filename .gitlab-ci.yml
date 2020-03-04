@@ -54,7 +54,7 @@ package:
 
 package-android:
   stage: package
-  image: openjdk:13.0.2-jdk-slim
+  image: openjdk:11-jdk-slim
   before_script:
     - 'apt -q update -y'
     - 'apt -q install -y curl tar unzip lib32stdc++6 lib32z1'
