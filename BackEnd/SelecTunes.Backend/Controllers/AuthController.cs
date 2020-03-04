@@ -259,8 +259,9 @@ namespace SelecTunes.Backend.Controllers
          *
          * 
          * 20/02/2020 - Alexander Young
+         * 04/03/2020 - Nathan Tucker - Fix method verb
          */
-        [HttpGet]
+        [HttpPost]
         [Authorize]
         public async Task<ActionResult<String>> Ban([FromQuery]string email)
         {
