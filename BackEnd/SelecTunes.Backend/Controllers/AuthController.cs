@@ -263,7 +263,7 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<String>> Ban([FromQuery]string email)
+        public async Task<ActionResult<String>> Ban([FromForm]string email)
         {
             if (email == null)
             {
