@@ -3,7 +3,11 @@ variables:
   OBJECTS_DIRECTORY: 'obj'
   NUGET_PACKAGES_DIRECTORY: '.nuget'
   BACKEND_PATH: 'BackEnd'
-  SOURCE_CODE_PATH: '$BACKEND_PATH/*/*/'
+  FRONTEND_PATH: 'FrontEnd'
+  SOURCE_CODE_PATH: '*'
+  ANDROID_SDK_VERSION: '6200805'
+  ANDROID_COMPILE_SDK: "29"
+  ANDROID_BUILD_TOOLS: "29.0.2"
 
 stages:
   - build
@@ -17,14 +21,14 @@ default:
   cache:
     key: "$CI_JOB_STAGE-$CI_COMMIT_REF_SLUG"
     paths:
-      - '$SOURCE_CODE_PATH$OBJECTS_DIRECTORY/project.assets.json'
-      - '$SOURCE_CODE_PATH$OBJECTS_DIRECTORY/*.csproj.nuget.*'
-      - '$NUGET_PACKAGES_DIRECTORY'
+      - '$BACKEND_PATH$SOURCE_CODE_PATH$OBJECTS_DIRECTORY/project.assets.json'
+      - '$BACKEND_PATH$SOURCE_CODE_PATH$OBJECTS_DIRECTORY/*.csproj.nuget.*'
+      - '$BACKEND_PATH$NUGET_PACKAGES_DIRECTORY'
     policy: pull-push
     
   before_script:
   - 'cd $BACKEND_PATH'
-  - 'apt update && apt install -y ruby'
+  - 'apt -q update -y && apt -q install -y ruby'
   - 'dotnet restore --packages $NUGET_PACKAGES_DIRECTORY'
 
 build:
@@ -39,8 +43,8 @@ tests:
 
 package:
   stage: package
-#  only:
-#    - tags
+  only:
+    - master
   artifacts:
     paths:
       - '$BACKEND_PATH/build-*'
@@ -48,10 +52,35 @@ package:
     - 'dotnet publish --self-contained -r linux-x64 -o build-linux SelecTunes.Backend'
     - 'dotnet publish --self-contained -r win-x64 -o build-win SelecTunes.Backend'
 
+package-android:
+  stage: package
+  image: openjdk:11-jdk-slim
+  before_script:
+    - 'apt -q update -y'
+    - 'apt -q install -y curl tar unzip lib32stdc++6 lib32z1'
+    - 'curl -sSLo android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_VERSION}_latest.zip'
+    - 'unzip -d android-sdk-linux android-sdk.zip'
+    - 'chmod +x android-sdk-linux/tools/bin/*'
+    - 'export ANDROID_HOME=$PWD/android-sdk-linux'
+    - 'export PATH=$PATH:$PWD/android-sdk-linux/platform-tools/'
+    - 'echo y | android-sdk-linux/tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --install "platforms;android-${ANDROID_COMPILE_SDK}" >/dev/null'
+    - 'echo y | android-sdk-linux/tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --install "platform-tools" >/dev/null'
+    - 'echo y | android-sdk-linux/tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --install "build-tools;${ANDROID_BUILD_TOOLS}" >/dev/null'
+    - 'set +o pipefail'
+    - 'yes | android-sdk-linux/tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --licenses'
+    - 'set -o pipefail'
+    - 'cd $FRONTEND_PATH'
+    - 'chmod +x ./gradlew'
+  script:
+    - './gradlew assemble'
+  artifacts:
+    paths:
+      - '$FRONTEND_PATH/app/build/outputs/'
+
 deploy:
   stage: deploy
-#  only:
-#    - tags
+  only:
+    - master
   before_script:
     - 'which ssh-agent || ( apt update -y && apt install openssh-client -y )'
     - eval $(ssh-agent -s)
