@@ -10,7 +10,21 @@ For this project, we have decided to make an application called SelecTunes. Have
 * Ability to monitor who is in the party, with the ability to ban by phone number
 * Remove songs from the queue that would be considered "memes"
 * Kick people who are potentially messing up the queue or being a general nuisance
+//TODO
 
 ### For the Party Guests
 * Easy join code
 * Anynomous join to party, only need phone number (not visible to anyone) and a desired username
+//TODO
+
+## Installation and Setup
+
+### Back End (Windows)
+* //TODO
+
+### Back End (Mac/Linux)
+* Download [dotnet core](https://dotnet.microsoft.com/download/dotnet-core/3.1) onto your system
+* Clone the repository
+* Move to the directory of the .sln file
+* `dotnet-ef update database` to update the database with the correct schema
+* `dotnet run` to start the development server
