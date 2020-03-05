@@ -1,5 +1,5 @@
 [![pipeline status](https://git.linux.iastate.edu/cs309/spring-2020/JR_2/badges/master/pipeline.svg)](https://git.linux.iastate.edu/cs309/spring-2020/JR_2/commits/master)
-
+[![License: MIT](https://img.shields.io/badge/license-Apache%202.0-blue)](https://git.linux.iastate.edu/cs309/spring-2020/JR_2/blob/master/LICENSE)
 # SelecTunes 309 Project
 
 For this project, we have decided to make an application called SelecTunes. Have you ever been at a party where you don't like the music? Or maybe there were gaps between songs and no one can agree? Well now you have the ability to queue your favorite songs easily! With a quick search you can add your choice of song to liven up the party.
