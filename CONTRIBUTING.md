@@ -5,7 +5,7 @@ email, or any other method with the owners of this repository before making a ch
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
-## Pull Request Process
+## Merge Request Process
 
 1. Make a branch for your feature, improvement, or bug work.
 2. Commit your work.
