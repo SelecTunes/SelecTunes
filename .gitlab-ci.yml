@@ -4,7 +4,7 @@ variables:
   NUGET_PACKAGES_DIRECTORY: '.nuget'
   BACKEND_PATH: 'BackEnd'
   FRONTEND_PATH: 'FrontEnd'
-  SOURCE_CODE_PATH: '$BACKEND_PATH/*/*/'
+  SOURCE_CODE_PATH: '*'
   ANDROID_SDK_VERSION: '6200805'
   ANDROID_COMPILE_SDK: "29"
   ANDROID_BUILD_TOOLS: "29.0.2"
@@ -21,9 +21,9 @@ default:
   cache:
     key: "$CI_JOB_STAGE-$CI_COMMIT_REF_SLUG"
     paths:
-      - '$SOURCE_CODE_PATH$OBJECTS_DIRECTORY/project.assets.json'
-      - '$SOURCE_CODE_PATH$OBJECTS_DIRECTORY/*.csproj.nuget.*'
-      - '$NUGET_PACKAGES_DIRECTORY'
+      - '$BACKEND_PATH$SOURCE_CODE_PATH$OBJECTS_DIRECTORY/project.assets.json'
+      - '$BACKEND_PATH$SOURCE_CODE_PATH$OBJECTS_DIRECTORY/*.csproj.nuget.*'
+      - '$BACKEND_PATH$NUGET_PACKAGES_DIRECTORY'
     policy: pull-push
     
   before_script:
@@ -44,7 +44,7 @@ tests:
 package:
   stage: package
   only:
-    - tags
+    - master
   artifacts:
     paths:
       - '$BACKEND_PATH/build-*'
@@ -80,7 +80,7 @@ package-android:
 deploy:
   stage: deploy
   only:
-    - tags
+    - master
   before_script:
     - 'which ssh-agent || ( apt update -y && apt install openssh-client -y )'
     - eval $(ssh-agent -s)
