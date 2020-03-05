@@ -1,4 +1,7 @@
 ---
+include:
+  - template: License-Scanning.gitlab-ci.yml
+
 variables:
   OBJECTS_DIRECTORY: 'obj'
   NUGET_PACKAGES_DIRECTORY: '.nuget'
