@@ -75,7 +75,7 @@ package-android:
     - './gradlew assemble'
   artifacts:
     paths:
-      - 'app/build/outputs/'
+      - '$FRONTEND_PATH/app/build/outputs/'
 
 deploy:
   stage: deploy
