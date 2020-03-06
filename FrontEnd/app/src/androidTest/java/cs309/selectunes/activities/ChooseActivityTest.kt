@@ -3,18 +3,23 @@ package cs309.selectunes.activities
 import android.widget.Button
 import androidx.test.rule.ActivityTestRule
 import cs309.selectunes.R
-import org.junit.After
+import cs309.selectunes.services.ServerService
+import org.json.JSONObject
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito
 
 class ChooseActivityTest {
 
     @get:Rule
-    val activityTestRule = ActivityTestRule<ChooseActivity>(ChooseActivity::class.java)
+    val activityTestRule = ActivityTestRule(ChooseActivity::class.java)
 
-    private var chooseActivity: ChooseActivity? = null
+    private val serverService = Mockito.mock(ServerService::class.java)
+
+    private lateinit var chooseActivity: ChooseActivity
 
     @Before
     fun setup() {
@@ -22,15 +27,24 @@ class ChooseActivityTest {
     }
 
     @Test
-    fun testViews() {
-        val createPartyButton = chooseActivity?.findViewById<Button>(R.id.create_party_button)
-        val joinPartyButton = chooseActivity?.findViewById<Button>(R.id.join_party_button)
-        assertNotNull(createPartyButton)
-        assertNotNull(joinPartyButton)
+    fun testCreateParty() {
+        val settings = chooseActivity.getSharedPreferences("PartyInfo", 0)
+        Mockito.`when`(serverService.createParty("test", chooseActivity)).then {
+            val jsonObj = JSONObject()
+            jsonObj.put("joinCode", "tempJoinCode")
+            val editor = settings.edit()
+            editor.putString("join_code", jsonObj.getString("joinCode"))
+            editor.apply()
+        }
+        serverService.createParty("test", chooseActivity)
+        assertEquals(settings.getString("join_code", ""), "tempJoinCode")
     }
 
-    @After
-    fun tearDown() {
-        chooseActivity = null
+    @Test
+    fun testViews() {
+        val createPartyButton = chooseActivity.findViewById<Button>(R.id.create_party_button)
+        val joinPartyButton = chooseActivity.findViewById<Button>(R.id.join_party_button)
+        assertNotNull(createPartyButton)
+        assertNotNull(joinPartyButton)
     }
 }
