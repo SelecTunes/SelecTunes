@@ -9,6 +9,7 @@ import com.android.volley.toolbox.Volley
 import cs309.selectunes.R
 import cs309.selectunes.activities.HostMenuActivity
 import cs309.selectunes.activities.SongSearchActivity
+import cs309.selectunes.adapter.SongAdapter
 import cs309.selectunes.utils.HttpUtils
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
@@ -46,7 +47,7 @@ class ServerServiceImpl : ServerService {
                 Response.Listener {
                     activity.parseJson(it)
                     val listView = activity.findViewById<ListView>(R.id.song_search_list)
-                    val adapter = SongSearchActivity.SongAdapter(activity, activity.songList)
+                    val adapter = SongAdapter(activity, activity.songList)
                     listView.adapter = adapter
                 },
                 Response.ErrorListener {
