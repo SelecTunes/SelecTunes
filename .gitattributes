@@ -1,0 +1,3 @@
+*.html linguist-vendored=true
+*.rb linguist-vendored=true
+*.java linguist-vendored=true
