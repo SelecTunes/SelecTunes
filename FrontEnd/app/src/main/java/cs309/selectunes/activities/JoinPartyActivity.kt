@@ -13,6 +13,13 @@ import cs309.selectunes.R
 import cs309.selectunes.utils.HttpUtils
 import org.json.JSONObject
 
+/**
+ * The join party activity is what users see
+ * if they choose the join party option in the
+ * choose activity. This includes text input
+ * where they can input a party code.
+ * @author Jack Goldsworth
+ */
 class JoinPartyActivity : AppCompatActivity() {
 
     override fun onCreate(instanceState: Bundle?) {

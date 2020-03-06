@@ -13,6 +13,12 @@ import cs309.selectunes.models.Song
 import cs309.selectunes.utils.BitmapCache
 import java.net.URL
 
+/**
+ * This is a custom adapter for the song search
+ * list. It allows each song to get it's own image,
+ * name, and artist name in the list.
+ * @author Jack Goldsworth
+ */
 class SongAdapter(private val ctx: Context, private val songList: List<Song>) : ArrayAdapter<String>(ctx, R.layout.song_search_menu, songList as List<String>) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

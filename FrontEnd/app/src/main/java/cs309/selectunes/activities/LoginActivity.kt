@@ -11,9 +11,14 @@ import cs309.selectunes.R
 import cs309.selectunes.services.AuthServiceImpl
 import cs309.selectunes.utils.NukeSSLCerts
 
-
-//https://colorhunt.co/palette/69667
-//https://colorhunt.co/palette/2763
+/**
+ * The login activity is where users can
+ * log into the app.
+ * Color pallets:
+ * https://colorhunt.co/palette/69667
+ * https://colorhunt.co/palette/2763
+ * @author Jack Goldsworth
+ */
 class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(instanceState: Bundle?) {

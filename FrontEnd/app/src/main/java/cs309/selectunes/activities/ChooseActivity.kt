@@ -12,7 +12,11 @@ import cs309.selectunes.services.ServerServiceImpl
 import cs309.selectunes.utils.HttpUtils
 import cs309.selectunes.utils.SpotifyUtils
 
-
+/**
+ * The choose activity allows you to choose
+ * between joining a party and creating one.
+ * @author Jack Goldsworth
+ */
 class ChooseActivity : AppCompatActivity() {
 
     private val serverService = ServerServiceImpl()

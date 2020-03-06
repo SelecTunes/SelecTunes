@@ -7,6 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import cs309.selectunes.R
 import cs309.selectunes.utils.HttpUtils
 
+/**
+ * The host menu activity is what a user
+ * sees after they choose to create a party.
+ * It includes a party join code.
+ * @author Jack Goldsworth
+ */
 class HostMenuActivity : AppCompatActivity() {
 
     override fun onCreate(instanceState: Bundle?) {
