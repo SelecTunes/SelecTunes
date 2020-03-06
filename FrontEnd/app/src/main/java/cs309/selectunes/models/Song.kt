@@ -1,6 +1,8 @@
 package cs309.selectunes.models
 
-
+/**
+ * @author Joshua Edwards
+ */
 class Song(
     val songName: String,
     val id: String,

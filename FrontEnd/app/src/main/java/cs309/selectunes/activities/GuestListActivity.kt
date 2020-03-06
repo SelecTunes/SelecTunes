@@ -10,14 +10,17 @@ import cs309.selectunes.GuestRecyclerViewAdapter
 import cs309.selectunes.R
 import cs309.selectunes.models.Guest
 
+/**
+ * The guest list activity allows people
+ * to see who is currently in the party.
+ * @author Joshua Edwards
+ */
 class GuestListActivity : AppCompatActivity()
 {
     var guests = ArrayList<Guest>()
 
 
-
-    override fun onCreate(instanceState: Bundle?)
-    {
+    override fun onCreate(instanceState: Bundle?) {
 
 
         var guest1 = Guest("Reggie Bush")

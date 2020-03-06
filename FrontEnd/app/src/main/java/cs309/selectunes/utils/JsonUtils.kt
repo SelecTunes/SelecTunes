@@ -6,8 +6,17 @@ import cs309.selectunes.R
 import org.json.JSONArray
 import org.json.JSONObject
 
+/**
+ * General JSON based utility functions.
+ * @author Jack Goldsworth
+ */
 object JsonUtils {
 
+    /**
+     * Parses the login request response and reports if there is an error.
+     * @param activity activity this method is being called from.
+     * @param body login response body.
+     */
     fun parseLoginResponse(activity: AppCompatActivity, body: String): Boolean {
         val json = JSONObject(body)
         val success = json.getBoolean("success")
@@ -23,6 +32,12 @@ object JsonUtils {
         return success
     }
 
+    /**
+     * Parses the register request response and reports if there is an error.
+     * @param activity activity this method is being called from.
+     * @param body login response body.
+     * @param status request response code.
+     */
     fun parseRegisterResponse(activity: AppCompatActivity, body: String?, status: Int): Boolean {
         val registerError = activity.findViewById<TextView>(R.id.register_error)
         if (body == "true") {

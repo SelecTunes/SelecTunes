@@ -8,6 +8,11 @@ import cs309.selectunes.R
 import cs309.selectunes.services.AuthServiceImpl
 import cs309.selectunes.utils.NukeSSLCerts
 
+/**
+ * The register activity is where users
+ * can register for the application
+ * @author Jack Goldsworth
+ */
 class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(instanceState: Bundle?) {
