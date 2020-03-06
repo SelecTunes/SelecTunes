@@ -9,6 +9,7 @@ class Song(
     val explicit: Boolean
 ) {
 
+
     var upVotes = 0
     var downVotes = 0
 
