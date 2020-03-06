@@ -3,37 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout3"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/phoneNumber"
-        android:layout_width="112dp"
-        android:layout_height="36dp"
-        android:text="TextView"
+        android:id="@+id/email"
+        android:layout_width="182dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:text="Guest_Email"
+        android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/upvote_id"
+    <Switch
+        android:id="@+id/mod_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="Button"
-        app:layout_constraintBottom_toTopOf="@+id/downvote_id"
-        app:layout_constraintStart_toEndOf="@+id/phoneNumber"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:text="Moderator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/downvote_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="96dp"
-        android:layout_marginBottom="601dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/upvote_id"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        android:id="@+id/kick_the_nark"
+        android:layout_width="81dp"
+        android:layout_height="33dp"
+        android:layout_marginEnd="12dp"
+        android:text="Kick User"
+        android:textAlignment="textStart"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toStartOf="@+id/mod_switch"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
