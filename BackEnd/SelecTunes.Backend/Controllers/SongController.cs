@@ -171,6 +171,41 @@ namespace SelecTunes.Backend.Controllers
         }
 
         /**
+         * Func Queue() -> async <ActionResult<String>>
+         * => JSON representation of Song Queue of the current User's Party
+         *
+         * Send a GET request to the endpoint to get a queue
+         * Find the current user from the context
+         * Find the party that user is a member of
+         * Pull the queue out of the redis cache
+         * Return the string representation
+         *
+         * 06/03/2020 - Nathan Tucker 
+         */
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult<String>> Queue()
+        {
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false); // Find the current user asking to join a party
+            Party party = _context.Parties.Where(p => p == user.Party || p.Id == user.PartyId).FirstOrDefault(); // find the party that they are member of
+
+            if (user == null)
+            {
+                throw new InvalidOperationException("User is null");
+            }
+
+            if (party == null)
+            {
+                throw new InvalidOperationException("User is not in a party");
+            }
+
+            var ByteQueue = await _cache.GetAsync($"$queue:${party.JoinCode}").ConfigureAwait(false);
+            string CurrentQueue = Encoding.UTF8.GetString(ByteQueue, 0, ByteQueue.Length);
+
+            return CurrentQueue;
+        }
+
+        /**
          * Func Search<T>() -> async <T>
          * => SpotifyResult
          * 
