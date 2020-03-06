@@ -1,0 +1,1542 @@
+{
+  "tracks": {
+    "href": "https://api.spotify.com/v1/search?query=Good+News&type=track&market=US&offset=0&limit=20",
+    "items": [
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/4LLpKhyESsyAXpc4laK94U"
+              },
+              "href": "https://api.spotify.com/v1/artists/4LLpKhyESsyAXpc4laK94U",
+              "id": "4LLpKhyESsyAXpc4laK94U",
+              "name": "Mac Miller",
+              "type": "artist",
+              "uri": "spotify:artist:4LLpKhyESsyAXpc4laK94U"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/5sY6UIQ32GqwMLAfSNEaXb"
+          },
+          "href": "https://api.spotify.com/v1/albums/5sY6UIQ32GqwMLAfSNEaXb",
+          "id": "5sY6UIQ32GqwMLAfSNEaXb",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b27326b7dd89810cc1a40ada642c",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e0226b7dd89810cc1a40ada642c",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d0000485126b7dd89810cc1a40ada642c",
+              "width": 64
+            }
+          ],
+          "name": "Circles",
+          "release_date": "2020-01-17",
+          "release_date_precision": "day",
+          "total_tracks": 12,
+          "type": "album",
+          "uri": "spotify:album:5sY6UIQ32GqwMLAfSNEaXb"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/4LLpKhyESsyAXpc4laK94U"
+            },
+            "href": "https://api.spotify.com/v1/artists/4LLpKhyESsyAXpc4laK94U",
+            "id": "4LLpKhyESsyAXpc4laK94U",
+            "name": "Mac Miller",
+            "type": "artist",
+            "uri": "spotify:artist:4LLpKhyESsyAXpc4laK94U"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 342040,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USWB11801008"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/1DWZUa5Mzf2BwzpHtgbHPY"
+        },
+        "href": "https://api.spotify.com/v1/tracks/1DWZUa5Mzf2BwzpHtgbHPY",
+        "id": "1DWZUa5Mzf2BwzpHtgbHPY",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Good News",
+        "popularity": 82,
+        "preview_url": "https://p.scdn.co/mp3-preview/82d28d6eb7f77b2fb4e51e0fcc0fa76d71edaff4?cid=774b29d4f13844c495f206cafdad9c86",
+        "track_number": 4,
+        "type": "track",
+        "uri": "spotify:track:1DWZUa5Mzf2BwzpHtgbHPY"
+      },
+      {
+        "album": {
+          "album_type": "single",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/1qGohIp3a4kh1Euymx0pyL"
+              },
+              "href": "https://api.spotify.com/v1/artists/1qGohIp3a4kh1Euymx0pyL",
+              "id": "1qGohIp3a4kh1Euymx0pyL",
+              "name": "Ocean Park Standoff",
+              "type": "artist",
+              "uri": "spotify:artist:1qGohIp3a4kh1Euymx0pyL"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/3RLGxqyxJbe9wFro2TQp4T"
+          },
+          "href": "https://api.spotify.com/v1/albums/3RLGxqyxJbe9wFro2TQp4T",
+          "id": "3RLGxqyxJbe9wFro2TQp4T",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b273d33abaa87fdea5da142fd201",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e02d33abaa87fdea5da142fd201",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d00004851d33abaa87fdea5da142fd201",
+              "width": 64
+            }
+          ],
+          "name": "Ocean Park Standoff",
+          "release_date": "2017-03-03",
+          "release_date_precision": "day",
+          "total_tracks": 5,
+          "type": "album",
+          "uri": "spotify:album:3RLGxqyxJbe9wFro2TQp4T"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/1qGohIp3a4kh1Euymx0pyL"
+            },
+            "href": "https://api.spotify.com/v1/artists/1qGohIp3a4kh1Euymx0pyL",
+            "id": "1qGohIp3a4kh1Euymx0pyL",
+            "name": "Ocean Park Standoff",
+            "type": "artist",
+            "uri": "spotify:artist:1qGohIp3a4kh1Euymx0pyL"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 188138,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USHR11637474"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/1dXCXb006YbPSAajh6qhaF"
+        },
+        "href": "https://api.spotify.com/v1/tracks/1dXCXb006YbPSAajh6qhaF",
+        "id": "1dXCXb006YbPSAajh6qhaF",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Good News",
+        "popularity": 54,
+        "preview_url": null,
+        "track_number": 2,
+        "type": "track",
+        "uri": "spotify:track:1dXCXb006YbPSAajh6qhaF"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/0pCNk4D3E2xtszsm6hMsWr"
+              },
+              "href": "https://api.spotify.com/v1/artists/0pCNk4D3E2xtszsm6hMsWr",
+              "id": "0pCNk4D3E2xtszsm6hMsWr",
+              "name": "K.Flay",
+              "type": "artist",
+              "uri": "spotify:artist:0pCNk4D3E2xtszsm6hMsWr"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/1CJDBCPg27ASz4eWE7oeNz"
+          },
+          "href": "https://api.spotify.com/v1/albums/1CJDBCPg27ASz4eWE7oeNz",
+          "id": "1CJDBCPg27ASz4eWE7oeNz",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b2737f888564b247d806d838761e",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e027f888564b247d806d838761e",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d000048517f888564b247d806d838761e",
+              "width": 64
+            }
+          ],
+          "name": "Solutions",
+          "release_date": "2019-07-12",
+          "release_date_precision": "day",
+          "total_tracks": 10,
+          "type": "album",
+          "uri": "spotify:album:1CJDBCPg27ASz4eWE7oeNz"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/0pCNk4D3E2xtszsm6hMsWr"
+            },
+            "href": "https://api.spotify.com/v1/artists/0pCNk4D3E2xtszsm6hMsWr",
+            "id": "0pCNk4D3E2xtszsm6hMsWr",
+            "name": "K.Flay",
+            "type": "artist",
+            "uri": "spotify:artist:0pCNk4D3E2xtszsm6hMsWr"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 211026,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USUM71907468"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/5cInnHweXJJrRsHxwihgkK"
+        },
+        "href": "https://api.spotify.com/v1/tracks/5cInnHweXJJrRsHxwihgkK",
+        "id": "5cInnHweXJJrRsHxwihgkK",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Good News",
+        "popularity": 48,
+        "preview_url": null,
+        "track_number": 6,
+        "type": "track",
+        "uri": "spotify:track:5cInnHweXJJrRsHxwihgkK"
+      },
+      {
+        "album": {
+          "album_type": "single",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/1fd3fmwlhrDl2U5wbbPQYN"
+              },
+              "href": "https://api.spotify.com/v1/artists/1fd3fmwlhrDl2U5wbbPQYN",
+              "id": "1fd3fmwlhrDl2U5wbbPQYN",
+              "name": "Apashe",
+              "type": "artist",
+              "uri": "spotify:artist:1fd3fmwlhrDl2U5wbbPQYN"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/61r8fQhh7yxfhM7sxIZ3bp"
+          },
+          "href": "https://api.spotify.com/v1/albums/61r8fQhh7yxfhM7sxIZ3bp",
+          "id": "61r8fQhh7yxfhM7sxIZ3bp",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b2735a1f4b77ef7a4ba35e6f7d1c",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e025a1f4b77ef7a4ba35e6f7d1c",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d000048515a1f4b77ef7a4ba35e6f7d1c",
+              "width": 64
+            }
+          ],
+          "name": "The Good, The Bad & The Fake",
+          "release_date": "2019-02-22",
+          "release_date_precision": "day",
+          "total_tracks": 3,
+          "type": "album",
+          "uri": "spotify:album:61r8fQhh7yxfhM7sxIZ3bp"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/1fd3fmwlhrDl2U5wbbPQYN"
+            },
+            "href": "https://api.spotify.com/v1/artists/1fd3fmwlhrDl2U5wbbPQYN",
+            "id": "1fd3fmwlhrDl2U5wbbPQYN",
+            "name": "Apashe",
+            "type": "artist",
+            "uri": "spotify:artist:1fd3fmwlhrDl2U5wbbPQYN"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 284571,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "CA5KR1908060"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/5sSqOGfBz5CjJ9IGL8pz31"
+        },
+        "href": "https://api.spotify.com/v1/tracks/5sSqOGfBz5CjJ9IGL8pz31",
+        "id": "5sSqOGfBz5CjJ9IGL8pz31",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Good News",
+        "popularity": 52,
+        "preview_url": "https://p.scdn.co/mp3-preview/f8cb60bb5dfb7ca866376c82dda704e448e1080c?cid=774b29d4f13844c495f206cafdad9c86",
+        "track_number": 1,
+        "type": "track",
+        "uri": "spotify:track:5sSqOGfBz5CjJ9IGL8pz31"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/0YPElKYjOD1sofFCtLdYj3"
+              },
+              "href": "https://api.spotify.com/v1/artists/0YPElKYjOD1sofFCtLdYj3",
+              "id": "0YPElKYjOD1sofFCtLdYj3",
+              "name": "Mandisa",
+              "type": "artist",
+              "uri": "spotify:artist:0YPElKYjOD1sofFCtLdYj3"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/42y8y3uNMSS3O7pFyHR9I0"
+          },
+          "href": "https://api.spotify.com/v1/albums/42y8y3uNMSS3O7pFyHR9I0",
+          "id": "42y8y3uNMSS3O7pFyHR9I0",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b273005a275e8a0821ab2311e33e",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e02005a275e8a0821ab2311e33e",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d00004851005a275e8a0821ab2311e33e",
+              "width": 64
+            }
+          ],
+          "name": "Out Of The Dark (Deluxe Edition)",
+          "release_date": "2017-05-19",
+          "release_date_precision": "day",
+          "total_tracks": 18,
+          "type": "album",
+          "uri": "spotify:album:42y8y3uNMSS3O7pFyHR9I0"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/0YPElKYjOD1sofFCtLdYj3"
+            },
+            "href": "https://api.spotify.com/v1/artists/0YPElKYjOD1sofFCtLdYj3",
+            "id": "0YPElKYjOD1sofFCtLdYj3",
+            "name": "Mandisa",
+            "type": "artist",
+            "uri": "spotify:artist:0YPElKYjOD1sofFCtLdYj3"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 170813,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USUM71702765"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/3QqTmV1zpTNEAMviQFUFkW"
+        },
+        "href": "https://api.spotify.com/v1/tracks/3QqTmV1zpTNEAMviQFUFkW",
+        "id": "3QqTmV1zpTNEAMviQFUFkW",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Good News",
+        "popularity": 43,
+        "preview_url": null,
+        "track_number": 10,
+        "type": "track",
+        "uri": "spotify:track:3QqTmV1zpTNEAMviQFUFkW"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/3raES4AyYCX6XlbO6lEvco"
+              },
+              "href": "https://api.spotify.com/v1/artists/3raES4AyYCX6XlbO6lEvco",
+              "id": "3raES4AyYCX6XlbO6lEvco",
+              "name": "Manic Drive",
+              "type": "artist",
+              "uri": "spotify:artist:3raES4AyYCX6XlbO6lEvco"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/5UG67nlGPV5uWaOmQc64do"
+          },
+          "href": "https://api.spotify.com/v1/albums/5UG67nlGPV5uWaOmQc64do",
+          "id": "5UG67nlGPV5uWaOmQc64do",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b27346fa4bb90db765b31ed8bd57",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e0246fa4bb90db765b31ed8bd57",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d0000485146fa4bb90db765b31ed8bd57",
+              "width": 64
+            }
+          ],
+          "name": "Vip",
+          "release_date": "2014-10-14",
+          "release_date_precision": "day",
+          "total_tracks": 10,
+          "type": "album",
+          "uri": "spotify:album:5UG67nlGPV5uWaOmQc64do"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/3raES4AyYCX6XlbO6lEvco"
+            },
+            "href": "https://api.spotify.com/v1/artists/3raES4AyYCX6XlbO6lEvco",
+            "id": "3raES4AyYCX6XlbO6lEvco",
+            "name": "Manic Drive",
+            "type": "artist",
+            "uri": "spotify:artist:3raES4AyYCX6XlbO6lEvco"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 214956,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USACX1401141"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/3nfRaMg245gU64jg6wvRgJ"
+        },
+        "href": "https://api.spotify.com/v1/tracks/3nfRaMg245gU64jg6wvRgJ",
+        "id": "3nfRaMg245gU64jg6wvRgJ",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Good News",
+        "popularity": 41,
+        "preview_url": "https://p.scdn.co/mp3-preview/0125e82f0b8103238a01b9129168b38c38849ca6?cid=774b29d4f13844c495f206cafdad9c86",
+        "track_number": 5,
+        "type": "track",
+        "uri": "spotify:track:3nfRaMg245gU64jg6wvRgJ"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/6N1GBr0koYYU0W59ECgg5u"
+              },
+              "href": "https://api.spotify.com/v1/artists/6N1GBr0koYYU0W59ECgg5u",
+              "id": "6N1GBr0koYYU0W59ECgg5u",
+              "name": "The Theorist",
+              "type": "artist",
+              "uri": "spotify:artist:6N1GBr0koYYU0W59ECgg5u"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/109kwopxNwCcfu7shXIj9L"
+          },
+          "href": "https://api.spotify.com/v1/albums/109kwopxNwCcfu7shXIj9L",
+          "id": "109kwopxNwCcfu7shXIj9L",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b273513249cc463f379b0d71bab3",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e02513249cc463f379b0d71bab3",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d00004851513249cc463f379b0d71bab3",
+              "width": 64
+            }
+          ],
+          "name": "Piano Covers, Vol. 16",
+          "release_date": "2020-02-26",
+          "release_date_precision": "day",
+          "total_tracks": 13,
+          "type": "album",
+          "uri": "spotify:album:109kwopxNwCcfu7shXIj9L"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/6N1GBr0koYYU0W59ECgg5u"
+            },
+            "href": "https://api.spotify.com/v1/artists/6N1GBr0koYYU0W59ECgg5u",
+            "id": "6N1GBr0koYYU0W59ECgg5u",
+            "name": "The Theorist",
+            "type": "artist",
+            "uri": "spotify:artist:6N1GBr0koYYU0W59ECgg5u"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 306211,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "QZFZ42042191"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/1Zlvlpu6ZVpiKMLhZG7Lzb"
+        },
+        "href": "https://api.spotify.com/v1/tracks/1Zlvlpu6ZVpiKMLhZG7Lzb",
+        "id": "1Zlvlpu6ZVpiKMLhZG7Lzb",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Good News (Piano Arrangement)",
+        "popularity": 16,
+        "preview_url": "https://p.scdn.co/mp3-preview/c636a7113166a6902d44aee8d6c6de86a4540e5a?cid=774b29d4f13844c495f206cafdad9c86",
+        "track_number": 9,
+        "type": "track",
+        "uri": "spotify:track:1Zlvlpu6ZVpiKMLhZG7Lzb"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/4UVlSeEFDPmlkYKaRMRoOz"
+              },
+              "href": "https://api.spotify.com/v1/artists/4UVlSeEFDPmlkYKaRMRoOz",
+              "id": "4UVlSeEFDPmlkYKaRMRoOz",
+              "name": "The Garden",
+              "type": "artist",
+              "uri": "spotify:artist:4UVlSeEFDPmlkYKaRMRoOz"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/5OTx88lV36Cgz4nrLUCbOz"
+          },
+          "href": "https://api.spotify.com/v1/albums/5OTx88lV36Cgz4nrLUCbOz",
+          "id": "5OTx88lV36Cgz4nrLUCbOz",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b273d2140b20357358b336708622",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e02d2140b20357358b336708622",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d00004851d2140b20357358b336708622",
+              "width": 64
+            }
+          ],
+          "name": "Mirror Might Steal Your Charm",
+          "release_date": "2018-03-30",
+          "release_date_precision": "day",
+          "total_tracks": 12,
+          "type": "album",
+          "uri": "spotify:album:5OTx88lV36Cgz4nrLUCbOz"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/4UVlSeEFDPmlkYKaRMRoOz"
+            },
+            "href": "https://api.spotify.com/v1/artists/4UVlSeEFDPmlkYKaRMRoOz",
+            "id": "4UVlSeEFDPmlkYKaRMRoOz",
+            "name": "The Garden",
+            "type": "artist",
+            "uri": "spotify:artist:4UVlSeEFDPmlkYKaRMRoOz"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 159000,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USEP41746008"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/1moZKr3tMS8IPdeRFqj2vD"
+        },
+        "href": "https://api.spotify.com/v1/tracks/1moZKr3tMS8IPdeRFqj2vD",
+        "id": "1moZKr3tMS8IPdeRFqj2vD",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Good News",
+        "popularity": 36,
+        "preview_url": "https://p.scdn.co/mp3-preview/a6055fb7825e298ebd83966c0cab2726bd37fb62?cid=774b29d4f13844c495f206cafdad9c86",
+        "track_number": 8,
+        "type": "track",
+        "uri": "spotify:track:1moZKr3tMS8IPdeRFqj2vD"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/12zbUHbPHL5DGuJtiUfsip"
+              },
+              "href": "https://api.spotify.com/v1/artists/12zbUHbPHL5DGuJtiUfsip",
+              "id": "12zbUHbPHL5DGuJtiUfsip",
+              "name": "Julien Baker",
+              "type": "artist",
+              "uri": "spotify:artist:12zbUHbPHL5DGuJtiUfsip"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/4dRzxZm69k9s0nzKmKb8Gj"
+          },
+          "href": "https://api.spotify.com/v1/albums/4dRzxZm69k9s0nzKmKb8Gj",
+          "id": "4dRzxZm69k9s0nzKmKb8Gj",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b27319ec2bda3f2349a7416f13e6",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e0219ec2bda3f2349a7416f13e6",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d0000485119ec2bda3f2349a7416f13e6",
+              "width": 64
+            }
+          ],
+          "name": "Sprained Ankle",
+          "release_date": "2015-10-23",
+          "release_date_precision": "day",
+          "total_tracks": 9,
+          "type": "album",
+          "uri": "spotify:album:4dRzxZm69k9s0nzKmKb8Gj"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/12zbUHbPHL5DGuJtiUfsip"
+            },
+            "href": "https://api.spotify.com/v1/artists/12zbUHbPHL5DGuJtiUfsip",
+            "id": "12zbUHbPHL5DGuJtiUfsip",
+            "name": "Julien Baker",
+            "type": "artist",
+            "uri": "spotify:artist:12zbUHbPHL5DGuJtiUfsip"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 211216,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USA2P1506531"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/7sCCleYbeg2uVSqS98Bp4t"
+        },
+        "href": "https://api.spotify.com/v1/tracks/7sCCleYbeg2uVSqS98Bp4t",
+        "id": "7sCCleYbeg2uVSqS98Bp4t",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Good News",
+        "popularity": 35,
+        "preview_url": "https://p.scdn.co/mp3-preview/5289f409b41c6d3823e21fae1af2cd0fb2da1c36?cid=774b29d4f13844c495f206cafdad9c86",
+        "track_number": 5,
+        "type": "track",
+        "uri": "spotify:track:7sCCleYbeg2uVSqS98Bp4t"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/1dF0qAJMVOCfhBnPiPfUIm"
+              },
+              "href": "https://api.spotify.com/v1/artists/1dF0qAJMVOCfhBnPiPfUIm",
+              "id": "1dF0qAJMVOCfhBnPiPfUIm",
+              "name": "Vanessa Bell Armstrong",
+              "type": "artist",
+              "uri": "spotify:artist:1dF0qAJMVOCfhBnPiPfUIm"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/15OBZyFNDZH5QUEP6bQzZy"
+          },
+          "href": "https://api.spotify.com/v1/albums/15OBZyFNDZH5QUEP6bQzZy",
+          "id": "15OBZyFNDZH5QUEP6bQzZy",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b27359b0ff0d16fdb5ce3ba231ee",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e0259b0ff0d16fdb5ce3ba231ee",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d0000485159b0ff0d16fdb5ce3ba231ee",
+              "width": 64
+            }
+          ],
+          "name": "The Experience",
+          "release_date": "2009-01-01",
+          "release_date_precision": "day",
+          "total_tracks": 13,
+          "type": "album",
+          "uri": "spotify:album:15OBZyFNDZH5QUEP6bQzZy"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/1dF0qAJMVOCfhBnPiPfUIm"
+            },
+            "href": "https://api.spotify.com/v1/artists/1dF0qAJMVOCfhBnPiPfUIm",
+            "id": "1dF0qAJMVOCfhBnPiPfUIm",
+            "name": "Vanessa Bell Armstrong",
+            "type": "artist",
+            "uri": "spotify:artist:1dF0qAJMVOCfhBnPiPfUIm"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 379840,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USEG30900091"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/2x8BlDYVnlD57KLrbqXcbq"
+        },
+        "href": "https://api.spotify.com/v1/tracks/2x8BlDYVnlD57KLrbqXcbq",
+        "id": "2x8BlDYVnlD57KLrbqXcbq",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Good News",
+        "popularity": 34,
+        "preview_url": null,
+        "track_number": 4,
+        "type": "track",
+        "uri": "spotify:track:2x8BlDYVnlD57KLrbqXcbq"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/6xdRb2GypJ7DqnWAI2mHGn"
+              },
+              "href": "https://api.spotify.com/v1/artists/6xdRb2GypJ7DqnWAI2mHGn",
+              "id": "6xdRb2GypJ7DqnWAI2mHGn",
+              "name": "MUNA",
+              "type": "artist",
+              "uri": "spotify:artist:6xdRb2GypJ7DqnWAI2mHGn"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/5ZpSRd3GwvEGrD7kWn0fHz"
+          },
+          "href": "https://api.spotify.com/v1/albums/5ZpSRd3GwvEGrD7kWn0fHz",
+          "id": "5ZpSRd3GwvEGrD7kWn0fHz",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b273aa9d32f896a408216a8f4a5a",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e02aa9d32f896a408216a8f4a5a",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d00004851aa9d32f896a408216a8f4a5a",
+              "width": 64
+            }
+          ],
+          "name": "Saves The World",
+          "release_date": "2019-09-06",
+          "release_date_precision": "day",
+          "total_tracks": 12,
+          "type": "album",
+          "uri": "spotify:album:5ZpSRd3GwvEGrD7kWn0fHz"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/6xdRb2GypJ7DqnWAI2mHGn"
+            },
+            "href": "https://api.spotify.com/v1/artists/6xdRb2GypJ7DqnWAI2mHGn",
+            "id": "6xdRb2GypJ7DqnWAI2mHGn",
+            "name": "MUNA",
+            "type": "artist",
+            "uri": "spotify:artist:6xdRb2GypJ7DqnWAI2mHGn"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 250653,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USRC11901669"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/3OQXqukbEw1EKu9veODhFi"
+        },
+        "href": "https://api.spotify.com/v1/tracks/3OQXqukbEw1EKu9veODhFi",
+        "id": "3OQXqukbEw1EKu9veODhFi",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Good News (Ya-Ya Song)",
+        "popularity": 39,
+        "preview_url": "https://p.scdn.co/mp3-preview/f90b099422a419456a5021febeb748e4b9943508?cid=774b29d4f13844c495f206cafdad9c86",
+        "track_number": 10,
+        "type": "track",
+        "uri": "spotify:track:3OQXqukbEw1EKu9veODhFi"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/0RdRumkn2UydUjqytNJ2Cp"
+              },
+              "href": "https://api.spotify.com/v1/artists/0RdRumkn2UydUjqytNJ2Cp",
+              "id": "0RdRumkn2UydUjqytNJ2Cp",
+              "name": "White Denim",
+              "type": "artist",
+              "uri": "spotify:artist:0RdRumkn2UydUjqytNJ2Cp"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/3jGzrViFQlZQsw2xxaWn1s"
+          },
+          "href": "https://api.spotify.com/v1/albums/3jGzrViFQlZQsw2xxaWn1s",
+          "id": "3jGzrViFQlZQsw2xxaWn1s",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b2732b541726eb965f7765f3804a",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e022b541726eb965f7765f3804a",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d000048512b541726eb965f7765f3804a",
+              "width": 64
+            }
+          ],
+          "name": "Performance",
+          "release_date": "2018-08-24",
+          "release_date_precision": "day",
+          "total_tracks": 9,
+          "type": "album",
+          "uri": "spotify:album:3jGzrViFQlZQsw2xxaWn1s"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/0RdRumkn2UydUjqytNJ2Cp"
+            },
+            "href": "https://api.spotify.com/v1/artists/0RdRumkn2UydUjqytNJ2Cp",
+            "id": "0RdRumkn2UydUjqytNJ2Cp",
+            "name": "White Denim",
+            "type": "artist",
+            "uri": "spotify:artist:0RdRumkn2UydUjqytNJ2Cp"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 261399,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "DED621800066"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/7KnVPizU71x6pIkKHcW4qm"
+        },
+        "href": "https://api.spotify.com/v1/tracks/7KnVPizU71x6pIkKHcW4qm",
+        "id": "7KnVPizU71x6pIkKHcW4qm",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Good News",
+        "popularity": 33,
+        "preview_url": "https://p.scdn.co/mp3-preview/e387fcf717fe6d17a02a6585e931593052127bb9?cid=774b29d4f13844c495f206cafdad9c86",
+        "track_number": 9,
+        "type": "track",
+        "uri": "spotify:track:7KnVPizU71x6pIkKHcW4qm"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/6aiFCgyKNwF9Rv5TOxnE8E"
+              },
+              "href": "https://api.spotify.com/v1/artists/6aiFCgyKNwF9Rv5TOxnE8E",
+              "id": "6aiFCgyKNwF9Rv5TOxnE8E",
+              "name": "IDK",
+              "type": "artist",
+              "uri": "spotify:artist:6aiFCgyKNwF9Rv5TOxnE8E"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/7MyUIiX7nkyazdl4JqfMJK"
+          },
+          "href": "https://api.spotify.com/v1/albums/7MyUIiX7nkyazdl4JqfMJK",
+          "id": "7MyUIiX7nkyazdl4JqfMJK",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b273db4a7040705e9f54a93b139a",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e02db4a7040705e9f54a93b139a",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d00004851db4a7040705e9f54a93b139a",
+              "width": 64
+            }
+          ],
+          "name": "IDK & FRIENDS :)",
+          "release_date": "2018-11-09",
+          "release_date_precision": "day",
+          "total_tracks": 7,
+          "type": "album",
+          "uri": "spotify:album:7MyUIiX7nkyazdl4JqfMJK"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/6aiFCgyKNwF9Rv5TOxnE8E"
+            },
+            "href": "https://api.spotify.com/v1/artists/6aiFCgyKNwF9Rv5TOxnE8E",
+            "id": "6aiFCgyKNwF9Rv5TOxnE8E",
+            "name": "IDK",
+            "type": "artist",
+            "uri": "spotify:artist:6aiFCgyKNwF9Rv5TOxnE8E"
+          },
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/6vHBuUxrcpn1do5UaEJ7g6"
+            },
+            "href": "https://api.spotify.com/v1/artists/6vHBuUxrcpn1do5UaEJ7g6",
+            "id": "6vHBuUxrcpn1do5UaEJ7g6",
+            "name": "Domo Genesis",
+            "type": "artist",
+            "uri": "spotify:artist:6vHBuUxrcpn1do5UaEJ7g6"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 124486,
+        "explicit": true,
+        "external_ids": {
+          "isrc": "USLD91716412"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/3KIBM9Vo83dSqWiGRzMGru"
+        },
+        "href": "https://api.spotify.com/v1/tracks/3KIBM9Vo83dSqWiGRzMGru",
+        "id": "3KIBM9Vo83dSqWiGRzMGru",
+        "is_local": false,
+        "is_playable": true,
+        "name": "GOOD NEWS",
+        "popularity": 33,
+        "preview_url": "https://p.scdn.co/mp3-preview/9f2af2cd9496b4acef687f26cfbad0319f4cb75b?cid=774b29d4f13844c495f206cafdad9c86",
+        "track_number": 7,
+        "type": "track",
+        "uri": "spotify:track:3KIBM9Vo83dSqWiGRzMGru"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/71h7GTahhKcSkQ1ayhTvOD"
+              },
+              "href": "https://api.spotify.com/v1/artists/71h7GTahhKcSkQ1ayhTvOD",
+              "id": "71h7GTahhKcSkQ1ayhTvOD",
+              "name": "Something Corporate",
+              "type": "artist",
+              "uri": "spotify:artist:71h7GTahhKcSkQ1ayhTvOD"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/1yFFvTKFLIJhqa6DhXjzix"
+          },
+          "href": "https://api.spotify.com/v1/albums/1yFFvTKFLIJhqa6DhXjzix",
+          "id": "1yFFvTKFLIJhqa6DhXjzix",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b27371d542175d87f29088805e1a",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e0271d542175d87f29088805e1a",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d0000485171d542175d87f29088805e1a",
+              "width": 64
+            }
+          ],
+          "name": "Leaving Through The Window",
+          "release_date": "2002-01-01",
+          "release_date_precision": "day",
+          "total_tracks": 14,
+          "type": "album",
+          "uri": "spotify:album:1yFFvTKFLIJhqa6DhXjzix"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/71h7GTahhKcSkQ1ayhTvOD"
+            },
+            "href": "https://api.spotify.com/v1/artists/71h7GTahhKcSkQ1ayhTvOD",
+            "id": "71h7GTahhKcSkQ1ayhTvOD",
+            "name": "Something Corporate",
+            "type": "artist",
+            "uri": "spotify:artist:71h7GTahhKcSkQ1ayhTvOD"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 232226,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USMC10200315"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/38FRmZa1UjYZEOik2RHiiq"
+        },
+        "href": "https://api.spotify.com/v1/tracks/38FRmZa1UjYZEOik2RHiiq",
+        "id": "38FRmZa1UjYZEOik2RHiiq",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Good News",
+        "popularity": 26,
+        "preview_url": null,
+        "track_number": 10,
+        "type": "track",
+        "uri": "spotify:track:38FRmZa1UjYZEOik2RHiiq"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/7DWL1f2n0bdG747Hb1SUrC"
+              },
+              "href": "https://api.spotify.com/v1/artists/7DWL1f2n0bdG747Hb1SUrC",
+              "id": "7DWL1f2n0bdG747Hb1SUrC",
+              "name": "Jazz Morning Playlist",
+              "type": "artist",
+              "uri": "spotify:artist:7DWL1f2n0bdG747Hb1SUrC"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/1vdd4Nt2FnRKOcUrbw5yP0"
+          },
+          "href": "https://api.spotify.com/v1/albums/1vdd4Nt2FnRKOcUrbw5yP0",
+          "id": "1vdd4Nt2FnRKOcUrbw5yP0",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b273f0107a4a4a42cabc86a0cd55",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e02f0107a4a4a42cabc86a0cd55",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d00004851f0107a4a4a42cabc86a0cd55",
+              "width": 64
+            }
+          ],
+          "name": "Wake Up with Jazz",
+          "release_date": "2019-06-18",
+          "release_date_precision": "day",
+          "total_tracks": 24,
+          "type": "album",
+          "uri": "spotify:album:1vdd4Nt2FnRKOcUrbw5yP0"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/7DWL1f2n0bdG747Hb1SUrC"
+            },
+            "href": "https://api.spotify.com/v1/artists/7DWL1f2n0bdG747Hb1SUrC",
+            "id": "7DWL1f2n0bdG747Hb1SUrC",
+            "name": "Jazz Morning Playlist",
+            "type": "artist",
+            "uri": "spotify:artist:7DWL1f2n0bdG747Hb1SUrC"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 127223,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "BGA471913941"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/3TjgonIsMjuE9Sp0zfQVGD"
+        },
+        "href": "https://api.spotify.com/v1/tracks/3TjgonIsMjuE9Sp0zfQVGD",
+        "id": "3TjgonIsMjuE9Sp0zfQVGD",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Good News",
+        "popularity": 34,
+        "preview_url": "https://p.scdn.co/mp3-preview/43c544f0d4dad199055eeddec69056be772cd7be?cid=774b29d4f13844c495f206cafdad9c86",
+        "track_number": 9,
+        "type": "track",
+        "uri": "spotify:track:3TjgonIsMjuE9Sp0zfQVGD"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/2sgVQmhRbgSEe47A1bJRrC"
+              },
+              "href": "https://api.spotify.com/v1/artists/2sgVQmhRbgSEe47A1bJRrC",
+              "id": "2sgVQmhRbgSEe47A1bJRrC",
+              "name": "Mike Love",
+              "type": "artist",
+              "uri": "spotify:artist:2sgVQmhRbgSEe47A1bJRrC"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/3IivLS3oT0lgW0HALAqZiT"
+          },
+          "href": "https://api.spotify.com/v1/albums/3IivLS3oT0lgW0HALAqZiT",
+          "id": "3IivLS3oT0lgW0HALAqZiT",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b2736ffbd5160677319875747b59",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e026ffbd5160677319875747b59",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d000048516ffbd5160677319875747b59",
+              "width": 64
+            }
+          ],
+          "name": "Love Will Find a Way",
+          "release_date": "2015-09-01",
+          "release_date_precision": "day",
+          "total_tracks": 11,
+          "type": "album",
+          "uri": "spotify:album:3IivLS3oT0lgW0HALAqZiT"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/2sgVQmhRbgSEe47A1bJRrC"
+            },
+            "href": "https://api.spotify.com/v1/artists/2sgVQmhRbgSEe47A1bJRrC",
+            "id": "2sgVQmhRbgSEe47A1bJRrC",
+            "name": "Mike Love",
+            "type": "artist",
+            "uri": "spotify:artist:2sgVQmhRbgSEe47A1bJRrC"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 298784,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "QM2U81500002"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/66WnIjcKTm5UtjJqazmeGo"
+        },
+        "href": "https://api.spotify.com/v1/tracks/66WnIjcKTm5UtjJqazmeGo",
+        "id": "66WnIjcKTm5UtjJqazmeGo",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Good News",
+        "popularity": 29,
+        "preview_url": "https://p.scdn.co/mp3-preview/9de200e683ae1bd645ec71ff21109619c467363b?cid=774b29d4f13844c495f206cafdad9c86",
+        "track_number": 2,
+        "type": "track",
+        "uri": "spotify:track:66WnIjcKTm5UtjJqazmeGo"
+      },
+      {
+        "album": {
+          "album_type": "compilation",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/57EAEbnYbr1PFzadw9Zvgi"
+              },
+              "href": "https://api.spotify.com/v1/artists/57EAEbnYbr1PFzadw9Zvgi",
+              "id": "57EAEbnYbr1PFzadw9Zvgi",
+              "name": "Fattburger",
+              "type": "artist",
+              "uri": "spotify:artist:57EAEbnYbr1PFzadw9Zvgi"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/19aNDBgWykjAltGcPv5sTw"
+          },
+          "href": "https://api.spotify.com/v1/albums/19aNDBgWykjAltGcPv5sTw",
+          "id": "19aNDBgWykjAltGcPv5sTw",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b273b92dba25ada4b068a51ce9de",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e02b92dba25ada4b068a51ce9de",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d00004851b92dba25ada4b068a51ce9de",
+              "width": 64
+            }
+          ],
+          "name": "The Best Of Fattburger",
+          "release_date": "1992-01-01",
+          "release_date_precision": "day",
+          "total_tracks": 12,
+          "type": "album",
+          "uri": "spotify:album:19aNDBgWykjAltGcPv5sTw"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/57EAEbnYbr1PFzadw9Zvgi"
+            },
+            "href": "https://api.spotify.com/v1/artists/57EAEbnYbr1PFzadw9Zvgi",
+            "id": "57EAEbnYbr1PFzadw9Zvgi",
+            "name": "Fattburger",
+            "type": "artist",
+            "uri": "spotify:artist:57EAEbnYbr1PFzadw9Zvgi"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 355160,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USCA28600590"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/0iLz09lGAXEUesTM7ALZmz"
+        },
+        "href": "https://api.spotify.com/v1/tracks/0iLz09lGAXEUesTM7ALZmz",
+        "id": "0iLz09lGAXEUesTM7ALZmz",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Good News",
+        "popularity": 28,
+        "preview_url": null,
+        "track_number": 1,
+        "type": "track",
+        "uri": "spotify:track:0iLz09lGAXEUesTM7ALZmz"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/2Hkut4rAAyrQxRdof7FVJq"
+              },
+              "href": "https://api.spotify.com/v1/artists/2Hkut4rAAyrQxRdof7FVJq",
+              "id": "2Hkut4rAAyrQxRdof7FVJq",
+              "name": "Rush",
+              "type": "artist",
+              "uri": "spotify:artist:2Hkut4rAAyrQxRdof7FVJq"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/7hgcHQbB7xYr75qPPulfro"
+          },
+          "href": "https://api.spotify.com/v1/albums/7hgcHQbB7xYr75qPPulfro",
+          "id": "7hgcHQbB7xYr75qPPulfro",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b27356c80f5e2391eae7d9cb7bec",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e0256c80f5e2391eae7d9cb7bec",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d0000485156c80f5e2391eae7d9cb7bec",
+              "width": 64
+            }
+          ],
+          "name": "Snakes & Arrows",
+          "release_date": "2007-04-27",
+          "release_date_precision": "day",
+          "total_tracks": 13,
+          "type": "album",
+          "uri": "spotify:album:7hgcHQbB7xYr75qPPulfro"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/2Hkut4rAAyrQxRdof7FVJq"
+            },
+            "href": "https://api.spotify.com/v1/artists/2Hkut4rAAyrQxRdof7FVJq",
+            "id": "2Hkut4rAAyrQxRdof7FVJq",
+            "name": "Rush",
+            "type": "artist",
+            "uri": "spotify:artist:2Hkut4rAAyrQxRdof7FVJq"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 290680,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USAT20701870"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/4vGv5xaIUgmzycJlUQXpSp"
+        },
+        "href": "https://api.spotify.com/v1/tracks/4vGv5xaIUgmzycJlUQXpSp",
+        "id": "4vGv5xaIUgmzycJlUQXpSp",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Good News First",
+        "popularity": 26,
+        "preview_url": "https://p.scdn.co/mp3-preview/0c32036e7c28f634a4d0be3c8f5ed634ac5c77eb?cid=774b29d4f13844c495f206cafdad9c86",
+        "track_number": 11,
+        "type": "track",
+        "uri": "spotify:track:4vGv5xaIUgmzycJlUQXpSp"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/4I4taY0pRzBIGmIgsBqcrE"
+              },
+              "href": "https://api.spotify.com/v1/artists/4I4taY0pRzBIGmIgsBqcrE",
+              "id": "4I4taY0pRzBIGmIgsBqcrE",
+              "name": "Rosemary Fairweather",
+              "type": "artist",
+              "uri": "spotify:artist:4I4taY0pRzBIGmIgsBqcrE"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/7wJdKiDRwXk7UE9y4C3XBQ"
+          },
+          "href": "https://api.spotify.com/v1/albums/7wJdKiDRwXk7UE9y4C3XBQ",
+          "id": "7wJdKiDRwXk7UE9y4C3XBQ",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b2732c02b08ba3ed9be7c8da9014",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e022c02b08ba3ed9be7c8da9014",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d000048512c02b08ba3ed9be7c8da9014",
+              "width": 64
+            }
+          ],
+          "name": "Heavenly",
+          "release_date": "2016-11-04",
+          "release_date_precision": "day",
+          "total_tracks": 10,
+          "type": "album",
+          "uri": "spotify:album:7wJdKiDRwXk7UE9y4C3XBQ"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/4I4taY0pRzBIGmIgsBqcrE"
+            },
+            "href": "https://api.spotify.com/v1/artists/4I4taY0pRzBIGmIgsBqcrE",
+            "id": "4I4taY0pRzBIGmIgsBqcrE",
+            "name": "Rosemary Fairweather",
+            "type": "artist",
+            "uri": "spotify:artist:4I4taY0pRzBIGmIgsBqcrE"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 223226,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USHM21620821"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/7ly8RGycjJddqh0RsBwMpt"
+        },
+        "href": "https://api.spotify.com/v1/tracks/7ly8RGycjJddqh0RsBwMpt",
+        "id": "7ly8RGycjJddqh0RsBwMpt",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Good News",
+        "popularity": 28,
+        "preview_url": null,
+        "track_number": 2,
+        "type": "track",
+        "uri": "spotify:track:7ly8RGycjJddqh0RsBwMpt"
+      },
+      {
+        "album": {
+          "album_type": "album",
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/0jFWFHZJmceWrAYcjKP3P2"
+              },
+              "href": "https://api.spotify.com/v1/artists/0jFWFHZJmceWrAYcjKP3P2",
+              "id": "0jFWFHZJmceWrAYcjKP3P2",
+              "name": "John Lewis Colton",
+              "type": "artist",
+              "uri": "spotify:artist:0jFWFHZJmceWrAYcjKP3P2"
+            }
+          ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/7qj1j2N6RZ852qi60JxPlf"
+          },
+          "href": "https://api.spotify.com/v1/albums/7qj1j2N6RZ852qi60JxPlf",
+          "id": "7qj1j2N6RZ852qi60JxPlf",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab67616d0000b2733681731064122094c2d2ef68",
+              "width": 640
+            },
+            {
+              "height": 300,
+              "url": "https://i.scdn.co/image/ab67616d00001e023681731064122094c2d2ef68",
+              "width": 300
+            },
+            {
+              "height": 64,
+              "url": "https://i.scdn.co/image/ab67616d000048513681731064122094c2d2ef68",
+              "width": 64
+            }
+          ],
+          "name": "The Eye in the Universe",
+          "release_date": "2018-03-29",
+          "release_date_precision": "day",
+          "total_tracks": 13,
+          "type": "album",
+          "uri": "spotify:album:7qj1j2N6RZ852qi60JxPlf"
+        },
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/0jFWFHZJmceWrAYcjKP3P2"
+            },
+            "href": "https://api.spotify.com/v1/artists/0jFWFHZJmceWrAYcjKP3P2",
+            "id": "0jFWFHZJmceWrAYcjKP3P2",
+            "name": "John Lewis Colton",
+            "type": "artist",
+            "uri": "spotify:artist:0jFWFHZJmceWrAYcjKP3P2"
+          }
+        ],
+        "disc_number": 1,
+        "duration_ms": 128341,
+        "explicit": false,
+        "external_ids": {
+          "isrc": "USDHM1806262"
+        },
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/73DhhdsDootRjvXTmNjfDP"
+        },
+        "href": "https://api.spotify.com/v1/tracks/73DhhdsDootRjvXTmNjfDP",
+        "id": "73DhhdsDootRjvXTmNjfDP",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Good News / Bad News",
+        "popularity": 24,
+        "preview_url": "https://p.scdn.co/mp3-preview/7989fc5076d132ee315a9bb5ff31511b797c4c71?cid=774b29d4f13844c495f206cafdad9c86",
+        "track_number": 8,
+        "type": "track",
+        "uri": "spotify:track:73DhhdsDootRjvXTmNjfDP"
+      }
+    ],
+    "limit": 20,
+    "next": "https://api.spotify.com/v1/search?query=Good+News&type=track&market=US&offset=20&limit=20",
+    "offset": 0,
+    "previous": null,
+    "total": 5995
+  }
+}
