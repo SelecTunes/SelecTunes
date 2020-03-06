@@ -41,6 +41,28 @@ tests:
   script:
     - 'dotnet test --no-restore'
 
+package-android:
+  stage: package
+  image: openjdk:11-jdk-slim
+  before_script:
+    - 'apt -q update -y'
+    - 'apt -q install -y curl tar unzip lib32stdc++6 lib32z1'
+    - 'curl -sSLo android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_VERSION}_latest.zip'
+    - 'unzip -d android-sdk-linux android-sdk.zip'
+    - 'chmod +x android-sdk-linux/tools/bin/*'
+    - 'export ANDROID_HOME=$PWD/android-sdk-linux'
+    - 'export PATH=$PATH:$PWD/android-sdk-linux/platform-tools/'
+    - 'echo y | android-sdk-linux/tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --install "platforms;android-${ANDROID_COMPILE_SDK}" >/dev/null'
+    - 'echo y | android-sdk-linux/tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --install "platform-tools" >/dev/null'
+    - 'echo y | android-sdk-linux/tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --install "build-tools;${ANDROID_BUILD_TOOLS}" >/dev/null'
+    - 'set +o pipefail'
+    - 'yes | android-sdk-linux/tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --licenses'
+    - 'set -o pipefail'
+    - 'cd $FRONTEND_PATH'
+    - 'chmod +x ./gradlew'
+  script:
+    - './gradlew test'
+
 package:
   stage: package
   only:
