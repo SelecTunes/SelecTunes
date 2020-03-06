@@ -5,6 +5,10 @@ import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
 
+/**
+ * General Spotify based utility methods.
+ * @author Jack Goldsworth
+ */
 object SpotifyUtils {
 
     private const val REQUEST_CODE = 1138
@@ -22,6 +26,10 @@ object SpotifyUtils {
             .setScopes(arrayOf(scopes))
             .build()
 
+    /**
+     * Opens the spotify login page and logs the user in.
+     * @param activity activity this method is being called from.
+     */
     fun login(activity: AppCompatActivity) {
         AuthenticationClient.openLoginActivity(activity, REQUEST_CODE, spotify)
     }

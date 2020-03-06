@@ -12,8 +12,17 @@ import org.apache.http.impl.client.DefaultHttpClient
 import org.apache.http.impl.cookie.BasicClientCookie
 import java.nio.charset.StandardCharsets
 
+/**
+ * General http based utilities.
+ * @author Jack Goldsworth
+ */
 object HttpUtils {
 
+    /**
+     * Creates an http client stack the contains an
+     * authorization cookie.
+     * @param activity activity this method is called from.
+     */
     fun createAuthCookie(activity: AppCompatActivity): HttpClientStack {
         val httpclient = DefaultHttpClient()
         val cookieStore = BasicCookieStore()
@@ -25,9 +34,15 @@ object HttpUtils {
         return HttpClientStack(httpclient)
     }
 
+    /**
+     * This http request ends the party
+     * the user is currently in.
+     * @param activity activity this method is being called from.
+     * @param switchedActivity activity to go to after the party is closed.
+     */
     fun endParty(activity: AppCompatActivity, switchedActivity: Class<out AppCompatActivity>?) {
         val stringRequest = StringRequest(Request.Method.DELETE,
-            "https://coms-309-jr-2.cs.iastate.edu/api/Party/DisbandParty",
+                "https://coms-309-jr-2.cs.iastate.edu/api/Party/DisbandParty",
                 Response.Listener {
                     if (switchedActivity != null) {
                         activity.startActivity(Intent(activity, switchedActivity))
@@ -41,6 +56,12 @@ object HttpUtils {
         requestQueue.add(stringRequest)
     }
 
+    /**
+     * This http request makes the user leave
+     * the party they're already in.
+     * @param activity activity this method is being called from.
+     * @param switchedActivity activity to go to after the party is closed.
+     */
     fun leaveParty(activity: AppCompatActivity, switchedActivity: Class<out AppCompatActivity>?) {
         val stringRequest = StringRequest(Request.Method.POST,
                 "https://coms-309-jr-2.cs.iastate.edu/api/Party/LeaveParty",

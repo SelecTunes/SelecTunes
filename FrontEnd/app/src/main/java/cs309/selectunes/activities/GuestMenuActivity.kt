@@ -7,6 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import cs309.selectunes.R
 import cs309.selectunes.utils.HttpUtils
 
+/**
+ * The guest menu activity is the view
+ * that guest see after joining a party.
+ * @author Jack Goldsworth
+ */
 class GuestMenuActivity : AppCompatActivity() {
 
     override fun onCreate(instanceState: Bundle?) {

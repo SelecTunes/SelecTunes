@@ -10,12 +10,17 @@ import cs309.selectunes.R
 import cs309.selectunes.SongRecyclerViewAdapter
 import cs309.selectunes.models.Song
 
+/**
+ * The song list activity is where
+ * users can see a list of the songs
+ * currently in the queue.
+ * @author Joshua Edwards
+ */
 class SongListActivity : AppCompatActivity()
 {
     var songs = ArrayList<Song>()
 
-    override fun onCreate(instanceState:  Bundle?)
-    {
+    override fun onCreate(instanceState:  Bundle?) {
         super.onCreate(instanceState)
         setContentView(R.layout.song_queue)
 

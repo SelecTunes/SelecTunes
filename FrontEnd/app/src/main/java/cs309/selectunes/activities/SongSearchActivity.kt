@@ -12,7 +12,12 @@ import cs309.selectunes.models.Song
 import cs309.selectunes.services.ServerServiceImpl
 import org.json.JSONObject
 
-
+/**
+ * The song search activity is where users
+ * can search for new songs to be added to the
+ * queue.
+ * @author Jack Goldsworth
+ */
 class SongSearchActivity : AppCompatActivity() {
 
     internal val songList = mutableListOf<Song>()
