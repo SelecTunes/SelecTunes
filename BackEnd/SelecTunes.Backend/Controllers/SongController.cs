@@ -182,10 +182,22 @@ namespace SelecTunes.Backend.Controllers
          *
          * 06/03/2020 - Nathan Tucker 
          */
+        [Authorize]
+        [HttpGet]
         public async Task<ActionResult<String>> Queue()
         {
             User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false); // Find the current user asking to join a party
             Party party = _context.Parties.Where(p => p == user.Party || p.Id == user.PartyId).FirstOrDefault(); // find the party that they are member of
+
+            if (user == null)
+            {
+                throw new InvalidOperationException("User is null");
+            }
+
+            if (party == null)
+            {
+                throw new InvalidOperationException("User is not in a party");
+            }
 
             var ByteQueue = await _cache.GetAsync($"$queue:${party.JoinCode}").ConfigureAwait(false);
             string CurrentQueue = Encoding.UTF8.GetString(ByteQueue, 0, ByteQueue.Length);
