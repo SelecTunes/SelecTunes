@@ -8,24 +8,22 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import cs309.selectunes.R
 import cs309.selectunes.models.Song
+import cs309.selectunes.services.ServerServiceImpl
 import cs309.selectunes.utils.BitmapCache
-import cs309.selectunes.utils.HttpUtils
 import org.json.JSONObject
 import java.net.URL
-import java.nio.charset.StandardCharsets
-import java.util.*
 
 
 class SongSearchActivity : AppCompatActivity() {
 
-    private val songList = mutableListOf<Song>()
+    internal val songList = mutableListOf<Song>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +34,7 @@ class SongSearchActivity : AppCompatActivity() {
 
         songSearch.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                searchSong(songSearch.text.toString())
+                ServerServiceImpl().searchSong(songSearch.text.toString(), this)
                 return@OnKeyListener true
             }
             false
@@ -50,62 +48,32 @@ class SongSearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun searchSong(songToSearch: String) {
-        val json = JSONObject()
-        json.put("QueryString", songToSearch)
-        val jsonObjectRequest = object : JsonObjectRequest(Method.POST, "https://coms-309-jr-2.cs.iastate.edu/api/Song/SearchBySong", json,
-                Response.Listener {
-                    parseJson(it)
-                },
-                Response.ErrorListener {
-                    println("Error fetching JSON object: ${it.networkResponse.statusCode}")
-                    println(it.networkResponse.data.toString(StandardCharsets.UTF_8))
-                }) {
-            override fun getParams(): Map<String, String> {
-                val params: MutableMap<String, String> = HashMap()
-                params["QueryString"] = songToSearch
-                return params
-            }
-
-            override fun getHeaders(): Map<String, String> {
-                val headers: MutableMap<String, String> = HashMap()
-                headers["Content-Type"] = "application/json"
-                headers["Accept"] = "application/json, text/json"
-                return headers
-            }
-        }
-        val requestQueue = Volley.newRequestQueue(this, HttpUtils.createAuthCookie(this))
-        requestQueue.add(jsonObjectRequest)
-    }
-
-    private fun parseJson(jsonBack: JSONObject) {
+    fun parseJson(jsonBack: JSONObject) {
         songList.clear()
+        println(jsonBack.toString())
         val jsonItems = jsonBack.getJSONObject("tracks").getJSONArray("items")
         for (x in 0 until jsonItems.length()) {
             val jsonSong = jsonItems.getJSONObject(x)
             val song = jsonSong.get("name")
             val songName = song.toString()
+            val songId = jsonSong.get("id").toString()
             val explicit = jsonSong.getBoolean("explicit")
             val jsonAlbum = jsonSong.getJSONObject("album")
             val artistName = jsonAlbum.getJSONArray("artists").getJSONObject(0).getString("name")
             val albumArt = jsonAlbum.getJSONArray("images")
             val firstSize = albumArt.getJSONObject(0)
             val albumArtSrc = firstSize.getString("url")
-            println("Song $x: name: $songName, artist: $artistName, albumSrc: $albumArtSrc, explicit: $explicit")
+            //println("Song $x: name: $songName, id: $songId, artist: $artistName, albumSrc: $albumArtSrc, explicit: $explicit")
             songList.add(
                     Song(
                             songName,
-                            "",
+                            songId,
                             artistName,
                             albumArtSrc,
                             explicit
                     )
             )
         }
-
-        val listView = findViewById<ListView>(R.id.song_search_list)
-        val adapter = SongAdapter(this, songList)
-        listView.adapter = adapter
     }
 
 
