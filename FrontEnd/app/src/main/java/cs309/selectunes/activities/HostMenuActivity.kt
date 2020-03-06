@@ -27,7 +27,7 @@ class HostMenuActivity : AppCompatActivity() {
         }
 
         songList.setOnClickListener{
-            val toSongList = Intent(this, SongSearchActivity::class.java)
+            val toSongList = Intent(this, SongListActivity::class.java)
             startActivity(toSongList)
         }
 
