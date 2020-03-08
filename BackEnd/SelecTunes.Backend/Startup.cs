@@ -38,7 +38,8 @@ namespace SelecTunes.Backend
 
             services.AddDistributedRedisCache(options =>
             {
-                options.Configuration = Configuration.GetConnectionString("Redis");
+                options.Configuration = "localhost:6379";
+                //options.Configuration = Configuration.GetConnectionString("Redis");
             });
 
             services.AddHttpClient("spotify", c =>
