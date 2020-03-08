@@ -155,8 +155,6 @@ namespace SelecTunes.Backend.Controllers
                 throw new InvalidOperationException("User is null");
             }
 
-            
-
             var ByteQueue = await _cache.GetAsync($"$queue:${party.JoinCode}").ConfigureAwait(false);
             if (ByteQueue == null)
             {
@@ -167,6 +165,14 @@ namespace SelecTunes.Backend.Controllers
             }
 
             Queue<Song> CurrentQueue = JsonConvert.DeserializeObject<Queue<Song>>(ByteQueue.ToString());
+
+            if (CurrentQueue == null)
+            {
+                Queue<Song> queue = new Queue<Song>();
+                queue.Append(SongToAdd);
+                await _cache.SetStringAsync($"$queue:${party.JoinCode}", JsonConvert.SerializeObject(queue)).ConfigureAwait(false);
+                return new JsonResult(new { Success = true });
+            }
 
             // Append the requested song to the queue
             CurrentQueue.Append(SongToAdd);
