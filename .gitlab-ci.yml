@@ -77,6 +77,8 @@ package:
 package-android:
   stage: package
   image: openjdk:11-jdk-slim
+  only:
+    - master
   before_script:
     - 'apt -q update -y'
     - 'apt -q install -y curl tar unzip lib32stdc++6 lib32z1'
