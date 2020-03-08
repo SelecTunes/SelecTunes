@@ -152,7 +152,7 @@ namespace SelecTunes.Backend.Controllers
 
             // Pull the current song queue out of the redis cache. It's stored as a JSON string, so deserialize
             Queue<Song> CurrentQueue = JsonConvert.DeserializeObject<Queue<Song>>(
-                (await _cache.GetAsync($"$queue:${party.JoinCode}").ConfigureAwait(false)).ToString()
+                (await _cache.GetAsync($"$queue:${party.JoinCode}").ConfigureAwait(false)).ToString() ?? ""
             );
 
             // If a queue didn't exist for that party before
@@ -200,6 +200,10 @@ namespace SelecTunes.Backend.Controllers
             }
 
             var ByteQueue = await _cache.GetAsync($"$queue:${party.JoinCode}").ConfigureAwait(false);
+            if (ByteQueue == null)
+            {
+                return new JsonResult(new { Success = false });
+            }
             string CurrentQueue = Encoding.UTF8.GetString(ByteQueue, 0, ByteQueue.Length);
 
             return CurrentQueue;
