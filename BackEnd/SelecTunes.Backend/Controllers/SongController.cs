@@ -180,13 +180,10 @@ namespace SelecTunes.Backend.Controllers
             {
                 Console.WriteLine("CREATING NEW QUEUE. CURRENT QUEUE IS NULL");
                 Queue<Song> queue = new Queue<Song>();
-                queue.Append(SongToAdd);
+                queue.Enqueue(SongToAdd);
                 await _cache.SetStringAsync($"$queue:${party.JoinCode}", JsonConvert.SerializeObject(queue)).ConfigureAwait(false);
                 return new JsonResult(new { Success = true });
             }
-
-            // Append the requested song to the queue
-            CurrentQueue.Append(SongToAdd);
 
             CurrentQueue.Enqueue(SongToAdd);
 
