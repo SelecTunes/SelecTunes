@@ -28,6 +28,11 @@ namespace SelecTunes.Backend.Controllers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        public class JoinRequest
+        {
+            public string JoinCode { get; set; }
+        }
+
         /**
          * Func JoinParty(string :joinCode) -> ActionResult<String>
          * => party join code
@@ -40,8 +45,15 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpPost]
         [Authorize]
-        public ActionResult<String> JoinParty([FromBody]string joinCode)
+        public ActionResult<String> JoinParty([FromBody]JoinRequest join)
         {
+            if (join == null)
+            {
+                throw new InvalidOperationException("Attempting to Join Party with null code");
+            }
+
+            string joinCode = join.JoinCode;
+
             _logger.LogDebug("User {0} attempting to join party with join code {1}", _userManager.GetUserAsync(HttpContext.User).Result, joinCode);
 
             User ToJoin = _userManager.GetUserAsync(HttpContext.User).Result; // Find the current user asking to join a party
