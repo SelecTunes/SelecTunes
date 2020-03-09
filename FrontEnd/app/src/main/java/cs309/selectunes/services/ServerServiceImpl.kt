@@ -73,12 +73,14 @@ class ServerServiceImpl : ServerService {
     override fun addSongToQueue(song: Song, activity: AppCompatActivity) {
         val json = JSONObject()
         json.put("id", song.id)
+        json.put("name", song.songName)
+        json.put("artist_name", song.artistName)
+        json.put("album_art_url", song.albumArt)
         val jsonObjectRequest = object : JsonObjectRequest(Method.POST, "https://coms-309-jr-2.cs.iastate.edu/api/Song/AddToQueue", json, null,
                 Response.ErrorListener {
                     println("Error adding song to queue: ${it.networkResponse.statusCode}")
                     println(it.networkResponse.data.toString(StandardCharsets.UTF_8))
                 }) {
-
             override fun getHeaders(): Map<String, String> {
                 val headers: MutableMap<String, String> = java.util.HashMap()
                 headers["Content-Type"] = "application/json"
