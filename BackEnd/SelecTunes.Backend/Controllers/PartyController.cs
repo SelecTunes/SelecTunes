@@ -8,6 +8,7 @@ using SelecTunes.Backend.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -163,6 +164,37 @@ namespace SelecTunes.Backend.Controllers
             }
 
             return new JsonResult(new { Success = false });
+        }
+
+        /**
+         * Func Members -> ActionResult<String>
+         *
+         * Send a GET request to /api/party/members
+         *
+         * Gets a JSON array of all the current members of the party to populate the view
+         *
+         * 09/03/2020 - Nathan Tucker
+         */
+        [Authorize]
+        [HttpGet]
+        public ActionResult<string> Members()
+        {
+            User user = _userManager.GetUserAsync(HttpContext.User).Result;
+
+            if (user == null)
+            {
+                throw new InvalidOperationException("User is null");
+            }
+
+            Party party = _context.Parties.Where(p => p.Id == user.PartyId).FirstOrDefault();
+
+            if (party == null)
+            {
+                throw new InvalidOperationException("party is null");
+            }
+
+            var GuestList = party.PartyMembers;
+            return Ok(GuestList);
         }
 
         /**
