@@ -156,6 +156,7 @@ namespace SelecTunes.Backend.Controllers
             }
 
             var ByteQueue = await _cache.GetAsync($"$queue:${party.JoinCode}").ConfigureAwait(false);
+            Console.WriteLine("THIS IS WHAT THE QUEUE LOOKS LIKE: {0}", ByteQueue);
             if (ByteQueue == null)
             {
                 Queue<Song> queue = new Queue<Song>();
@@ -164,8 +165,9 @@ namespace SelecTunes.Backend.Controllers
                 return new JsonResult(new { Success = true });
             }
 
-            Queue<Song> CurrentQueue = JsonConvert.DeserializeObject<Queue<Song>>(ByteQueue.ToString());
+            Queue<Song> CurrentQueue = JsonConvert.DeserializeObject<Queue<Song>>(Encoding.UTF8.GetString(ByteQueue));
 
+            Console.WriteLine("THIS IS WHAT THE DESERIALIZED QUEUE LOOKS LIKE: {0}", CurrentQueue);
             if (CurrentQueue == null)
             {
                 Queue<Song> queue = new Queue<Song>();
