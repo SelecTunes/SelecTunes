@@ -41,7 +41,7 @@ namespace SelecTunes.Backend.Controllers
          * The user that sent the request will be added to the party with that join code
          *
          * 15/02/2020 D/M/Y - Nathan Tucker - Stubbing
-         * 17/02/2020 D/M/Y - Nathan Tucker - Finalizing
+         * 09/03/2020 D/M/Y - Nathan Tucker - Finalizing
          */
         [HttpPost]
         [Authorize]
@@ -58,6 +58,7 @@ namespace SelecTunes.Backend.Controllers
 
             User ToJoin = _userManager.GetUserAsync(HttpContext.User).Result; // Find the current user asking to join a party
             Party party = _context.Parties.Where(p => p.JoinCode == joinCode).FirstOrDefault(); // Find a corresponding party with the requested join code
+
             if (party == null) // no party with that join code
             {
                 throw new InvalidOperationException("A party with that code does not exist");
@@ -66,7 +67,15 @@ namespace SelecTunes.Backend.Controllers
             // In the event they are already in a party, remove them from that, add them to new party
             if (ToJoin.Party != null || ToJoin.PartyId != null)
             {
-                ToJoin.Party.PartyMembers.Remove(ToJoin);
+                if (ToJoin.Party.PartyHost == ToJoin) // uh oh, they are the host user
+                {
+                    DisbandCurrentParty(ToJoin.Party);
+                }
+                else
+                {
+                    ToJoin.Party.PartyMembers.Remove(ToJoin); // if they aren't the host, then go ahead and just do a simple remove
+                }
+                
                 party.PartyMembers.Add(ToJoin);
 
                 return new JsonResult(new { Success = true });
