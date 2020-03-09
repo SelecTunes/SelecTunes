@@ -167,12 +167,13 @@ namespace SelecTunes.Backend.Controllers
         public ActionResult<string> Members()
         {
             User user = _userManager.GetUserAsync(HttpContext.User).Result;
-            Party party = _context.Parties.Where(p => p.Id == user.PartyId).FirstOrDefault();
 
             if (user == null)
             {
                 throw new InvalidOperationException("User is null");
             }
+
+            Party party = _context.Parties.Where(p => p.Id == user.PartyId).FirstOrDefault();
 
             if (party == null)
             {
