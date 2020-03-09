@@ -10,8 +10,8 @@
     <RepositoryUrl>https://git.linux.iastate.edu/cs309/spring-2020/JR_2</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Company>CS 309 JR 2</Company>
-    <AssemblyVersion>1.5.1.0</AssemblyVersion>
-    <FileVersion>1.5.1.0</FileVersion>
+    <AssemblyVersion>1.5.2.0</AssemblyVersion>
+    <FileVersion>1.5.2.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
