@@ -188,6 +188,8 @@ namespace SelecTunes.Backend.Controllers
             // Append the requested song to the queue
             CurrentQueue.Append(SongToAdd);
 
+            CurrentQueue.Enqueue(SongToAdd);
+
             Console.WriteLine("WRITING NEW QUEUE, {0}", JsonConvert.SerializeObject(CurrentQueue));
 
             // Write the new queue to the redis cache. Because it used the old key from the key value pair, the old one will be written over
