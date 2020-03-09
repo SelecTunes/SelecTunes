@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import cs309.selectunes.R
 import cs309.selectunes.services.AuthServiceImpl
-import cs309.selectunes.utils.NukeSSLCerts
 
 /**
  * The login activity is where users can
@@ -24,7 +23,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(instanceState: Bundle?) {
         super.onCreate(instanceState)
         setContentView(R.layout.login_menu)
-        NukeSSLCerts.nuke()
         val email = findViewById<TextView>(R.id.login_email)
         val password = findViewById<TextView>(R.id.login_password)
         val button = findViewById<Button>(R.id.register_button)

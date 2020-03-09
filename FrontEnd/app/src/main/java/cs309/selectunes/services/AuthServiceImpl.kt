@@ -16,7 +16,6 @@ class AuthServiceImpl : AuthService {
         val stringRequest = object : StringRequest(Method.POST, "https://coms-309-jr-2.cs.iastate.edu/api/auth/login", Response.Listener {
             val success = JsonUtils.parseLoginResponse(activity, it)
             if (success) activity.startActivity(Intent(activity, ChooseActivity::class.java))
-            println(it)
         }, Response.ErrorListener {
             println("There was an error with the response. Code: ${it.networkResponse.statusCode}")
         }) {
@@ -39,7 +38,6 @@ class AuthServiceImpl : AuthService {
                 val responseHeaders = response?.headers
                 val rawCookies = responseHeaders?.get("Set-Cookie")
                 if (rawCookies != null) {
-                    println("Cookie Before: $rawCookies")
                     val search = "Holtzmann="
                     val cookie = rawCookies.substring(rawCookies.indexOf(search) + search.length, rawCookies.indexOf(';'))
                     val settings = activity.getSharedPreferences("Cookie", 0)
@@ -56,7 +54,6 @@ class AuthServiceImpl : AuthService {
         val stringRequest = object : StringRequest(Method.POST, "https://coms-309-jr-2.cs.iastate.edu/api/auth/register", Response.Listener {
             val success = JsonUtils.parseRegisterResponse(activity, it, 200)
             if (success) activity.startActivity(Intent(activity, LoginActivity::class.java))
-            println(it)
         }, Response.ErrorListener {
             JsonUtils.parseRegisterResponse(activity, null, it.networkResponse.statusCode)
             println("There was an error with the response. Code: ${it.networkResponse.statusCode}")
