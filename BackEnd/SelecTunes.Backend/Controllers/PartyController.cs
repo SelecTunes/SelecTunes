@@ -40,7 +40,7 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpPost]
         [Authorize]
-        public ActionResult<String> JoinParty([FromForm]string joinCode)
+        public ActionResult<String> JoinParty([FromBody]string joinCode)
         {
             _logger.LogDebug("User {0} attempting to join party with join code {1}", _userManager.GetUserAsync(HttpContext.User).Result, joinCode);
 
