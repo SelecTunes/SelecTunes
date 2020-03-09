@@ -166,7 +166,7 @@ namespace SelecTunes.Backend.Controllers
             {
                 Console.WriteLine("CREATING NEW QUEUE. BYTE QUEUE IS NULL");
                 Queue<Song> queue = new Queue<Song>();
-                queue.Append(SongToAdd);
+                queue.Enqueue(SongToAdd);
                 await _cache.SetStringAsync($"$queue:${party.JoinCode}", JsonConvert.SerializeObject(queue)).ConfigureAwait(false);
                 return new JsonResult(new { Success = true });
             }
