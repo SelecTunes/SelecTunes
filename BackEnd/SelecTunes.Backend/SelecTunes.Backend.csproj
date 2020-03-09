@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>0a5f8979-ec4a-45da-99b1-77ab0dc4bf1f</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <Version>1.5.1</Version>
+    <Version>1.5.2</Version>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Authors>Alexander Young, Nate Tucker</Authors>
     <RepositoryUrl>https://git.linux.iastate.edu/cs309/spring-2020/JR_2</RepositoryUrl>
