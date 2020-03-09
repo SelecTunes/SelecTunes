@@ -159,9 +159,9 @@ namespace SelecTunes.Backend.Controllers
             }
 
             var ByteQueue = await _cache.GetAsync($"$queue:${party.JoinCode}").ConfigureAwait(false);
-            Console.WriteLine("THIS IS WHAT THE QUEUE LOOKS LIKE: {0}", Encoding.UTF8.GetString(ByteQueue));
-            Console.WriteLine("BYTE: {0}", ByteQueue.ToString());
-            Console.WriteLine("BYTE SERIALIZE: {0}", JsonConvert.SerializeObject(ByteQueue));
+            //Console.WriteLine("THIS IS WHAT THE QUEUE LOOKS LIKE: {0}", Encoding.UTF8.GetString(ByteQueue));
+            //Console.WriteLine("BYTE: {0}", ByteQueue.ToString());
+            //Console.WriteLine("BYTE SERIALIZE: {0}", JsonConvert.SerializeObject(ByteQueue));
             if (ByteQueue == null)
             {
                 Console.WriteLine("CREATING NEW QUEUE. BYTE QUEUE IS NULL");
@@ -173,9 +173,9 @@ namespace SelecTunes.Backend.Controllers
 
             Queue<Song> CurrentQueue = JsonConvert.DeserializeObject<Queue<Song>>(Encoding.UTF8.GetString(ByteQueue));
 
-            Console.WriteLine("THIS IS WHAT THE DESERIALIZED QUEUE LOOKS LIKE: {0}", CurrentQueue);
-            Console.WriteLine("CURRENT: {0}", CurrentQueue.ToString());
-            Console.WriteLine("CURRENT SERIALIZE: {0}", JsonConvert.SerializeObject(CurrentQueue));
+            //Console.WriteLine("THIS IS WHAT THE DESERIALIZED QUEUE LOOKS LIKE: {0}", CurrentQueue);
+            //Console.WriteLine("CURRENT: {0}", CurrentQueue.ToString());
+            //Console.WriteLine("CURRENT SERIALIZE: {0}", JsonConvert.SerializeObject(CurrentQueue));
             if (CurrentQueue == null)
             {
                 Console.WriteLine("CREATING NEW QUEUE. CURRENT QUEUE IS NULL");
