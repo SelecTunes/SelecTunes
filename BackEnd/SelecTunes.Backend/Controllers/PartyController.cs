@@ -63,9 +63,13 @@ namespace SelecTunes.Backend.Controllers
                 throw new InvalidOperationException("A party with that code does not exist");
             }
 
+            // In the event they are already in a party, remove them from that, add them to new party
             if (ToJoin.Party != null || ToJoin.PartyId != null)
             {
-                throw new InvalidOperationException("User attempting to join two parties");
+                ToJoin.Party.PartyMembers.Remove(ToJoin);
+                party.PartyMembers.Add(ToJoin);
+
+                return new JsonResult(new { Success = true });
             }
 
             party.PartyMembers.Add(ToJoin);
