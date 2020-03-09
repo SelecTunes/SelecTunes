@@ -74,8 +74,8 @@ class ServerServiceImpl : ServerService {
         val json = JSONObject()
         json.put("id", song.id)
         json.put("name", song.songName)
-        json.put("artist_name", song.artistName)
-        json.put("album_art_url", song.albumArt)
+        json.put("artistName", song.artistName)
+        json.put("albumArt", song.albumArt)
         val jsonObjectRequest = object : JsonObjectRequest(Method.POST, "https://coms-309-jr-2.cs.iastate.edu/api/Song/AddToQueue", json, null,
                 Response.ErrorListener {
                     println("Error adding song to queue: ${it.networkResponse.statusCode}")
