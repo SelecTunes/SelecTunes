@@ -150,15 +150,28 @@ namespace SelecTunes.Backend.Controllers
                 throw new InvalidOperationException("Yo party is nul");
             }
 
-            // Pull the current song queue out of the redis cache. It's stored as a JSON string, so deserialize
-            Queue<Song> CurrentQueue = JsonConvert.DeserializeObject<Queue<Song>>(
-                (await _cache.GetAsync($"$queue:${party.JoinCode}").ConfigureAwait(false)).ToString() ?? ""
-            );
+            if (user == null)
+            {
+                throw new InvalidOperationException("User is null");
+            }
 
-            // If a queue didn't exist for that party before
+            var ByteQueue = await _cache.GetAsync($"$queue:${party.JoinCode}").ConfigureAwait(false);
+            if (ByteQueue == null)
+            {
+                Queue<Song> queue = new Queue<Song>();
+                queue.Append(SongToAdd);
+                await _cache.SetStringAsync($"$queue:${party.JoinCode}", JsonConvert.SerializeObject(queue)).ConfigureAwait(false);
+                return new JsonResult(new { Success = true });
+            }
+
+            Queue<Song> CurrentQueue = JsonConvert.DeserializeObject<Queue<Song>>(ByteQueue.ToString());
+
             if (CurrentQueue == null)
             {
-                CurrentQueue = new Queue<Song>();
+                Queue<Song> queue = new Queue<Song>();
+                queue.Append(SongToAdd);
+                await _cache.SetStringAsync($"$queue:${party.JoinCode}", JsonConvert.SerializeObject(queue)).ConfigureAwait(false);
+                return new JsonResult(new { Success = true });
             }
 
             // Append the requested song to the queue
