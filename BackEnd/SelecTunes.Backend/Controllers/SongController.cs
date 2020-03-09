@@ -68,17 +68,20 @@ namespace SelecTunes.Backend.Controllers
             }
             catch (ArgumentNullException e)
             {
+                Console.WriteLine("ArgNullException Occurred: {0}", e);
                 _logger.LogDebug("Search Called with NULL Query {}", e);
                 return new BadRequestObjectResult("Query is null.");
             }
             catch (InvalidOperationException e)
             {
+                Console.WriteLine("InvalidOperationException Occurred: {0}", e);
                 _logger.LogDebug("Search Attempted without Being at Party First", e);
 
                 return Unauthorized("You must be at a party to search for songs.");
             }
             catch (UnauthorizedAccessException e)
             {
+                Console.WriteLine("UnauthorizedAccessException Occurred: {0}", e);
                 _logger.LogWarning("Spotify returned a UnauthorizedAccessException", e);
 
                 return Unauthorized("Party Host not authorized to preform that action.");
@@ -248,6 +251,13 @@ namespace SelecTunes.Backend.Controllers
                 _logger.LogWarning("Attempted Song search without being at a party.");
 
                 throw new InvalidOperationException("No search without party");
+            }
+
+            Console.WriteLine("User Party Id: {0}. Party Id: {1}, Party Host: {2}", user.Id, party.Id, party.PartyHost);
+
+            if (party.PartyHost == null)
+            {
+                throw new InvalidOperationException("Party is without party host");
             }
 
             User host = party.PartyHost = await _auth.UpdateUserTokens(party.PartyHost).ConfigureAwait(false);
