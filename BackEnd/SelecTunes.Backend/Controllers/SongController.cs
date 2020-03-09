@@ -232,9 +232,10 @@ namespace SelecTunes.Backend.Controllers
             {
                 return new JsonResult(new { Success = false });
             }
-            string CurrentQueue = Encoding.UTF8.GetString(ByteQueue, 0, ByteQueue.Length);
 
-            return CurrentQueue;
+            Queue<Song> queue = JsonConvert.DeserializeObject<Queue<Song>>(Encoding.UTF8.GetString(ByteQueue));
+
+            return Ok(queue);
         }
 
         /**
