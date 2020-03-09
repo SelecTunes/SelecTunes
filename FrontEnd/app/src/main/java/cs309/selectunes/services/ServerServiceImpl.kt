@@ -10,6 +10,7 @@ import cs309.selectunes.R
 import cs309.selectunes.activities.HostMenuActivity
 import cs309.selectunes.activities.SongSearchActivity
 import cs309.selectunes.adapter.SongAdapter
+import cs309.selectunes.models.Song
 import cs309.selectunes.utils.HttpUtils
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
@@ -49,17 +50,37 @@ class ServerServiceImpl : ServerService {
                     val listView = activity.findViewById<ListView>(R.id.song_search_list)
                     val adapter = SongAdapter(activity, activity.songList)
                     listView.adapter = adapter
+                    listView.setOnItemClickListener { parent, view, position, id ->
+                        addSongToQueue(activity.songList[position], activity)
+                    }
                 },
                 Response.ErrorListener {
                     println("Error fetching JSON object: ${it.networkResponse.statusCode}")
                     println(it.networkResponse.data.toString(StandardCharsets.UTF_8))
                 }) {
-            override fun getParams(): Map<String, String> {
-                val params: MutableMap<String, String> = java.util.HashMap()
-                params["QueryString"] = songToSearch
-                return params
-            }
 
+            override fun getHeaders(): Map<String, String> {
+                val headers: MutableMap<String, String> = java.util.HashMap()
+                headers["Content-Type"] = "application/json"
+                headers["Accept"] = "application/json, text/json"
+                return headers
+            }
+        }
+        val requestQueue = Volley.newRequestQueue(activity, HttpUtils.createAuthCookie(activity))
+        requestQueue.add(jsonObjectRequest)
+    }
+
+    override fun addSongToQueue(song: Song, activity: AppCompatActivity) {
+        val json = JSONObject()
+        json.put("id", song.id)
+        json.put("name", song.songName)
+        json.put("artist_name", song.artistName)
+        json.put("album_art_url", song.albumArt)
+        val jsonObjectRequest = object : JsonObjectRequest(Method.POST, "https://coms-309-jr-2.cs.iastate.edu/api/Song/AddToQueue", json, null,
+                Response.ErrorListener {
+                    println("Error adding song to queue: ${it.networkResponse.statusCode}")
+                    println(it.networkResponse.data.toString(StandardCharsets.UTF_8))
+                }) {
             override fun getHeaders(): Map<String, String> {
                 val headers: MutableMap<String, String> = java.util.HashMap()
                 headers["Content-Type"] = "application/json"

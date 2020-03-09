@@ -47,7 +47,6 @@ class SongSearchActivity : AppCompatActivity() {
 
     fun parseJson(jsonBack: JSONObject) {
         songList.clear()
-        println(jsonBack.toString())
         val jsonItems = jsonBack.getJSONObject("tracks").getJSONArray("items")
         for (x in 0 until jsonItems.length()) {
             val jsonSong = jsonItems.getJSONObject(x)

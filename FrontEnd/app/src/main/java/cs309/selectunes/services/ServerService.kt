@@ -2,6 +2,7 @@ package cs309.selectunes.services
 
 import androidx.appcompat.app.AppCompatActivity
 import cs309.selectunes.activities.SongSearchActivity
+import cs309.selectunes.models.Song
 
 /**
  * General http request methods for the app.
@@ -22,4 +23,13 @@ interface ServerService {
      * @param activity activity this method is called from.
      */
     fun searchSong(songToSearch: String, activity: SongSearchActivity)
+
+    /**
+     * Http request to add a song to the queue, where it can
+     * then be voted on.
+     * @param song Song to add.
+     * @param activity activity this method is called from.
+     */
+    fun addSongToQueue(song: Song, activity: AppCompatActivity)
+
 }
