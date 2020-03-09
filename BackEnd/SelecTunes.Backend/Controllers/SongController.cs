@@ -159,9 +159,12 @@ namespace SelecTunes.Backend.Controllers
             }
 
             var ByteQueue = await _cache.GetAsync($"$queue:${party.JoinCode}").ConfigureAwait(false);
-            Console.WriteLine("THIS IS WHAT THE QUEUE LOOKS LIKE: {0}", ByteQueue);
+            Console.WriteLine("THIS IS WHAT THE QUEUE LOOKS LIKE: {0}", Encoding.UTF8.GetString(ByteQueue));
+            Console.WriteLine("BYTE: {0}", ByteQueue.ToString());
+            Console.WriteLine("BYTE SERIALIZE: {0}", JsonConvert.SerializeObject(ByteQueue));
             if (ByteQueue == null)
             {
+                Console.WriteLine("CREATING NEW QUEUE. BYTE QUEUE IS NULL");
                 Queue<Song> queue = new Queue<Song>();
                 queue.Append(SongToAdd);
                 await _cache.SetStringAsync($"$queue:${party.JoinCode}", JsonConvert.SerializeObject(queue)).ConfigureAwait(false);
@@ -171,8 +174,11 @@ namespace SelecTunes.Backend.Controllers
             Queue<Song> CurrentQueue = JsonConvert.DeserializeObject<Queue<Song>>(Encoding.UTF8.GetString(ByteQueue));
 
             Console.WriteLine("THIS IS WHAT THE DESERIALIZED QUEUE LOOKS LIKE: {0}", CurrentQueue);
+            Console.WriteLine("CURRENT: {0}", CurrentQueue.ToString());
+            Console.WriteLine("CURRENT SERIALIZE: {0}", JsonConvert.SerializeObject(CurrentQueue));
             if (CurrentQueue == null)
             {
+                Console.WriteLine("CREATING NEW QUEUE. CURRENT QUEUE IS NULL");
                 Queue<Song> queue = new Queue<Song>();
                 queue.Append(SongToAdd);
                 await _cache.SetStringAsync($"$queue:${party.JoinCode}", JsonConvert.SerializeObject(queue)).ConfigureAwait(false);
@@ -181,6 +187,8 @@ namespace SelecTunes.Backend.Controllers
 
             // Append the requested song to the queue
             CurrentQueue.Append(SongToAdd);
+
+            Console.WriteLine("WRITING NEW QUEUE, {0}", JsonConvert.SerializeObject(CurrentQueue));
 
             // Write the new queue to the redis cache. Because it used the old key from the key value pair, the old one will be written over
             await _cache.SetStringAsync($"$queue:${party.JoinCode}", JsonConvert.SerializeObject(CurrentQueue)).ConfigureAwait(false);
@@ -244,7 +252,7 @@ namespace SelecTunes.Backend.Controllers
             }
 
             User user = await _userManager.GetUserAsync(context).ConfigureAwait(false); // get the current user identity
-            Party party = _context.Parties.Where(p => p.PartyMembers.Any(a => a.Id == user.Id) || p.PartyHost == user).FirstOrDefault(); // find which party they are at
+            Party party = _context.Parties.Where(p => p.Id == user.PartyId || p.PartyHost == user || p.PartyHostId == user.Id).FirstOrDefault(); // find which party they are at
 
             if (party == null)
             {
