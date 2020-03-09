@@ -265,7 +265,15 @@ namespace SelecTunes.Backend.Controllers
 
             if (party.PartyHost == null)
             {
-                throw new InvalidOperationException("Party is without party host");
+                User hostUser = _context.Users.Where(u => u.Id == party.PartyHostId).FirstOrDefault();
+
+                if (hostUser == null)
+                {
+                    throw new InvalidOperationException($"Party is without party host. Cannot find user with ID {party.PartyHostId}");
+                }
+
+                party.PartyHost = hostUser;
+                _context.SaveChanges();
             }
 
             User host = party.PartyHost = await _auth.UpdateUserTokens(party.PartyHost).ConfigureAwait(false);
