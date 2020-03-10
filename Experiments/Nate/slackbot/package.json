@@ -1,0 +1,30 @@
+{
+  "name": "slackbot",
+  "version": "1.0.0",
+  "description": "A simple slackbot for my CS 309 workspace",
+  "main": "./dist/index.js",
+  "scripts": {
+    "dev": "NODE_ENV=development babel-node src/index.js",
+    "build": "rm -rf ./dist/ && babel src --out-dir dist/ --copy-files",
+    "prod": "NODE_ENV=production node dist/index.js",
+    "lint": "eslint src"
+  },
+  "author": "Nathan Tucker",
+  "license": "MIT",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "body-parser": "^1.19.0",
+    "config": "^3.3.0",
+    "csv-write-stream": "^2.0.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.1",
+    "express": "^4.17.1",
+    "mkdirp": "^1.0.3",
+    "morgan": "^1.9.1",
+    "request": "^2.88.2",
+    "tracer": "^1.0.2"
+  }
+}
