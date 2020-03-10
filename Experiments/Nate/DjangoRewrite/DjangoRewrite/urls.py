@@ -17,10 +17,16 @@ from django.contrib import admin
 from django.urls import path, include
 from base import views as base_views
 
+from rest_framework.documentation import include_docs_urls
+
 urlpatterns = [
-    path('', base_views.IndexView.as_view(), name='site-index'),
+    path('', base_views.IndexView.as_view(), name='index'),
+
     path('admin/', admin.site.urls),
+
     path('api/song/', include('song.urls')),
     path('api/party/', include('party.urls')),
     path('api/auth/', include('selectunesauth.urls')),
+
+    path('api/docs/', include_docs_urls(title='SelecTunes API', public=True)),
 ]

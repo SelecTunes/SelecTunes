@@ -36,7 +36,3 @@ class IndexView(View):
 
     def head(self, request, context, *args, **kwargs):
         raise NotImplementedError("HEAD method not implemented on the view.")
-
-
-
- Create your views here.
