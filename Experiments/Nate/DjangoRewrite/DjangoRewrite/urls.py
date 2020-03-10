@@ -20,5 +20,7 @@ from base import views as base_views
 urlpatterns = [
     path('', base_views.IndexView.as_view(), name='site-index'),
     path('admin/', admin.site.urls),
-    path('api/v1/', include('api.urls')),
+    path('api/song/', include('song.urls')),
+    path('api/party/', include('party.urls')),
+    path('api/auth/', include('selectunesauth.urls')),
 ]
