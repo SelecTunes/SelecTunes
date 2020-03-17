@@ -1,4 +1,4 @@
-"""DjangoRewrite URL Configuration
+"""djangorewrite URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.0/topics/http/urls/
@@ -14,19 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from base import views as base_views
-
-from rest_framework.documentation import include_docs_urls
+from django.urls import path
 
 urlpatterns = [
-    path('', base_views.IndexView.as_view(), name='index'),
-
     path('admin/', admin.site.urls),
-
-    path('api/song/', include('song.urls')),
-    path('api/party/', include('party.urls')),
-    path('api/auth/', include('selectunesauth.urls')),
-
-    path('api/docs/', include_docs_urls(title='SelecTunes API', public=True)),
 ]

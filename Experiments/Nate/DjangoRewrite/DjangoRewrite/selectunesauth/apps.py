@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class SelectunesauthConfig(AppConfig):
+class AuthConfig(AppConfig):
     name = 'selectunesauth'
