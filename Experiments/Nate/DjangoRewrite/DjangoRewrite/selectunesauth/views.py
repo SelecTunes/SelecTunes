@@ -1,3 +1,4 @@
+from django.contrib.auth import logout
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 
@@ -31,6 +32,12 @@ class LoginView(View):
 class LogoutView(View):
     def get(self):
         pass
+
+    def post(self, request, *args, **kwargs):
+        user = get_object_or_404(RewriteUser)
+        RewriteUser.objects.filter(user.email).delete()
+        logout(request)
+        return HttpResponse("success")
 
 
 class GetCurrentUserEmail(View):
