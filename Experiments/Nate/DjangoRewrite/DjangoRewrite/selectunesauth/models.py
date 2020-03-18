@@ -1,19 +1,17 @@
+from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 
 from djangorewrite.party.models import Party
 from djangorewrite.song.models import AccessAuthToken
 
 
-class RewriteUser(models.Model):
+class RewriteUser(AbstractBaseUser, models.Model):
+    email = models.CharField(max_length=140, default='NO EMAIL')
+    password = models.CharField(max_length=140, default='EMPTY PASS')
     is_banned = models.BooleanField()
     party = models.ForeignKey(Party, on_delete=models.CASCADE)
     id_of_party = models.IntegerField()
     access_token = models.ForeignKey(AccessAuthToken, on_delete=models.CASCADE)
-
-
-class InputModel(models.Model):
-    email = models.TextField()
-    password = models.CharField(max_length=255)
 
 
 # class SpotifyIdentity(models.Model):
