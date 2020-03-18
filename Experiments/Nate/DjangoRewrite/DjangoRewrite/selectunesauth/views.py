@@ -1,6 +1,7 @@
 from django.contrib.auth import logout, login
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 
 from django.views import View
 
@@ -32,6 +33,7 @@ class LogoutView(View):
         return HttpResponse("success")
 
 
+@login_required
 class GetCurrentUserEmail(View):
     def get(self):
         user = get_object_or_404(RewriteUser)

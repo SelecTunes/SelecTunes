@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 # Create your views here.
@@ -9,21 +10,25 @@ class DefaultView(View):
         pass
 
 
+@login_required
 class SearchBySongView(View):
     def get(self):
         pass
 
 
+@login_required
 class SearchByArtistView(View):
     def get(self):
         pass
 
 
+@login_required
 class AddToQueueView(View):
     def get(self):
         pass
 
 
+@login_required
 class QueueView(View):
     def get(self):
         pass
