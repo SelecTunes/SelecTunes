@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 using SelecTunes.Backend.Models.Auth;
 
 namespace SelecTunes.Backend.Models
@@ -11,5 +12,9 @@ namespace SelecTunes.Backend.Models
         public int? PartyId { get; set; }
 
         public AccessAuthToken Token { get; set; }
+
+        public int Strikes { get; set; }
+
+        public List<int> PartiesKickedFrom { get; }
     }
 }

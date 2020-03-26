@@ -297,13 +297,48 @@ namespace SelecTunes.Backend.Controllers
                 throw new InvalidOperationException("Current User is not the host of the User to banne's party.");
             }
 
-            // Do all of the lockout features
-            ToBan.IsBanned = true;
-            ToBan.LockoutEnabled = true;
-            ToBan.LockoutEnd = DateTimeOffset.Now.AddDays(16);
-            ToBan.Party = null;
-            ToBan.PartyId = null;
-            CurrentUser.Party.PartyMembers.Remove(ToBan);
+            _auth.BanUser(ToBan, CurrentUser, _context);
+
+            return new JsonResult(new { Success = true });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<String>> Kick([FromForm]string email)
+        {
+            if (email == null)
+            {
+                throw new ArgumentNullException(nameof(email));
+            }
+
+            User ToKick = await _userManager.FindByEmailAsync(email).ConfigureAwait(false);
+            User CurrentUser = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
+
+            if (ToKick == null)
+            {
+                throw new InvalidOperationException("User to kick is null.");
+            }
+
+            if (CurrentUser == null)
+            {
+                throw new InvalidOperationException("Current user is null.");
+            }
+
+            Party KickFrom = _context.Parties.Where(p => p == ToKick.Party || p.Id == ToKick.PartyId).FirstOrDefault();
+
+            if (KickFrom == null)
+            {
+                throw new InvalidOperationException("Party is null");
+            }
+
+            if (KickFrom.PartyHost != CurrentUser || KickFrom.PartyHost.Id != CurrentUser.Id)
+            {
+                throw new InvalidOperationException("Current user is not a host user");
+            }
+
+            ToKick.Strikes += 1;
+            ToKick.PartiesKickedFrom.Add(int.Parse(KickFrom.JoinCode));
+            KickFrom.PartyMembers.Remove(ToKick);
 
             _context.SaveChanges();
 
