@@ -302,6 +302,20 @@ namespace SelecTunes.Backend.Controllers
             return new JsonResult(new { Success = true });
         }
 
+        /**
+         * Func Kick(string: email) -> async <ActionResult<String>>
+         * => true
+         *
+         * Kicks the user specified by email address.
+         *
+         * This operation will only work if all conditions are met:
+         * 1. The ToKick is in a party
+         * 2. The CurrentUser is a host
+         * 3. The CurrentUser is the host of the party of the UserToBan
+         * 
+         * With a kick, the user's number of Strikes goes up by one. On the 3rd strike, they are banned from the service
+         * Additionally, when kicked from a party, a user is no longer allowed to join that same party
+         */
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<String>> Kick([FromForm]string email)
@@ -337,7 +351,15 @@ namespace SelecTunes.Backend.Controllers
             }
 
             ToKick.Strikes += 1;
-            ToKick.PartiesKickedFrom.Add(int.Parse(KickFrom.JoinCode));
+
+            if (ToKick.Strikes >= 3)
+            {
+                _auth.BanUser(ToKick, CurrentUser, _context);
+                return new JsonResult(new { Success = true });
+
+            }
+
+            KickFrom.KickedMembers.Add(ToKick);
             KickFrom.PartyMembers.Remove(ToKick);
 
             _context.SaveChanges();

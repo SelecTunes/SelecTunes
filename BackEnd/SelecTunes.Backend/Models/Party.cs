@@ -24,5 +24,7 @@ namespace SelecTunes.Backend.Models
 
         public User PartyHost { get; set; }
         public string PartyHostId { get; set; }
+
+        public virtual ICollection<User> KickedMembers { get; set; }
     }
 }

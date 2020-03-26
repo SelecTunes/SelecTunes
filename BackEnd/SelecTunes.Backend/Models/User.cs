@@ -15,6 +15,5 @@ namespace SelecTunes.Backend.Models
 
         public int Strikes { get; set; }
 
-        public List<int> PartiesKickedFrom { get; }
     }
 }
