@@ -143,6 +143,8 @@ namespace SelecTunes.Backend.Helper
 
         public bool BanUser(User ToBan, User CurrentUser, ApplicationContext context)
         {
+            // Reset strike counter
+            ToBan.Strikes = 0;
             // Do all of the lockout features
             ToBan.IsBanned = true;
             ToBan.LockoutEnabled = true;
