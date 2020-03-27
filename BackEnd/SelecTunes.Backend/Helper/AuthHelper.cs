@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SelecTunes.Backend.Data;
 using SelecTunes.Backend.Helper.Exceptions;
 using SelecTunes.Backend.Models;
 using SelecTunes.Backend.Models.Auth;
@@ -138,6 +139,23 @@ namespace SelecTunes.Backend.Helper
             user.Token = await AssertValidLogin(user.Token, false).ConfigureAwait(false);
 
             return user;
+        }
+
+        public bool BanUser(User ToBan, User CurrentUser, ApplicationContext context)
+        {
+            // Reset strike counter
+            ToBan.Strikes = 0;
+            // Do all of the lockout features
+            ToBan.IsBanned = true;
+            ToBan.LockoutEnabled = true;
+            ToBan.LockoutEnd = DateTimeOffset.Now.AddDays(16);
+            ToBan.Party = null;
+            ToBan.PartyId = null;
+            CurrentUser.Party.PartyMembers.Remove(ToBan);
+
+            context.SaveChanges();
+
+            return true;
         }
     }
 }
