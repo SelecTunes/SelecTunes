@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace SelecTunes.Backend.Migrations
 {
@@ -6,6 +7,11 @@ namespace SelecTunes.Backend.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.AddColumn<int>(
                 name: "PartyId1",
                 table: "AspNetUsers",
@@ -33,6 +39,11 @@ namespace SelecTunes.Backend.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+            {
+                throw new ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.DropForeignKey(
                 name: "FK_AspNetUsers_Parties_PartyId1",
                 table: "AspNetUsers");
