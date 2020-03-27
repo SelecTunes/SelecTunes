@@ -65,6 +65,11 @@ namespace SelecTunes.Backend.Controllers
                 throw new InvalidOperationException("A party with that code does not exist");
             }
 
+            if (party.KickedMembers.Contains(ToJoin))
+            {
+                throw new InvalidOperationException("You can't join a party you've been kicked from");
+            }
+
             // In the event they are already in a party, remove them from that, add them to new party
             if (ToJoin.Party != null || ToJoin.PartyId != null)
             {
