@@ -8,6 +8,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Net.Http;
 using SelecTunes.Backend.Helper;
+using System.Linq;
+using SelecTunes.Backend.Models;
+using System;
 
 namespace SelecTunes.Backend.Test.Controllers
 {
@@ -31,6 +34,12 @@ namespace SelecTunes.Backend.Test.Controllers
         public void AssertThatInstantiatedControllerIsInstanceOfTheClass()
         {
             Assert.IsInstanceOf<SongController>(controller);
+        }
+
+        [Test]
+        public void AssertNeedsAuth()
+        {
+            Assert.ThrowsAsync<NullReferenceException>(async () => await controller.Queue());
         }
     }
 }
