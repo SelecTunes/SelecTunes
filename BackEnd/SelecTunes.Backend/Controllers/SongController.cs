@@ -202,12 +202,13 @@ namespace SelecTunes.Backend.Controllers
         public async Task<ActionResult<String>> Queue()
         {
             User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false); // Find the current user asking to join a party
-            Party party = _context.Parties.Where(p => p == user.Party || p.Id == user.PartyId).FirstOrDefault(); // find the party that they are member of
 
             if (user == null)
             {
                 throw new InvalidOperationException("User is null");
             }
+
+            Party party = _context.Parties.Where(p => p == user.Party || p.Id == user.PartyId).FirstOrDefault(); // find the party that they are member of
 
             if (party == null)
             {
@@ -256,13 +257,7 @@ namespace SelecTunes.Backend.Controllers
             if (party.PartyHost == null)
             {
                 User hostUser = _context.Users.Where(u => u.Id == party.PartyHostId).FirstOrDefault();
-
-                if (hostUser == null)
-                {
-                    throw new InvalidOperationException($"Party is without party host. Cannot find user with ID {party.PartyHostId}");
-                }
-
-                party.PartyHost = hostUser;
+                party.PartyHost = hostUser ?? throw new InvalidOperationException($"Party is without party host. Cannot find user with ID {party.PartyHostId}");
                 _context.SaveChanges();
             }
 
