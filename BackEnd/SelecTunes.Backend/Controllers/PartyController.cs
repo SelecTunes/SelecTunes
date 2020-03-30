@@ -182,7 +182,7 @@ namespace SelecTunes.Backend.Controllers
          */
         [Authorize]
         [HttpGet]
-        public ActionResult<string> Members()
+        public ActionResult<String> Members()
         {
             User user = _userManager.GetUserAsync(HttpContext.User).Result;
 
@@ -200,6 +200,33 @@ namespace SelecTunes.Backend.Controllers
 
             var GuestList = party.PartyMembers;
             return Ok(GuestList);
+        }
+
+        /**
+         * TODO COMMENTS AAAAAAAAAA
+         *
+         */
+        [Authorize]
+        [HttpPost]
+        public ActionResult<String> ToggleExplicit()
+        {
+            User user = _userManager.GetUserAsync(HttpContext.User).Result;
+
+            if (user == null)
+            {
+                throw new InvalidOperationException("User is null");
+            }
+
+            Party party = _context.Parties.Where(p => p.Id == user.PartyId).FirstOrDefault();
+
+            if (party == null)
+            {
+                throw new InvalidOperationException("party is null");
+            }
+
+            _ = (party.AllowExplicit == true) ? party.AllowExplicit = false : party.AllowExplicit = true;
+
+            return new JsonResult(new { Success = true });
         }
 
         /**
