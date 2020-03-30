@@ -102,7 +102,7 @@ class ServerServiceImpl : ServerService {
             Response.Listener {
                 val songList = JsonUtils.parseSongQueue(it)
                 val listView = activity.findViewById<ListView>(R.id.song_queue_list)
-                val adapter = QueueAdapter(activity, activity.songs)
+                val adapter = QueueAdapter(activity, songList)
                 listView.adapter = adapter
                 listView.setOnItemClickListener { parent, view, position, id ->
                     // TODO updoot and downdoot.

@@ -76,6 +76,7 @@ object JsonUtils {
      * @return list of songs.
      */
     fun parseSongQueue(song: JSONObject): List<Song> {
+        //TODO parse json queue and get current upvotes for each of the songs.
         return mutableListOf()
     }
 }

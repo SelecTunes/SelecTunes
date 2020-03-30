@@ -6,6 +6,8 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import cs309.selectunes.R
 import cs309.selectunes.models.Song
+import cs309.selectunes.services.ServerServiceImpl
+import java.net.Socket
 
 /**
  * The song list activity is where
@@ -14,7 +16,9 @@ import cs309.selectunes.models.Song
  * @author Joshua Edwards
  */
 class SongListActivity : AppCompatActivity() {
-    var songs = ArrayList<Song>()
+
+    internal val songList = mutableListOf<Song>()
+    var socket: Socket? = null
 
     override fun onCreate(instanceState: Bundle?) {
         super.onCreate(instanceState)
@@ -22,11 +26,25 @@ class SongListActivity : AppCompatActivity() {
 
         val backArrow = findViewById<Button>(R.id.back_arrow_song_queue)
 
+        createSocket()
+        ServerServiceImpl().getSongQueue(this)
+
         backArrow.setOnClickListener {
             if (intent.getStringExtra("previousActivity") == "host")
                 startActivity(Intent(this, HostMenuActivity::class.java))
             else
                 startActivity(Intent(this, GuestMenuActivity::class.java))
+        }
+    }
+
+    /**
+     * This function connects to the web-socket that
+     * allows the user to receive the current up-votes and
+     * down-votes.
+     */
+    private fun createSocket() {
+        if (socket == null) {
+            socket = Socket("https://coms-309-jr-2.cs.iastate.edu/api/Song/Queue", 443)
         }
     }
 
