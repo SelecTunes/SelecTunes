@@ -1,10 +1,8 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'kotlin-kapt'
+apply plugin: 'org.jetbrains.dokka-android'
 
 android {
     compileSdkVersion 29
@@ -37,6 +35,10 @@ android {
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/ASL2.0'
         exclude("META-INF/*.kotlin_module")
+    }
+    dokka {
+        outputFormat = 'html'
+        outputDirectory = "$buildDir/dokka"
     }
 }
 
