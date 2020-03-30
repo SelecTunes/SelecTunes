@@ -224,7 +224,7 @@ namespace SelecTunes.Backend.Controllers
                 throw new InvalidOperationException("party is null");
             }
 
-            _ = (party.AllowExplicit == true) ? party.AllowExplicit = false : party.AllowExplicit = true;
+            party.AllowExplicit = !party.AllowExplicit;
 
             return new JsonResult(new { Success = true });
         }
