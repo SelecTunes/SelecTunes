@@ -26,5 +26,7 @@ namespace SelecTunes.Backend.Models
         public string PartyHostId { get; set; }
 
         public virtual ICollection<User> KickedMembers { get; set; }
+
+        public bool AllowExplicit { get; set; }
     }
 }
