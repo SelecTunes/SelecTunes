@@ -199,6 +199,22 @@ namespace SelecTunes.Backend.Controllers
             // If so, update the tokens.
             host.Token = tok;
 
+            if (host.IsHost())
+            {
+                // Disband Party.
+                _context.Parties.Remove(host.Party);
+                host.Party = null;
+                host.PartyId = null;
+            }
+
+            if (host.IsInParty())
+            {
+                // Leave Party.
+                host.Party.PartyMembers.Remove(host);
+                host.Party = null;
+                host.PartyId = null;
+            }
+
             Party party = new Party
             { // Create a new party with this user as a host.
                 JoinCode = _rand.Next(0, 100000).ToString(CultureInfo.InvariantCulture).PadLeft(6, '0'),
