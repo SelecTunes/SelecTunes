@@ -3,6 +3,7 @@ package cs309.selectunes.services
 import android.content.Intent
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -12,6 +13,7 @@ import cs309.selectunes.activities.SongSearchActivity
 import cs309.selectunes.adapter.SongAdapter
 import cs309.selectunes.models.Song
 import cs309.selectunes.utils.HttpUtils
+import cs309.selectunes.utils.JsonUtils
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
 
@@ -88,6 +90,21 @@ class ServerServiceImpl : ServerService {
                 return headers
             }
         }
+        val requestQueue = Volley.newRequestQueue(activity, HttpUtils.createAuthCookie(activity))
+        requestQueue.add(jsonObjectRequest)
+    }
+
+    override fun getSongQueue(activity: AppCompatActivity) {
+        val url = "https://coms-309-jr-2.cs.iastate.edu/api/Song/Queue"
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
+            Response.Listener {
+                val songList = JsonUtils.parseSongQueue(it)
+                //TODO: Show it in a list.
+            },
+            Response.ErrorListener {
+                println("Error adding spotify login and creating party: ${it.networkResponse.statusCode}")
+                println(it.networkResponse.data.toString(StandardCharsets.UTF_8))
+            })
         val requestQueue = Volley.newRequestQueue(activity, HttpUtils.createAuthCookie(activity))
         requestQueue.add(jsonObjectRequest)
     }

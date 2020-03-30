@@ -32,4 +32,10 @@ interface ServerService {
      */
     fun addSongToQueue(song: Song, activity: AppCompatActivity)
 
+    /**
+     * This gets the current song queue.
+     * @param activity activity this method is called from.
+     */
+    fun getSongQueue(activity: AppCompatActivity)
+
 }

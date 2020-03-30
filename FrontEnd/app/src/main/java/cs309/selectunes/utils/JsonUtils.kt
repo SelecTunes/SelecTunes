@@ -3,6 +3,7 @@ package cs309.selectunes.utils
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import cs309.selectunes.R
+import cs309.selectunes.models.Song
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -67,5 +68,14 @@ object JsonUtils {
             }
             else -> true
         }
+    }
+
+    /**
+     * Parses the song queue into a list of songs.
+     * @param song song object from the getSongQueue request.
+     * @return list of songs.
+     */
+    fun parseSongQueue(song: JSONObject): List<Song> {
+        return mutableListOf()
     }
 }

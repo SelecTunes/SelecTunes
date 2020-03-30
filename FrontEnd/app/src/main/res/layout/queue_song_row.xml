@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/queue_album_cover"
+        android:layout_width="85dp"
+        android:layout_height="82dp"
+        android:src="@mipmap/ic_launcher" />
+
+    <RelativeLayout
+        android:layout_width="299dp"
+        android:layout_height="142dp">
+
+        <EditText
+            android:id="@+id/downvote_amount"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="191dp"
+            android:layout_marginBottom="36dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name" />
+
+        <TextView
+            android:id="@+id/queue_songName"
+            android:layout_width="272dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="23dp"
+            android:text="Main Title"
+            android:textColor="@color/colorText"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/queue_artistName"
+            android:layout_width="286dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="9dp"
+            android:text="Sub Title"
+            android:textColor="@color/colorText"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/upvote_button"
+            android:layout_width="50dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="245dp"
+            android:layout_marginBottom="61dp"
+            android:text="Button" />
+
+        <Button
+            android:id="@+id/downvote_button"
+            android:layout_width="50dp"
+            android:layout_height="35dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="46dp"
+            android:layout_marginEnd="191dp"
+            android:text="Button" />
+
+        <EditText
+            android:id="@+id/upvote_amount"
+            android:layout_width="50dp"
+            android:layout_height="19dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="245dp"
+            android:layout_marginBottom="36dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name" />
+        <!--so our layout is set-->
+
+    </RelativeLayout>
+
+</LinearLayout>
