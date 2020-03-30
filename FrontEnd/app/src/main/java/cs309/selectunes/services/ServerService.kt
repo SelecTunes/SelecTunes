@@ -1,6 +1,7 @@
 package cs309.selectunes.services
 
 import androidx.appcompat.app.AppCompatActivity
+import cs309.selectunes.activities.SongListActivity
 import cs309.selectunes.activities.SongSearchActivity
 import cs309.selectunes.models.Song
 
@@ -36,6 +37,6 @@ interface ServerService {
      * This gets the current song queue.
      * @param activity activity this method is called from.
      */
-    fun getSongQueue(activity: AppCompatActivity)
+    fun getSongQueue(activity: SongListActivity)
 
 }
