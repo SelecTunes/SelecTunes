@@ -113,7 +113,7 @@ namespace SelecTunes.Backend
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationContext context)
         {
             if (env.IsDevelopment())
             {
@@ -129,6 +129,11 @@ namespace SelecTunes.Backend
                 {
                     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
                 });
+            }
+
+            if (context != null)
+            {
+                context.Database.Migrate();
             }
 
             app.UseSwagger();
