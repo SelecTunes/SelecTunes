@@ -48,7 +48,48 @@ namespace SelecTunes.Backend.Helper.Hubs
 
         public async Task MoveSongToFront(string spotifyId)
         {
-            // TODO Add song to front of queue
+            User user = await _userManager.GetUserAsync(Context.User).ConfigureAwait(false);
+
+            if (user == null)
+            {
+                // TODO: Log error that user is nil.
+                return;
+            }
+
+            Party party = _context.Parties.Find(user.PartyId);
+
+            if (party == null)
+            {
+                // TODO: Log error that user is not in party.
+                return;
+            }
+
+            string partyId = party.JoinCode;
+
+            byte[] queue = await _cache.GetAsync($"$queue:${partyId}").ConfigureAwait(false);
+            if (queue == null)
+            {
+                return;
+            }
+
+            Queue<Song> q = JsonConvert.DeserializeObject<Queue<Song>>(Encoding.UTF8.GetString(queue));
+
+            Song s = RemoveSongFromQueue(ref q, spotifyId);
+
+            await _cache.SetStringAsync($"$queue:${partyId}", JsonConvert.SerializeObject(q)).ConfigureAwait(false);
+
+            byte[] locked = await _cache.GetAsync($"$locked:${partyId}").ConfigureAwait(false);
+            if (locked == null)
+            {
+                return;
+            }
+
+            Queue<Song> lockedIn = JsonConvert.DeserializeObject<Queue<Song>>(Encoding.UTF8.GetString(queue));
+
+            lockedIn.Enqueue(s);
+
+            await _cache.SetStringAsync($"$locked:${partyId}", JsonConvert.SerializeObject(q)).ConfigureAwait(false);
+
             await Clients.All.SendAsync("ReceiveMoveSongToFront", spotifyId).ConfigureAwait(false);
         }
 
@@ -80,19 +121,28 @@ namespace SelecTunes.Backend.Helper.Hubs
 
             Queue<Song> q = JsonConvert.DeserializeObject<Queue<Song>>(Encoding.UTF8.GetString(queue));
 
-            Console.WriteLine(JsonConvert.SerializeObject(q));
-
-            List<Song> list = BuildSongList(q);
-
-            list.RemoveAll(song => song.Id == spotifyId);
-            
-            Console.WriteLine(JsonConvert.SerializeObject(list));
-
-            q = BuildSongQueue(list);
+            RemoveSongFromQueue(ref q, spotifyId);
 
             await _cache.SetStringAsync($"$queue:${partyId}", JsonConvert.SerializeObject(q)).ConfigureAwait(false);
 
             await Clients.All.SendAsync("ReceiveRemoveSong", spotifyId).ConfigureAwait(false);
+        }
+
+        private static Song RemoveSongFromQueue(ref Queue<Song> songs, string spotifyId)
+        {
+            Console.WriteLine(JsonConvert.SerializeObject(songs));
+
+            List<Song> list = BuildSongList(songs);
+
+            Song s = list.Find(song => song.Id == spotifyId);
+
+            list.RemoveAll(song => song.Id == spotifyId);
+
+            Console.WriteLine(JsonConvert.SerializeObject(list));
+
+            songs = BuildSongQueue(list);
+
+            return s;
         }
 
         private static List<Song> BuildSongList(Queue<Song> queue)
