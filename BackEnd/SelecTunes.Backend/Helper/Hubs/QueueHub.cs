@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
+using SelecTunes.Backend.Data;
 using SelecTunes.Backend.Models;
 using System;
 using System.Collections.Generic;
@@ -12,9 +14,16 @@ namespace SelecTunes.Backend.Helper.Hubs
     public class QueueHub : Hub
     {
         private readonly IDistributedCache _cache;
-        public QueueHub(IDistributedCache cache)
+
+        private readonly UserManager<User> _userManager;
+
+        private readonly ApplicationContext _context;
+
+        public QueueHub(IDistributedCache cache, UserManager<User> manager, ApplicationContext context)
         {
             _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+            _userManager = manager ?? throw new ArgumentNullException(nameof(manager));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task JoinQueue(string queueName)
@@ -43,8 +52,26 @@ namespace SelecTunes.Backend.Helper.Hubs
             await Clients.All.SendAsync("ReceiveMoveSongToFront", SpotifyID).ConfigureAwait(false);
         }
 
-        public async Task RemoveSong(string spotifyId, string partyId)
+        public async Task RemoveSong(string spotifyId)
         {
+            User user = await _userManager.GetUserAsync(Context.User).ConfigureAwait(false);
+
+            if (user == null)
+            {
+                // TODO: Log error that user is nil.
+                return;
+            }
+
+            Party party = _context.Parties.Find(user.PartyId);
+
+            if (party == null)
+            {
+                // TODO: Log error that user is not in party.
+                return;
+            }
+
+            string partyId = party.JoinCode;
+
             byte[] queue = await _cache.GetAsync($"$queue:${partyId}").ConfigureAwait(false);
             if (queue == null)
             {
