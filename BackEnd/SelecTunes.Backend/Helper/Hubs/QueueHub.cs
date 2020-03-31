@@ -36,20 +36,20 @@ namespace SelecTunes.Backend.Helper.Hubs
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, queueName).ConfigureAwait(false);
         }
 
-        public async Task UpvoteSong(string SpotifyID)
+        public async Task UpvoteSong(string spotifyId)
         {
-            await Clients.All.SendAsync("ReceiveUpVote", SpotifyID).ConfigureAwait(false);
+            await Clients.All.SendAsync("ReceiveUpVote", spotifyId).ConfigureAwait(false);
         }
 
-        public async Task DownVote(string SpotifyID)
+        public async Task DownVote(string spotifyId)
         {
-            await Clients.All.SendAsync("ReceiveDownVote", SpotifyID).ConfigureAwait(false);
+            await Clients.All.SendAsync("ReceiveDownVote", spotifyId).ConfigureAwait(false);
         }
 
-        public async Task MoveSongToFront(string SpotifyID)
+        public async Task MoveSongToFront(string spotifyId)
         {
             // TODO Add song to front of queue
-            await Clients.All.SendAsync("ReceiveMoveSongToFront", SpotifyID).ConfigureAwait(false);
+            await Clients.All.SendAsync("ReceiveMoveSongToFront", spotifyId).ConfigureAwait(false);
         }
 
         public async Task RemoveSong(string spotifyId)
