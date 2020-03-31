@@ -215,15 +215,23 @@ namespace SelecTunes.Backend.Controllers
                 throw new InvalidOperationException("User is not in a party");
             }
 
-            var ByteQueue = await _cache.GetAsync($"$queue:${party.JoinCode}").ConfigureAwait(false);
+            byte[] ByteQueue = await _cache.GetAsync($"$queue:${party.JoinCode}").ConfigureAwait(false);
             if (ByteQueue == null)
             {
                 return new JsonResult(new { Success = false });
             }
 
+            byte[] locked = await _cache.GetAsync($"$locked:${party.JoinCode}").ConfigureAwait(false);
+            if (locked == null)
+            {
+                return new JsonResult(new { Success = false });
+            }
+
+            Queue<Song> lockedIn = JsonConvert.DeserializeObject<Queue<Song>>(Encoding.UTF8.GetString(locked));
+
             Queue<Song> queue = JsonConvert.DeserializeObject<Queue<Song>>(Encoding.UTF8.GetString(ByteQueue));
 
-            return Ok(queue);
+            return Ok(new { LockedIn = lockedIn, Votable = queue});
         }
 
         /**
