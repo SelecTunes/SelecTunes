@@ -42,3 +42,7 @@ end
 get '/auth/login' do
   erb :login
 end
+
+get '/sock/signalr' do
+  erb :signalr
+end
