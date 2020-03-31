@@ -3,17 +3,44 @@
     <script src="https://unpkg.com/@microsoft/signalr@3.1.3/dist/browser/signalr.js"></script>
   </head>
   <body>
-    <button id="downvote" disabled="disabled">Downvote</button>
+    <button id="remove" disabled="disabled">Remove</button>
     <input type="text" name="spotifyId" id="spotifySong" />
     <input type="text" name="partyId" id="partyId" />
+    <p>
+      <ul id="queue">
+
+      </ul>
+    </p>
     <script>
         let connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44395/queue").build();
 
-        connection.on("ReceiveRemoveSong", function (a, b) {
-            console.log(a, b);
+        let queue = [];
+
+        const build = async () => {
+            await fetch("https://localhost:44395/api/Song/Queue", {mode: "cors", credentials: "include"})
+                .then(async q => queue = Object.values(await q.json()))
+                .then(_ => console.log(queue));
+
+            let root = document.getElementById("queue");
+
+            root.innerHTML = "";
+
+            queue.forEach(o => {
+                let elem = document.createElement("li");
+                elem.innerText = o.id;
+                root.appendChild(elem);
+            });
+        };
+
+        build();
+
+        connection.on("ReceiveRemoveSong", function (id) {
+            console.log(id);
+
+            build();
         });
 
-        document.getElementById("downvote").addEventListener("click", function (event) {
+        document.getElementById("remove").addEventListener("click", function (event) {
             let song = document.getElementById("spotifySong").value;
 
             console.log(song);
@@ -26,7 +53,7 @@
         });
 
         connection.start().then(function () {
-            document.getElementById("downvote").disabled = false;
+            document.getElementById("remove").disabled = false;
         }).catch(function (err) {
             return console.error(err.toString());
         });
