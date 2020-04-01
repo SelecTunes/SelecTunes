@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import cs309.selectunes.R
-import cs309.selectunes.models.Song
 import cs309.selectunes.services.ServerServiceImpl
 import java.net.Socket
 
@@ -14,10 +13,10 @@ import java.net.Socket
  * users can see a list of the songs
  * currently in the queue.
  * @author Joshua Edwards
+ * @author Jack Goldsworth
  */
 class SongListActivity : AppCompatActivity() {
 
-    internal val songList = mutableListOf<Song>()
     var socket: Socket? = null
 
     override fun onCreate(instanceState: Bundle?) {
@@ -26,8 +25,7 @@ class SongListActivity : AppCompatActivity() {
 
         val backArrow = findViewById<Button>(R.id.back_arrow_song_queue)
 
-        createSocket()
-        ServerServiceImpl().getSongQueue(this)
+        //createSocket()
 
         backArrow.setOnClickListener {
             if (intent.getStringExtra("previousActivity") == "host")
@@ -35,6 +33,12 @@ class SongListActivity : AppCompatActivity() {
             else
                 startActivity(Intent(this, GuestMenuActivity::class.java))
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        println("Starting")
+        ServerServiceImpl().getSongQueue(this)
     }
 
     /**

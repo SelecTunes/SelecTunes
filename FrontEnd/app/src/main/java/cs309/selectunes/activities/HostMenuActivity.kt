@@ -33,8 +33,9 @@ class HostMenuActivity : AppCompatActivity() {
         }
 
         songList.setOnClickListener{
-            val toSongList = Intent(this, SongListActivity::class.java)
-            startActivity(toSongList)
+            val intent = Intent(this, SongListActivity::class.java)
+            intent.putExtra("previousActivity", "host")
+            startActivity(intent)
         }
 
         songSearch.setOnClickListener {

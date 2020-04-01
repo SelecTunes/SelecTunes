@@ -25,7 +25,8 @@ object JsonUtils {
         if (!success) {
             loginError.text = "There was an issue with the email or password."
             if (json.has("errors")) {
-                loginError.text = json.getJSONObject("errors").getJSONArray("ConfirmPassword").getString(0)
+                loginError.text =
+                    json.getJSONObject("errors").getJSONArray("ConfirmPassword").getString(0)
             }
         } else {
             loginError.text = ""
@@ -59,7 +60,8 @@ object JsonUtils {
                 false
             }
             json?.getJSONObject(0)!!.has("errors") -> {
-                registerError.text = json.getJSONObject(0).getJSONArray("ConfirmPassword").getString(0)
+                registerError.text =
+                    json.getJSONObject(0).getJSONArray("ConfirmPassword").getString(0)
                 false
             }
             json.getJSONObject(0).has("description") -> {
@@ -72,11 +74,23 @@ object JsonUtils {
 
     /**
      * Parses the song queue into a list of songs.
-     * @param song song object from the getSongQueue request.
+     * @param songs song array from the getSongQueue request.
      * @return list of songs.
      */
-    fun parseSongQueue(song: JSONObject): List<Song> {
-        //TODO parse json queue and get current upvotes for each of the songs.
-        return mutableListOf()
+    fun parseSongQueue(songs: JSONArray): List<Song> {
+        val songList = mutableListOf<Song>()
+        for (i in 0 until songs.length()) {
+            val jsonObj = songs.getJSONObject(i)
+            songList.add(
+                Song(
+                    jsonObj.getString("name"),
+                    jsonObj.getString("id"),
+                    jsonObj.getString("artistName"),
+                    jsonObj.getString("albumArt"),
+                    false
+                )
+            )
+        }
+        return songList
     }
 }

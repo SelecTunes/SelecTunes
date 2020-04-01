@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import cs309.selectunes.R
 import cs309.selectunes.activities.HostMenuActivity
@@ -16,6 +17,7 @@ import cs309.selectunes.adapter.SongAdapter
 import cs309.selectunes.models.Song
 import cs309.selectunes.utils.HttpUtils
 import cs309.selectunes.utils.JsonUtils
+import org.json.JSONArray
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
 
@@ -98,9 +100,12 @@ class ServerServiceImpl : ServerService {
 
     override fun getSongQueue(activity: SongListActivity) {
         val url = "https://coms-309-jr-2.cs.iastate.edu/api/Song/Queue"
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
+        val jsonObjectRequest = StringRequest(
+            Request.Method.GET, url,
             Response.Listener {
-                val songList = JsonUtils.parseSongQueue(it)
+                println(it)
+                val songArray = JSONArray(it)
+                val songList = JsonUtils.parseSongQueue(songArray)
                 val listView = activity.findViewById<ListView>(R.id.song_queue_list)
                 val adapter = QueueAdapter(activity, songList)
                 listView.adapter = adapter
@@ -109,8 +114,10 @@ class ServerServiceImpl : ServerService {
                 }
             },
             Response.ErrorListener {
-                println("Error getting the song queue: ${it.networkResponse.statusCode}")
-                println(it.networkResponse.data.toString(StandardCharsets.UTF_8))
+                if (it.networkResponse != null) {
+                    println("Error getting the song queue: ${it.networkResponse.statusCode}")
+                    println(it.networkResponse.data.toString(StandardCharsets.UTF_8))
+                }
             })
         val requestQueue = Volley.newRequestQueue(activity, HttpUtils.createAuthCookie(activity))
         requestQueue.add(jsonObjectRequest)
