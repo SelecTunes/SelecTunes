@@ -10,6 +10,7 @@ import cs309.selectunes.R
 import cs309.selectunes.activities.HostMenuActivity
 import cs309.selectunes.activities.SongSearchActivity
 import cs309.selectunes.adapter.SongAdapter
+import cs309.selectunes.models.Guest
 import cs309.selectunes.models.Song
 import cs309.selectunes.utils.HttpUtils
 import org.json.JSONObject
@@ -90,5 +91,58 @@ class ServerServiceImpl : ServerService {
         }
         val requestQueue = Volley.newRequestQueue(activity, HttpUtils.createAuthCookie(activity))
         requestQueue.add(jsonObjectRequest)
+    }
+
+    fun kickGuest(givenEmail : String, activity : AppCompatActivity)
+    {
+        val json = JSONObject()
+        json.put("email", givenEmail)
+        val jsonObjectRequest = object : JsonObjectRequest(Method.POST, "https://coms-309-jr-2.cs.iastate.edu/api/Auth/Kick", json,
+            Response.Listener{
+                println(it)
+            },
+            Response.ErrorListener {
+                println("Error kicking user: ${it.networkResponse.statusCode}")
+                println(it.networkResponse.data.toString(StandardCharsets.UTF_8))
+            }) {
+            override fun getHeaders(): Map<String, String> {
+                val headers: MutableMap<String, String> = java.util.HashMap()
+                headers["Content-Type"] = "application/json"
+                headers["Accept"] = "application/json, text/json"
+                return headers
+            }
+        }
+        val requestQueue = Volley.newRequestQueue(activity)
+        requestQueue.add(jsonObjectRequest)
+    }
+
+    fun getGuestList(activity: AppCompatActivity) : ArrayList<Guest>
+    {
+        var returnArrayList = ArrayList<Guest>()
+        val json = JSONObject()
+        val jsonObjectRequest = object : JsonObjectRequest(Method.GET, "https://coms-309-jr-2.cs.iastate.edu/api/Party/Members", json,
+            Response.Listener{
+                returnArrayList = parseGuests(it)
+            },
+            Response.ErrorListener {
+                println("Error kicking user: ${it.networkResponse.statusCode}")
+                println(it.networkResponse.data.toString(StandardCharsets.UTF_8))
+            }) {
+            override fun getHeaders(): Map<String, String> {
+                val headers: MutableMap<String, String> = java.util.HashMap()
+                headers["Content-Type"] = "application/json"
+                headers["Accept"] = "application/json, text/json"
+                return headers
+            }
+        }
+        val requestQueue = Volley.newRequestQueue(activity)
+        requestQueue.add(jsonObjectRequest)
+        return returnArrayList
+    }
+
+    private fun parseGuests(givenJson : JSONObject) : ArrayList<Guest>
+    {
+        var returnArrayList = ArrayList<Guest>()
+        return returnArrayList
     }
 }
