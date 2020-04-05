@@ -68,7 +68,14 @@ namespace SelecTunes.Backend.Controllers
                 SpotifyTracksResponseBody tracks = await Search<SpotifyTracksResponseBody>("track", songToSearch, HttpContext.User, user, party).ConfigureAwait(false);
                 if (!party.AllowExplicit)
                 {
-                    tracks.Tracks.Items.ToList().RemoveAll(s => s.Explicit);
+                    foreach (var item in tracks.Tracks.Items)
+                    {
+                        if (item.Explicit)
+                        {
+                            tracks.Tracks.Items.Remove(item);
+                        }
+                    }
+
                     return Ok(tracks);
                 }
                 return Ok(tracks);
