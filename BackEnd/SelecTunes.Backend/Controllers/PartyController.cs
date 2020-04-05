@@ -203,10 +203,16 @@ namespace SelecTunes.Backend.Controllers
         }
 
         /**
-         * TODO COMMENTS AAAAAAAAAA
+         * Func ToggleExplicit() -> ActionResult<String>
          *
+         * Send a POST request to the endpoint to enable or disable explicit song searches
+         * 
+         * Returns a success based on if it succeeded
+         *
+         * 05/04/2020 - Nathan Tucker
          */
         [Authorize]
+        [Route("/api/party/explicit")]
         [HttpPost]
         public ActionResult<String> ToggleExplicit()
         {
@@ -227,6 +233,37 @@ namespace SelecTunes.Backend.Controllers
             party.AllowExplicit = !party.AllowExplicit;
 
             return new JsonResult(new { Success = true });
+        }
+
+        /**
+         * Func ViewExplicit() -> ActionResult<String>
+         * => true
+         *
+         * Send a GET request to the endpoint to view the current status of explicit song searches
+         * This will be true if allowed, false otherwise
+         *
+         * 05/04/2020 - Nathan Tucker
+         */
+        [Authorize]
+        [Route("/api/party/explicit")]
+        [HttpGet]
+        public ActionResult<String> ViewExplicit()
+        {
+            User user = _userManager.GetUserAsync(HttpContext.User).Result;
+
+            if (user == null)
+            {
+                throw new InvalidOperationException("User is null");
+            }
+
+            Party party = _context.Parties.Where(p => p.Id == user.PartyId).FirstOrDefault();
+
+            if (party == null)
+            {
+                throw new InvalidOperationException("party is null");
+            }
+
+            return new JsonResult(new { allowed = party.AllowExplicit});
         }
 
         /**
