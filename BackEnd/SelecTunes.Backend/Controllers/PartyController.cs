@@ -232,6 +232,8 @@ namespace SelecTunes.Backend.Controllers
 
             party.AllowExplicit = !party.AllowExplicit;
 
+            _context.SaveChanges();
+
             return new JsonResult(new { Success = true });
         }
 
