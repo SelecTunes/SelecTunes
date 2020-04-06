@@ -219,6 +219,7 @@ namespace SelecTunes.Backend.Controllers
             { // Create a new party with this user as a host.
                 JoinCode = _rand.Next(0, 100000).ToString(CultureInfo.InvariantCulture).PadLeft(6, '0'),
                 PartyHost = host,
+                AllowExplicit = true
                 // PartyMembers = new List<User> { host },
             };
 
