@@ -60,11 +60,19 @@ namespace SelecTunes.Backend.Controllers
         [Authorize]
         public async Task<ActionResult<SpotifyTracksResponseBody>> SearchBySong([FromBody]SearchQuery songToSearch)
         {
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false); // Find the current user asking to join a party
+            Party party = _context.Parties.Where(p => p == user.Party || p.Id == user.PartyId).FirstOrDefault(); // find the party that they are member of
+
             try
             {
-                SpotifyTracksResponseBody artists = await Search<SpotifyTracksResponseBody>("track", songToSearch, HttpContext.User).ConfigureAwait(false);
+                SpotifyTracksResponseBody tracks = await Search<SpotifyTracksResponseBody>("track", songToSearch, HttpContext.User, user, party).ConfigureAwait(false);
+                if (!party.AllowExplicit)
+                {
+                    tracks.Tracks.Items = tracks.Tracks.Items.Where(x => !x.Explicit).ToList();
 
-                return Ok(artists);
+                    return Ok(tracks);
+                }
+                return Ok(tracks);
             }
             catch (ArgumentNullException e)
             {
@@ -100,9 +108,12 @@ namespace SelecTunes.Backend.Controllers
         [Authorize]
         public async Task<ActionResult<SpotifyArtistResponseBody>> SearchByArtist([FromBody]SearchQuery artistToSearch)
         {
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false); // Find the current user asking to join a party
+            Party party = _context.Parties.Where(p => p == user.Party || p.Id == user.PartyId).FirstOrDefault(); // find the party that they are member of
+
             try
             {
-                SpotifyArtistResponseBody artists = await Search<SpotifyArtistResponseBody>("artist", artistToSearch, HttpContext.User).ConfigureAwait(false);
+                SpotifyArtistResponseBody artists = await Search<SpotifyArtistResponseBody>("artist", artistToSearch, HttpContext.User, user, party).ConfigureAwait(false);
                 
                 return Ok(artists);
             }
@@ -235,15 +246,12 @@ namespace SelecTunes.Backend.Controllers
          * 15/02/2020 D/M/Y - Nathan Tucker - Creation
          * 16/02/2020 D/M/Y - Alexander Young - Finalize
          */
-        private async Task<T> Search<T>(string type, SearchQuery query, ClaimsPrincipal context)
+        private async Task<T> Search<T>(string type, SearchQuery query, ClaimsPrincipal context, User user, Party party)
         {
             if (query == null)
             {
                 throw new ArgumentNullException(nameof(query));
             }
-
-            User user = await _userManager.GetUserAsync(context).ConfigureAwait(false); // get the current user identity
-            Party party = _context.Parties.Where(p => p.Id == user.PartyId || p.PartyHost == user || p.PartyHostId == user.Id).FirstOrDefault(); // find which party they are at
 
             if (party == null)
             {
