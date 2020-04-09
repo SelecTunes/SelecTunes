@@ -56,7 +56,6 @@ class HostMenuActivity : AppCompatActivity() {
 
         explicit.setOnClickListener {
             songService.makeSongsExplicit(this)
-            songService.isExplicit(this)
         }
     }
 
