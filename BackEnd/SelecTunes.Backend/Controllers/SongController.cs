@@ -162,9 +162,17 @@ namespace SelecTunes.Backend.Controllers
             if (ByteQueue == null)
             {
                 Queue<Song> queue = new Queue<Song>();
+               
                 queue.Enqueue(SongToAdd);
                 await _cache.SetStringAsync($"$queue:${party.JoinCode}", JsonConvert.SerializeObject(queue)).ConfigureAwait(false);
+                
                 return new JsonResult(new { Success = true });
+            }
+
+            byte[] q = await _cache.GetAsync($"$locked:${party.JoinCode}").ConfigureAwait(false);
+            if (q == null)
+            {
+                await _cache.SetStringAsync($"$locked:${party.JoinCode}", JsonConvert.SerializeObject(new Queue<Song>())).ConfigureAwait(false);
             }
 
             Queue<Song> CurrentQueue = JsonConvert.DeserializeObject<Queue<Song>>(Encoding.UTF8.GetString(ByteQueue));
