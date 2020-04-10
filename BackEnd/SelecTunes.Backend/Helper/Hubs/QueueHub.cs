@@ -58,10 +58,10 @@ namespace SelecTunes.Backend.Helper.Hubs
 
             string partyId = party.JoinCode;
 
-            byte[] v = await _cache.GetAsync($"$queue:${partyId}:${spotifyId}:$votes").ConfigureAwait(false);
+            byte[] v = await _cache.GetAsync($"$votes:${partyId}:${spotifyId}").ConfigureAwait(false);
             if (v == null)
             {
-                v = Array.Empty<byte>();
+                v = Encoding.UTF8.GetBytes("0");
             }
 
             int votes = JsonConvert.DeserializeObject<int>(Encoding.UTF8.GetString(v));
@@ -98,10 +98,10 @@ namespace SelecTunes.Backend.Helper.Hubs
 
             string partyId = party.JoinCode;
 
-            byte[] v = await _cache.GetAsync($"$queue:${partyId}:${spotifyId}:$votes").ConfigureAwait(false);
+            byte[] v = await _cache.GetAsync($"$votes:${partyId}:${spotifyId}").ConfigureAwait(false);
             if (v == null)
             {
-                v = Array.Empty<byte>();
+                v = Encoding.UTF8.GetBytes("0");
             }
 
             int votes = JsonConvert.DeserializeObject<int>(Encoding.UTF8.GetString(v));
