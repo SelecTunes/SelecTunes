@@ -1,0 +1,20 @@
+<html lang="en">
+<body>
+<form action="https://localhost:44395/api/party/join" method="post" id="joinParty">
+  <!--<form action="https://coms-309-jr-2.cs.iastate.edu/api/auth/login" method="post">-->
+  <input type="text" name="code" id="partyCode" placeholder="Party Code">
+  <button type="submit">Submit</button>
+</form>
+<script>
+  document.getElementById("joinParty").addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    let response = await fetch("https://localhost:44395/api/Song/Queue", {method: "POST", headers: {
+            'Content-Type': 'application/json'
+        }, mode: "cors", credentials: "include", data: JSON.stringify({joinCode: document.getElementById("partyCode").value })});
+
+    console.log(response);
+  });
+</script>
+</body>
+</html>

@@ -43,6 +43,10 @@ get '/auth/login' do
   erb :login
 end
 
+get '/auth/join' do
+  erb :join
+end
+
 get '/sock/signalr' do
   erb :signalr
 end
