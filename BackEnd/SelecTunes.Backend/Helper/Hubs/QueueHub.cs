@@ -159,7 +159,8 @@ namespace SelecTunes.Backend.Helper.Hubs
             byte[] locked = await _cache.GetAsync($"$locked:${partyId}").ConfigureAwait(false);
             if (locked == null)
             {
-                return;
+                await _cache.SetStringAsync($"$locked:${party.JoinCode}", JsonConvert.SerializeObject(new Queue<Song>())).ConfigureAwait(false);
+                locked = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new Queue<Song>()));
             }
 
             Queue<Song> lockedIn = JsonConvert.DeserializeObject<Queue<Song>>(Encoding.UTF8.GetString(locked));
