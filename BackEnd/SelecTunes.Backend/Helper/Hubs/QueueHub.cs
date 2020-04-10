@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
@@ -166,7 +166,7 @@ namespace SelecTunes.Backend.Helper.Hubs
 
             lockedIn.Enqueue(s);
 
-            await _cache.SetStringAsync($"$locked:${partyId}", JsonConvert.SerializeObject(q)).ConfigureAwait(false);
+            await _cache.SetStringAsync($"$locked:${partyId}", JsonConvert.SerializeObject(lockedIn)).ConfigureAwait(false);
 
             await Clients.All.SendAsync("ReceiveMoveSongToFront", spotifyId).ConfigureAwait(false);
         }
