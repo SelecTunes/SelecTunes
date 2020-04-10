@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
@@ -159,7 +159,7 @@ namespace SelecTunes.Backend.Helper.Hubs
                 return;
             }
 
-            Queue<Song> lockedIn = JsonConvert.DeserializeObject<Queue<Song>>(Encoding.UTF8.GetString(queue));
+            Queue<Song> lockedIn = JsonConvert.DeserializeObject<Queue<Song>>(Encoding.UTF8.GetString(locked));
 
             lockedIn.Enqueue(s);
 
