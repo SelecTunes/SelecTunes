@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
@@ -73,6 +73,9 @@ namespace SelecTunes.Backend.Helper.Hubs
             if (votes >= VotesToTriggerAction)
             {
                 await MoveSongToFront(spotifyId).ConfigureAwait(true);
+                await _cache.RemoveAsync($"$votes:${partyId}:${spotifyId}").ConfigureAwait(false); // Remove it from the voteable pool, as it is no longer votable.
+
+                return;
             }
 
             await _cache.SetStringAsync($"$votes:${partyId}:${spotifyId}", JsonConvert.SerializeObject(votes)).ConfigureAwait(false);
