@@ -16,6 +16,7 @@ using SelecTunes.Backend.Helper;
 using System.Net.Http;
 using Microsoft.Extensions.Options;
 using SelecTunes.Backend.Helper.Hubs;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace SelecTunes.Backend
 {
@@ -110,6 +111,14 @@ namespace SelecTunes.Backend
                     RedirectUrl = _options.Value.RedirectUri,
                 };
             });
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().Build();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -144,6 +153,8 @@ namespace SelecTunes.Backend
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "SelecTunes API v1");
             });
+
+            app.UseCors();
 
             app.UseHttpsRedirection();
 
