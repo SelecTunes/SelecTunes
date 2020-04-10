@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
@@ -113,7 +113,7 @@ namespace SelecTunes.Backend.Helper.Hubs
 
             await Clients.All.SendAsync("ReceiveDownvote", spotifyId, votes).ConfigureAwait(false);
 
-            if (votes <= VotesToTriggerAction)
+            if (votes <= -VotesToTriggerAction)
             {
                 await RemoveSong(spotifyId).ConfigureAwait(true);
                 await _cache.RemoveAsync($"$votes:${partyId}:${spotifyId}").ConfigureAwait(false);
