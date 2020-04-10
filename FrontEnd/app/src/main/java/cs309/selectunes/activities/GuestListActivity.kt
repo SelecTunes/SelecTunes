@@ -45,8 +45,8 @@ class GuestListActivity : AppCompatActivity()
         }
 
         val recycler = findViewById<RecyclerView>(R.id.guest_recycler)
-        recycler.setLayoutManager(LinearLayoutManager(this))
-        val adapter = GuestRecyclerViewAdapter(guests, this)
+        recycler.layoutManager = LinearLayoutManager(this)
+        val adapter = GuestRecyclerViewAdapter(guests, this, this)
 
         recycler.adapter = adapter
     }

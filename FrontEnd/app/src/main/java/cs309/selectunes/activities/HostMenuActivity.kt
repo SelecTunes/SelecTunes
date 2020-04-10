@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import cs309.selectunes.R
+import cs309.selectunes.services.SongServiceImpl
 import cs309.selectunes.utils.HttpUtils
 
 /**
@@ -14,6 +15,8 @@ import cs309.selectunes.utils.HttpUtils
  * @author Jack Goldsworth
  */
 class HostMenuActivity : AppCompatActivity() {
+
+    private val songService = SongServiceImpl()
 
     override fun onCreate(instanceState: Bundle?) {
         super.onCreate(instanceState)
@@ -51,10 +54,15 @@ class HostMenuActivity : AppCompatActivity() {
         endParty.setOnClickListener{
             HttpUtils.endParty(this, LoginActivity::class.java)
         }
+
+        explicit.setOnClickListener {
+            songService.makeSongsExplicit(this)
+        }
     }
 
     override fun onStart() {
         super.onStart()
+        songService.isExplicit(this)
         val joinCode = findViewById<Button>(R.id.join_code_button)
         val settings = getSharedPreferences("PartyInfo", 0)
         joinCode.text = settings.getString("join_code", "Code not found.")

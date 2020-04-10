@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Switch
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import cs309.selectunes.models.Guest
+import cs309.selectunes.services.ServerServiceImpl
 
 
 class GuestRecyclerViewAdapter(private val guests: ArrayList<Guest>,
-                               val context : Context): RecyclerView.Adapter<GuestViewHolder>()
+                               val context: Context, val act: AppCompatActivity) : RecyclerView.Adapter<GuestViewHolder>()
 {
     override fun getItemCount(): Int
     {
@@ -28,11 +30,11 @@ class GuestRecyclerViewAdapter(private val guests: ArrayList<Guest>,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GuestViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val guestCell = layoutInflater.inflate(R.layout.guest_row,parent,false)
-        return GuestViewHolder(guestCell)
+        return GuestViewHolder(guestCell, act)
     }
 }
 
-class GuestViewHolder(view: View) : RecyclerView.ViewHolder(view)
+class GuestViewHolder(view: View, givenActivity: AppCompatActivity) : RecyclerView.ViewHolder(view)
 {
 
     private val email = view.findViewById<TextView>(R.id.email)
@@ -41,7 +43,7 @@ class GuestViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     init {
         kickUser.setOnClickListener {
-
+            ServerServiceImpl().kickGuest(email.text.toString(), givenActivity)
         }
         //modBool.setOnCheckedChangeListener(view, )
     }
