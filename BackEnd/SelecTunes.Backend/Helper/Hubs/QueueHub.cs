@@ -13,6 +13,8 @@ namespace SelecTunes.Backend.Helper.Hubs
 {
     public class QueueHub : Hub
     {
+        public const int VotesToTriggerAction = 2;
+
         private readonly IDistributedCache _cache;
 
         private readonly UserManager<User> _userManager;
@@ -38,12 +40,85 @@ namespace SelecTunes.Backend.Helper.Hubs
 
         public async Task UpvoteSong(string spotifyId)
         {
-            await Clients.All.SendAsync("ReceiveUpVote", spotifyId).ConfigureAwait(false);
+            User user = await _userManager.GetUserAsync(Context.User).ConfigureAwait(false);
+
+            if (user == null)
+            {
+                // TODO: Log error that user is nil.
+                return;
+            }
+
+            Party party = _context.Parties.Find(user.PartyId);
+
+            if (party == null)
+            {
+                // TODO: Log error that user is not in party.
+                return;
+            }
+
+            string partyId = party.JoinCode;
+
+            byte[] v = await _cache.GetAsync($"$queue:${partyId}:${spotifyId}:$votes").ConfigureAwait(false);
+            if (v == null)
+            {
+                v = Array.Empty<byte>();
+            }
+
+            int votes = JsonConvert.DeserializeObject<int>(Encoding.UTF8.GetString(v));
+
+            votes++;
+
+            await Clients.All.SendAsync("ReceiveUpvote", spotifyId, votes).ConfigureAwait(false);
+
+            if (votes >= VotesToTriggerAction)
+            {
+                await MoveSongToFront(spotifyId).ConfigureAwait(true);
+            }
+
+            await _cache.SetStringAsync($"$votes:${partyId}:${spotifyId}", JsonConvert.SerializeObject(votes)).ConfigureAwait(false);
         }
 
-        public async Task DownVote(string spotifyId)
+        public async Task DownvoteSong(string spotifyId)
         {
-            await Clients.All.SendAsync("ReceiveDownVote", spotifyId).ConfigureAwait(false);
+            User user = await _userManager.GetUserAsync(Context.User).ConfigureAwait(false);
+
+            if (user == null)
+            {
+                // TODO: Log error that user is nil.
+                return;
+            }
+
+            Party party = _context.Parties.Find(user.PartyId);
+
+            if (party == null)
+            {
+                // TODO: Log error that user is not in party.
+                return;
+            }
+
+            string partyId = party.JoinCode;
+
+            byte[] v = await _cache.GetAsync($"$queue:${partyId}:${spotifyId}:$votes").ConfigureAwait(false);
+            if (v == null)
+            {
+                v = Array.Empty<byte>();
+            }
+
+            int votes = JsonConvert.DeserializeObject<int>(Encoding.UTF8.GetString(v));
+
+            votes--;
+
+            await Clients.All.SendAsync("ReceiveDownvote", spotifyId, votes).ConfigureAwait(false);
+
+            if (votes <= VotesToTriggerAction)
+            {
+                await RemoveSong(spotifyId).ConfigureAwait(true);
+                await _cache.RemoveAsync($"$votes:${partyId}:${spotifyId}").ConfigureAwait(false);
+
+                return;
+            }
+
+            await _cache.SetStringAsync($"$votes:${partyId}:${spotifyId}", JsonConvert.SerializeObject(votes)).ConfigureAwait(false);
         }
 
         public async Task MoveSongToFront(string spotifyId)
