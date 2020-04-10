@@ -4,8 +4,9 @@
   </head>
   <body>
     <button id="remove" disabled="disabled">Remove</button>
+    <button id="upvote" disabled="disabled">Upvote</button>
+    <button id="downvote" disabled="disabled">Downvote</button>
     <input type="text" name="spotifyId" id="spotifySong" />
-    <input type="text" name="partyId" id="partyId" />
     <p>
       <h6>Voteable</h6>
       <ul id="voteQueue"></ul>
@@ -49,6 +50,18 @@
             build();
         });
 
+        connection.on("ReceiveUpvote", function (id, count) {
+            console.log(id, count);
+
+            build();
+        });
+
+        connection.on("ReceiveDownvote", function (id, count) {
+            console.log(id, count);
+
+            build();
+        });
+
         document.getElementById("remove").addEventListener("click", function (event) {
             let song = document.getElementById("spotifySong").value;
 
@@ -61,8 +74,34 @@
             event.preventDefault();
         });
 
+        document.getElementById("upvote").addEventListener("click", function (event) {
+            let song = document.getElementById("spotifySong").value;
+
+            console.log(song);
+
+            connection.invoke("UpvoteSong", song).catch(function (err) {
+                return console.error(err.toString());
+            });
+
+            event.preventDefault();
+        });
+
+        document.getElementById("downvote").addEventListener("click", function (event) {
+            let song = document.getElementById("spotifySong").value;
+
+            console.log(song);
+
+            connection.invoke("DownvoteSong", song).catch(function (err) {
+                return console.error(err.toString());
+            });
+
+            event.preventDefault();
+        });
+
         connection.start().then(function () {
             document.getElementById("remove").disabled = false;
+            document.getElementById("upvote").disabled = false;
+            document.getElementById("downvote").disabled = false;
         }).catch(function (err) {
             return console.error(err.toString());
         });
