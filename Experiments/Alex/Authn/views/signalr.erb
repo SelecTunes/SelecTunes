@@ -7,28 +7,37 @@
     <input type="text" name="spotifyId" id="spotifySong" />
     <input type="text" name="partyId" id="partyId" />
     <p>
-      <ul id="queue">
-
-      </ul>
+      <h6>Voteable</h6>
+      <ul id="voteQueue"></ul>
+      <h6>Locked In</h6>
+      <ul id="lockQueue"></ul>
     </p>
     <script>
         let connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44395/queue").build();
 
-        let queue = [];
+        let queue = {lockedIn: [], votable: []};
 
         const build = async () => {
             await fetch("https://localhost:44395/api/Song/Queue", {mode: "cors", credentials: "include"})
-                .then(async q => queue = Object.values(await q.json()))
+                .then(async q => queue = await q.json())
                 .then(_ => console.log(queue));
 
-            let root = document.getElementById("queue");
+            let voteRoot = document.getElementById("voteQueue");
+            let lockRoot = document.getElementById("lockQueue");
 
-            root.innerHTML = "";
+            voteRoot.innerHTML = "";
+            lockRoot.innerHTML = "";
 
-            queue.forEach(o => {
+            queue.votable.forEach(o => {
                 let elem = document.createElement("li");
                 elem.innerText = o.id;
-                root.appendChild(elem);
+                voteRoot.appendChild(elem);
+            });
+
+            queue.lockedIn.forEach(o => {
+                let elem = document.createElement("li");
+                elem.innerText = o.id;
+                lockRoot.appendChild(elem);
             });
         };
 
