@@ -9,6 +9,7 @@ namespace SelecTunes.Backend.Models
         public Party()
         {
             PartyMembers = new List<User>();
+            KickedMembers = new List<User>();
             SongQueue = new Queue<Song>();
         }
 
