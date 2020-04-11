@@ -112,7 +112,8 @@ class ServerServiceImpl : ServerService {
             Response.Listener {
                 println(it)
                 try {
-                    val songArray = JSONArray(it)
+                    val jsonObject = JSONObject(it)
+                    val songArray = jsonObject.getJSONArray("votable")
                     val songList = JsonUtils.parseSongQueue(songArray)
                     val listView = activity.findViewById<ListView>(R.id.song_queue_list)
                     val adapter = QueueAdapter(activity, songList, socket, votes)

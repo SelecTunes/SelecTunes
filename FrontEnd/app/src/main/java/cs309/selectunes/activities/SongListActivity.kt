@@ -36,7 +36,7 @@ class SongListActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        val url = "https://coms-309-jr-2.cs.iastate.edu/queue"
+        val url = "http://coms-309-jr-2.cs.iastate.edu/queue"
 
         val hubConnection = HubConnectionBuilder.create(url).build()
 
@@ -51,6 +51,8 @@ class SongListActivity : AppCompatActivity() {
         }, String::class.java)
 
         hubConnection.start().blockingAwait()
+        hubConnection.invoke("UpvoteSong",  "1dXCXb006YbPSAajh6qhaF")
+        println(hubConnection.connectionState.name)
         ServerServiceImpl().getSongQueue(this, hubConnection, votes)
     }
 }
