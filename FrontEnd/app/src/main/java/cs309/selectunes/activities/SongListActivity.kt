@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.microsoft.signalr.HubConnectionBuilder
 import cs309.selectunes.R
 import cs309.selectunes.services.ServerServiceImpl
-import java.net.Socket
+import cs309.selectunes.utils.NukeSSLCerts
+
 
 /**
  * The song list activity is where
@@ -17,15 +19,11 @@ import java.net.Socket
  */
 class SongListActivity : AppCompatActivity() {
 
-    var socket: Socket? = null
-
     override fun onCreate(instanceState: Bundle?) {
         super.onCreate(instanceState)
         setContentView(R.layout.song_queue_menu)
 
         val backArrow = findViewById<Button>(R.id.back_arrow_song_queue)
-
-        //createSocket()
 
         backArrow.setOnClickListener {
             if (intent.getStringExtra("previousActivity") == "host")
@@ -37,19 +35,19 @@ class SongListActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        println("Starting")
-        ServerServiceImpl().getSongQueue(this)
-    }
+        val url = "https://coms-309-jr-2.cs.iastate.edu/api/Song/Queue"
 
-    /**
-     * This function connects to the web-socket that
-     * allows the user to receive the current up-votes and
-     * down-votes.
-     */
-    private fun createSocket() {
-        if (socket == null) {
-            socket = Socket("https://coms-309-jr-2.cs.iastate.edu/api/Song/Queue", 443)
-        }
-    }
+        val hubConnection = HubConnectionBuilder.create(url).build()
 
+        hubConnection.on("ReceiveUpvote", { message: String ->
+            println(message)
+        }, String::class.java)
+
+        hubConnection.on("ReceiveDownvote", { message: String ->
+            println(message)
+        }, String::class.java)
+        NukeSSLCerts.nuke()
+        hubConnection.start().blockingAwait()
+        ServerServiceImpl().getSongQueue(this, hubConnection)
+    }
 }

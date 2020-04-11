@@ -8,6 +8,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.microsoft.signalr.HubConnection
 import cs309.selectunes.R
 import cs309.selectunes.activities.HostMenuActivity
 import cs309.selectunes.activities.SongListActivity
@@ -19,6 +20,7 @@ import cs309.selectunes.models.Song
 import cs309.selectunes.utils.HttpUtils
 import cs309.selectunes.utils.JsonUtils
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
 
@@ -99,19 +101,23 @@ class ServerServiceImpl : ServerService {
         requestQueue.add(jsonObjectRequest)
     }
 
-    override fun getSongQueue(activity: SongListActivity) {
+    override fun getSongQueue(activity: SongListActivity, socket: HubConnection) {
         val url = "https://coms-309-jr-2.cs.iastate.edu/api/Song/Queue"
         val jsonObjectRequest = StringRequest(
             Request.Method.GET, url,
             Response.Listener {
                 println(it)
-                val songArray = JSONArray(it)
-                val songList = JsonUtils.parseSongQueue(songArray)
-                val listView = activity.findViewById<ListView>(R.id.song_queue_list)
-                val adapter = QueueAdapter(activity, songList)
-                listView.adapter = adapter
-                listView.setOnItemClickListener { parent, view, position, id ->
-                    // TODO updoot and downdoot.
+                try {
+                    val songArray = JSONArray(it)
+                    val songList = JsonUtils.parseSongQueue(songArray)
+                    val listView = activity.findViewById<ListView>(R.id.song_queue_list)
+                    val adapter = QueueAdapter(activity, songList, socket)
+                    listView.adapter = adapter
+                    listView.setOnItemClickListener { parent, view, position, id ->
+                        // TODO updoot and downdoot.
+                    }
+                } catch (e: JSONException) {
+                    println("The queue doesn't exist.")
                 }
             },
             Response.ErrorListener {
