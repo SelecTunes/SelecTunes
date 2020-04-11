@@ -22,13 +22,17 @@ import java.net.URL
  * name, and artist name in the list.
  * @author Jack Goldsworth
  */
-class QueueAdapter(private val ctx: Context, private val songList: List<Song>, private val socket: HubConnection) :
-    ArrayAdapter<String>(ctx, R.layout.song_queue_menu, songList as List<String>) {
+class QueueAdapter(
+    private val ctx: Context,
+    private val songList: List<Song>,
+    private val socket: HubConnection,
+    private val votes: Map<String, Pair<Int, Int>>
+) : ArrayAdapter<String>(ctx, R.layout.song_queue_menu, songList as List<String>) {
 
     @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val layoutInflater =
-                ctx.applicationContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            ctx.applicationContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val row = layoutInflater.inflate(R.layout.queue_song_row, parent, false)
         val artist = row.findViewById<TextView>(R.id.queue_artistName)
         val song = row.findViewById<TextView>(R.id.queue_songName)
@@ -37,12 +41,17 @@ class QueueAdapter(private val ctx: Context, private val songList: List<Song>, p
         val downvoteButton = row.findViewById<Button>(R.id.downvote_button)
         val songId = songList[position].id
 
+        upvoteButton.text = votes[songId]?.first?.toString() ?: "0"
+        downvoteButton.text = votes[songId]?.second?.toString() ?: "0"
+
         upvoteButton.setOnClickListener {
             socket.invoke("UpvoteSong", songId)
+            upvoteButton.text = votes[songId]?.first?.plus(1)?.toString() ?: "0"
         }
 
         downvoteButton.setOnClickListener {
             socket.invoke("DownvoteSong", songId)
+            downvoteButton.text = votes[songId]?.second?.minus(1)?.toString() ?: "0"
         }
 
         artist.text = "By: ${songList[position].artistName}"

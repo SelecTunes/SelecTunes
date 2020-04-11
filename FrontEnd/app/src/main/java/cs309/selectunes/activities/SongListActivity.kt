@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.microsoft.signalr.HubConnectionBuilder
 import cs309.selectunes.R
 import cs309.selectunes.services.ServerServiceImpl
-import cs309.selectunes.utils.NukeSSLCerts
 
 
 /**
@@ -18,6 +17,8 @@ import cs309.selectunes.utils.NukeSSLCerts
  * @author Jack Goldsworth
  */
 class SongListActivity : AppCompatActivity() {
+
+    private val votes = mutableMapOf<String, Pair<Int, Int>>()
 
     override fun onCreate(instanceState: Bundle?) {
         super.onCreate(instanceState)
@@ -35,19 +36,21 @@ class SongListActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        val url = "https://coms-309-jr-2.cs.iastate.edu/api/Song/Queue"
+        val url = "https://coms-309-jr-2.cs.iastate.edu/queue"
 
         val hubConnection = HubConnectionBuilder.create(url).build()
 
         hubConnection.on("ReceiveUpvote", { message: String ->
+            //TODO: Store upvote in the votes map.
             println(message)
         }, String::class.java)
 
         hubConnection.on("ReceiveDownvote", { message: String ->
+            //TODO: Store downvote in the votes map.
             println(message)
         }, String::class.java)
-        NukeSSLCerts.nuke()
+
         hubConnection.start().blockingAwait()
-        ServerServiceImpl().getSongQueue(this, hubConnection)
+        ServerServiceImpl().getSongQueue(this, hubConnection, votes)
     }
 }
