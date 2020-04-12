@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.microsoft.signalr.HubConnection
 import cs309.selectunes.R
@@ -61,10 +62,12 @@ class QueueAdapter(
             if(!votedSongs.contains(songId)) {
                 socket.send("UpvoteSong", songId)
                 songVoteTotal.text = votes[songId]?.plus(1)?.toString() ?: "1"
+                upvoteButton.setBackgroundResource(R.drawable.thumbs_up_click)
                 SongListActivity.songsVotedOn[songId] = "UP"
             } else if(votedSongs.contains(songId) && votedSongs[songId] == "UP") {
                 socket.send("DownvoteSong", songId)
                 songVoteTotal.text = votes[songId]?.minus(1)?.toString() ?: "0"
+                upvoteButton.setBackgroundResource(R.drawable.thumbs_up_not)
                 SongListActivity.songsVotedOn.remove(songId)
             }
         }
@@ -73,10 +76,12 @@ class QueueAdapter(
             if(!SongListActivity.songsVotedOn.contains(songId)) {
                 socket.send("DownvoteSong", songId)
                 songVoteTotal.text = votes[songId]?.minus(1)?.toString() ?: "-1"
+                downvoteButton.setBackgroundResource(R.drawable.thumbs_down_click)
                 SongListActivity.songsVotedOn[songId] = "DOWN"
             } else if(votedSongs.contains(songId) && votedSongs[songId] == "DOWN") {
                 socket.send("UpvoteSong", songId)
                 songVoteTotal.text = votes[songId]?.plus(1)?.toString() ?: "0"
+                downvoteButton.setBackgroundResource(R.drawable.thumbs_down_not)
                 SongListActivity.songsVotedOn.remove(songId)
             }
         }
