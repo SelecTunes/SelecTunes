@@ -13,7 +13,7 @@
 
     <RelativeLayout
         android:layout_width="299dp"
-        android:layout_height="142dp">
+        android:layout_height="106dp">
 
         <TextView
             android:id="@+id/queue_songName"
@@ -45,10 +45,10 @@
             android:id="@+id/upvote_button"
             android:layout_width="37dp"
             android:layout_height="26dp"
+            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
+            android:layout_marginTop="46dp"
             android:layout_marginEnd="258dp"
-            android:layout_marginBottom="70dp"
             android:background="@drawable/thumbs_up_not" />
 
         <Button
@@ -65,10 +65,10 @@
             android:id="@+id/song_vote_total"
             android:layout_width="58dp"
             android:layout_height="29dp"
+            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="146dp"
-            android:layout_marginBottom="70dp"
+            android:layout_marginTop="43dp"
+            android:layout_marginEnd="148dp"
             android:background="@null"
             android:ems="10"
             android:inputType="number"

@@ -44,6 +44,7 @@ class QueueAdapter(
         val downvoteButton = row.findViewById<Button>(R.id.downvote_button)
         val songVoteTotal = row.findViewById<TextView>(R.id.song_vote_total)
         val songId = songList[position].id
+        val votedSongs = SongListActivity.songsVotedOn
 
         // Hide song vote options if the song is not voteable.
         if(!songList[position].voteable!!) {
@@ -52,11 +53,18 @@ class QueueAdapter(
             songVoteTotal.visibility = View.GONE
         }
 
+        // Keep upvote and downvote icons on reload.
+        if(votedSongs.contains(songId)) {
+            if(votedSongs[songId] == "UP") {
+                upvoteButton.setBackgroundResource(R.drawable.thumbs_up_click)
+            } else {
+                downvoteButton.setBackgroundResource(R.drawable.thumbs_down_click)
+            }
+        }
+
         println(votes[songId])
 
         songVoteTotal.text = votes[songId]?.toString() ?: "0"
-
-        val votedSongs = SongListActivity.songsVotedOn
 
         upvoteButton.setOnClickListener {
             if(!votedSongs.contains(songId)) {

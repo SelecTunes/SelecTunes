@@ -50,21 +50,25 @@ class SongListActivity : AppCompatActivity() {
         hubConnection.on("ReceiveUpvote", { id, count ->
             println("Upvoted for: $id $count")
             votes[id] = count.toInt()
+            ServerServiceImpl().getSongQueue(this, hubConnection, votes)
         }, String::class.java, String::class.java)
 
         hubConnection.on("ReceiveDownvote", { id, count ->
             println("Downvote: $id $count")
             votes[id] = count.toInt()
+            ServerServiceImpl().getSongQueue(this, hubConnection, votes)
         }, String::class.java, String::class.java)
 
         hubConnection.on("ReceiveMoveSongToFront", { id ->
             println("ReceiveMoveSongToFront: Removed $id: ${votes.remove(id)}")
             songsVotedOn.remove(id)
+            ServerServiceImpl().getSongQueue(this, hubConnection, votes)
         }, String::class.java)
 
         hubConnection.on("ReceiveRemoveSong", { id ->
             println("ReceiveRemoveSong: Removed $id: ${votes.remove(id)}")
             songsVotedOn.remove(id)
+            ServerServiceImpl().getSongQueue(this, hubConnection, votes)
         }, String::class.java)
 
         println(votes)
