@@ -7,6 +7,7 @@ import cs309.selectunes.activities.SongListActivity
 import cs309.selectunes.activities.SongSearchActivity
 import cs309.selectunes.models.Guest
 import cs309.selectunes.models.Song
+import org.json.JSONArray
 
 /**
  * General http request methods for the app.
@@ -49,4 +50,6 @@ interface ServerService {
     )
 
     fun getGuestList(activity: GuestListActivity)
+
+    fun parseGuests(givenJSON: JSONArray) : ArrayList<Guest>
 }

@@ -15,8 +15,8 @@
         android:layout_height="wrap_content"
         android:text="All Party Members:" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/guest_recycler"
+    <ListView
+        android:id="@+id/guests"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
