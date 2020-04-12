@@ -105,7 +105,7 @@ class ServerServiceImpl : ServerService {
     override fun getSongQueue(
         activity: SongListActivity,
         socket: HubConnection,
-        votes: Map<String, Pair<Int, Int>>
+        votes: Map<String, Int>
     ) {
         val url = "https://coms-309-jr-2.cs.iastate.edu/api/Song/Queue"
         val jsonObjectRequest = StringRequest(
@@ -114,10 +114,15 @@ class ServerServiceImpl : ServerService {
                 println(it)
                 try {
                     val jsonObject = JSONObject(it)
-                    val songArray = jsonObject.getJSONArray("votable")
-                    val songList = JsonUtils.parseSongQueue(songArray)
+                    val voteableSongArray = jsonObject.getJSONArray("votable")
+                    val lockedSongArray = jsonObject.getJSONArray("lockedIn")
+                    val voteableSongList = JsonUtils.parseSongQueue(voteableSongArray, true)
+                    val lockedSongList = JsonUtils.parseSongQueue(lockedSongArray, false)
+                    val allSongs = ArrayList<Song>()
+                    allSongs.addAll(lockedSongList)
+                    allSongs.addAll(voteableSongList)
                     val listView = activity.findViewById<ListView>(R.id.song_queue_list)
-                    val adapter = QueueAdapter(activity, songList, socket, votes)
+                    val adapter = QueueAdapter(activity, allSongs, socket, votes)
                     listView.adapter = adapter
                 } catch (e: JSONException) {
                     println("The queue doesn't exist.")

@@ -10,8 +10,10 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import com.microsoft.signalr.HubConnection
 import cs309.selectunes.R
+import cs309.selectunes.activities.SongListActivity
 import cs309.selectunes.models.Song
 import cs309.selectunes.utils.BitmapCache
 import java.net.URL
@@ -26,7 +28,7 @@ class QueueAdapter(
     private val ctx: Context,
     private val songList: List<Song>,
     private val socket: HubConnection,
-    private val votes: Map<String, Pair<Int, Int>>
+    private val votes: Map<String, Int>
 ) : ArrayAdapter<String>(ctx, R.layout.song_queue_menu, songList as List<String>) {
 
     @SuppressLint("ViewHolder")
@@ -39,21 +41,44 @@ class QueueAdapter(
         val image = row.findViewById<ImageView>(R.id.queue_album_cover)
         val upvoteButton = row.findViewById<Button>(R.id.upvote_button)
         val downvoteButton = row.findViewById<Button>(R.id.downvote_button)
+        val songVoteTotal = row.findViewById<TextView>(R.id.song_vote_total)
         val songId = songList[position].id
 
-        upvoteButton.text = votes[songId]?.first?.toString() ?: "0"
-        downvoteButton.text = votes[songId]?.second?.toString() ?: "0"
+        // Hide song vote options if the song is not voteable.
+        if(!songList[position].voteable!!) {
+            upvoteButton.visibility = View.GONE
+            downvoteButton.visibility = View.GONE
+            songVoteTotal.visibility = View.GONE
+        }
+
+        println(votes[songId])
+
+        songVoteTotal.text = votes[songId]?.toString() ?: "0"
+
+        val votedSongs = SongListActivity.songsVotedOn
 
         upvoteButton.setOnClickListener {
-            socket.send("UpvoteSong", songId)
-            println(socket.connectionState.name)
-            upvoteButton.text = (downvoteButton.text.toString().toInt() + 1).toString()
+            if(!votedSongs.contains(songId)) {
+                socket.send("UpvoteSong", songId)
+                songVoteTotal.text = votes[songId]?.plus(1)?.toString() ?: "1"
+                SongListActivity.songsVotedOn[songId] = "UP"
+            } else if(votedSongs.contains(songId) && votedSongs[songId] == "UP") {
+                socket.send("DownvoteSong", songId)
+                songVoteTotal.text = votes[songId]?.minus(1)?.toString() ?: "0"
+                SongListActivity.songsVotedOn.remove(songId)
+            }
         }
 
         downvoteButton.setOnClickListener {
-            socket.send("DownvoteSong", songId)
-            println(socket.connectionState.name)
-            downvoteButton.text = (downvoteButton.text.toString().toInt() - 1).toString()
+            if(!SongListActivity.songsVotedOn.contains(songId)) {
+                socket.send("DownvoteSong", songId)
+                songVoteTotal.text = votes[songId]?.minus(1)?.toString() ?: "-1"
+                SongListActivity.songsVotedOn[songId] = "DOWN"
+            } else if(votedSongs.contains(songId) && votedSongs[songId] == "DOWN") {
+                socket.send("UpvoteSong", songId)
+                songVoteTotal.text = votes[songId]?.plus(1)?.toString() ?: "0"
+                SongListActivity.songsVotedOn.remove(songId)
+            }
         }
 
         artist.text = "By: ${songList[position].artistName}"

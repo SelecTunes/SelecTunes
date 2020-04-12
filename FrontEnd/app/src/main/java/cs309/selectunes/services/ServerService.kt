@@ -40,12 +40,12 @@ interface ServerService {
      * This gets the current song queue.
      * @param activity activity this method is called from.
      * @param socket socket connection to the backend.
-     * @param votes map of votes by id to number of votes (First is up-votes, second down-votes).
+     * @param votes map of votes by id to number of votes.
      */
     fun getSongQueue(
         activity: SongListActivity,
         socket: HubConnection,
-        votes: Map<String, Pair<Int, Int>>
+        votes: Map<String, Int>
     )
 
     fun getGuestList(activity: GuestListActivity)

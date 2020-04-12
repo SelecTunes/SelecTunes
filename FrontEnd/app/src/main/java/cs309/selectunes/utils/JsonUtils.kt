@@ -77,7 +77,7 @@ object JsonUtils {
      * @param songs song array from the getSongQueue request.
      * @return list of songs.
      */
-    fun parseSongQueue(songs: JSONArray): List<Song> {
+    fun parseSongQueue(songs: JSONArray, isVoteable: Boolean): List<Song> {
         val songList = mutableListOf<Song>()
         for (i in 0 until songs.length()) {
             val jsonObj = songs.getJSONObject(i)
@@ -87,7 +87,8 @@ object JsonUtils {
                     jsonObj.getString("id"),
                     jsonObj.getString("artistName"),
                     jsonObj.getString("albumArt"),
-                    false
+                    false,
+                    isVoteable
                 )
             )
         }

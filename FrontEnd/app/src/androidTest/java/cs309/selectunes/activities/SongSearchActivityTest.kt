@@ -27,11 +27,11 @@ class SongSearchActivityTest {
         serverService = Mockito.mock(ServerService::class.java)
         songList = mutableListOf()
         // Just test the first five entries.
-        songList.add(Song("Good News", "1DWZUa5Mzf2BwzpHtgbHPY", "Mac Miller", "https://i.scdn.co/image/ab67616d0000b27326b7dd89810cc1a40ada642c", false))
-        songList.add(Song("Good News", "1dXCXb006YbPSAajh6qhaF", "Ocean Park Standoff", "https://i.scdn.co/image/ab67616d0000b273d33abaa87fdea5da142fd201", false))
-        songList.add(Song("Good News", "5cInnHweXJJrRsHxwihgkK", "K.Flay", "https://i.scdn.co/image/ab67616d0000b2737f888564b247d806d838761e", false))
-        songList.add(Song("Good News", "5sSqOGfBz5CjJ9IGL8pz31", "Apashe", "https://i.scdn.co/image/ab67616d0000b2735a1f4b77ef7a4ba35e6f7d1c", false))
-        songList.add(Song("Good News", "3QqTmV1zpTNEAMviQFUFkW", "Mandisa", "https://i.scdn.co/image/ab67616d0000b273005a275e8a0821ab2311e33e", false))
+        songList.add(Song("Good News", "1DWZUa5Mzf2BwzpHtgbHPY", "Mac Miller", "https://i.scdn.co/image/ab67616d0000b27326b7dd89810cc1a40ada642c", false, null))
+        songList.add(Song("Good News", "1dXCXb006YbPSAajh6qhaF", "Ocean Park Standoff", "https://i.scdn.co/image/ab67616d0000b273d33abaa87fdea5da142fd201", false, null))
+        songList.add(Song("Good News", "5cInnHweXJJrRsHxwihgkK", "K.Flay", "https://i.scdn.co/image/ab67616d0000b2737f888564b247d806d838761e", false, null))
+        songList.add(Song("Good News", "5sSqOGfBz5CjJ9IGL8pz31", "Apashe", "https://i.scdn.co/image/ab67616d0000b2735a1f4b77ef7a4ba35e6f7d1c", false, null))
+        songList.add(Song("Good News", "3QqTmV1zpTNEAMviQFUFkW", "Mandisa", "https://i.scdn.co/image/ab67616d0000b273005a275e8a0821ab2311e33e", false, null))
 
     }
 
