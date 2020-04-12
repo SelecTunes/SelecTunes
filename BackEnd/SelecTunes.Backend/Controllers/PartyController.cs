@@ -198,8 +198,16 @@ namespace SelecTunes.Backend.Controllers
                 throw new InvalidOperationException("party is null");
             }
 
-            var GuestList = party.PartyMembers;
-            return Ok(GuestList);
+            // Temporary fix.
+            List<User> wa = _context.Users.Where(u => u.PartyId == party.Id).ToList();
+
+            List<PesudoUser> users = wa.Select(u => new PesudoUser { Email = u.Email }).ToList();
+            return Ok(users);
+        }
+
+        internal class PesudoUser
+        {
+            public string Email { get; set; }
         }
 
         /**
