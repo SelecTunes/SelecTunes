@@ -10,6 +10,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.microsoft.signalr.HubConnection
 import cs309.selectunes.R
+import cs309.selectunes.activities.GuestListActivity
 import cs309.selectunes.activities.HostMenuActivity
 import cs309.selectunes.activities.SongListActivity
 import cs309.selectunes.activities.SongSearchActivity
@@ -150,35 +151,34 @@ class ServerServiceImpl : ServerService {
                 return headers
             }
         }
-        val requestQueue = Volley.newRequestQueue(activity)
+        val requestQueue = Volley.newRequestQueue(activity, HttpUtils.createAuthCookie(activity))
         requestQueue.add(jsonObjectRequest)
     }
 
-    fun getGuestList(activity: AppCompatActivity): ArrayList<Guest> {
-        var returnArrayList = ArrayList<Guest>()
-        val json = JSONObject()
-        val jsonObjectRequest = object : JsonObjectRequest(Method.GET, "https://coms-309-jr-2.cs.iastate.edu/api/Party/Members", json,
+    override fun getGuestList(activity: GuestListActivity) {
+
+        val jsonObjectRequest = object : JsonObjectRequest(Method.GET, "https://coms-309-jr-2.cs.iastate.edu/api/Party/Members", null,
                 Response.Listener {
-                    returnArrayList = parseGuests(it)
+                    println(it)
                 },
                 Response.ErrorListener {
-                    println("Error kicking user: ${it.networkResponse.statusCode}")
-                    println(it.networkResponse.data.toString(StandardCharsets.UTF_8))
+                    println("Error getting the memberList...")
                 }) {
             override fun getHeaders(): Map<String, String> {
                 val headers: MutableMap<String, String> = java.util.HashMap()
                 headers["Content-Type"] = "application/json"
-                headers["Accept"] = "application/json, text/json"
+                headers["Accept"] = "application/json, text/json, text/plain"
                 return headers
             }
         }
-        val requestQueue = Volley.newRequestQueue(activity)
+        val requestQueue = Volley.newRequestQueue(activity, HttpUtils.createAuthCookie(activity))
         requestQueue.add(jsonObjectRequest)
-        return returnArrayList
     }
 
     private fun parseGuests(givenJson: JSONObject): ArrayList<Guest> {
         var returnArrayList = ArrayList<Guest>()
         return returnArrayList
     }
+
+
 }

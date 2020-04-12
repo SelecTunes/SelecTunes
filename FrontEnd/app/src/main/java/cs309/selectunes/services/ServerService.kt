@@ -2,8 +2,10 @@ package cs309.selectunes.services
 
 import androidx.appcompat.app.AppCompatActivity
 import com.microsoft.signalr.HubConnection
+import cs309.selectunes.activities.GuestListActivity
 import cs309.selectunes.activities.SongListActivity
 import cs309.selectunes.activities.SongSearchActivity
+import cs309.selectunes.models.Guest
 import cs309.selectunes.models.Song
 
 /**
@@ -46,4 +48,5 @@ interface ServerService {
         votes: Map<String, Pair<Int, Int>>
     )
 
+    fun getGuestList(activity: GuestListActivity)
 }

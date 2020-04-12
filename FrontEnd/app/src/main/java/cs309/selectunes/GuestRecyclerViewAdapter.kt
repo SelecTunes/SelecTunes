@@ -45,7 +45,7 @@ class GuestViewHolder(view: View, givenActivity: AppCompatActivity) : RecyclerVi
         kickUser.setOnClickListener {
             ServerServiceImpl().kickGuest(email.text.toString(), givenActivity)
         }
-        //modBool.setOnCheckedChangeListener(view, )
+        //modBool.setOnCheckedChangeListener()
     }
 
     fun bind(givenGuest: Guest)

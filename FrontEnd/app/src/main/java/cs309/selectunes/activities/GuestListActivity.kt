@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import cs309.selectunes.GuestRecyclerViewAdapter
 import cs309.selectunes.R
 import cs309.selectunes.models.Guest
+import cs309.selectunes.services.ServerServiceImpl
 
 /**
  * The guest list activity allows people
@@ -23,16 +24,7 @@ class GuestListActivity : AppCompatActivity()
     override fun onCreate(instanceState: Bundle?) {
 
 
-        var guest1 = Guest("Reggie Bush")
-        var guest2 = Guest("George Bush")
-        var guest3 = Guest("Busch Light")
-        var guest4 = Guest("Large Bush")
-        var guest5 = Guest("Bushy Bush")
-        guests.add(guest1)
-        guests.add(guest2)
-        guests.add(guest3)
-        guests.add(guest4)
-        guests.add(guest5)
+        ServerServiceImpl().getGuestList(this)
 
         super.onCreate(instanceState)
         setContentView(R.layout.guest_list_menu)

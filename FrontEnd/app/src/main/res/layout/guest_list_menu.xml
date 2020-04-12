@@ -5,9 +5,15 @@
 
     <Button
         android:id="@+id/return_id"
+        android:layout_width="63dp"
+        android:layout_height="wrap_content"
+        android:text="@string/goBack" />
+
+    <TextView
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text= "@string/goBack" />
+        android:text="All Party Members:" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/guest_recycler"
