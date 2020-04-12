@@ -47,13 +47,13 @@ class QueueAdapter(
         upvoteButton.setOnClickListener {
             socket.send("UpvoteSong", songId)
             println(socket.connectionState.name)
-            upvoteButton.text = votes[songId]?.first?.plus(1)?.toString() ?: "0"
+            upvoteButton.text = (downvoteButton.text.toString().toInt() + 1).toString()
         }
 
         downvoteButton.setOnClickListener {
             socket.send("DownvoteSong", songId)
             println(socket.connectionState.name)
-            downvoteButton.text = votes[songId]?.second?.minus(1)?.toString() ?: "0"
+            downvoteButton.text = (downvoteButton.text.toString().toInt() - 1).toString()
         }
 
         artist.text = "By: ${songList[position].artistName}"
