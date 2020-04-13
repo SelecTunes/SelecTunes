@@ -32,16 +32,17 @@ class GuestListActivityTest {
 
     @Test
     fun testParseGuestList() {
-        Mockito.`when`(serverService.getGuestList(guestListActivity)).then{
+        Mockito.`when`(serverService.getGuestList(guestListActivity, true)).then {
             val fileText = this.javaClass.classLoader?.getResource("guestListExample.json")?.readText(Charsets.UTF_8)
             val json = JSONArray(fileText ?: error("example song json file not found."))
-            serverService.parseGuests(json)
+            guestListActivity.parseGuests(json)
         }
-        serverService.getGuestList(guestListActivity)
+        serverService.getGuestList(guestListActivity, true)
 
         var isSame = true
         for (i in 0..2) {
-
+            val tempList = guestListActivity.guestList
+            isSame = isSame && tempList[i].givenEmail == guestList[i].givenEmail
         }
         assertEquals(isSame, true)
     }

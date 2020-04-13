@@ -5,13 +5,12 @@ import com.microsoft.signalr.HubConnection
 import cs309.selectunes.activities.GuestListActivity
 import cs309.selectunes.activities.SongListActivity
 import cs309.selectunes.activities.SongSearchActivity
-import cs309.selectunes.models.Guest
 import cs309.selectunes.models.Song
-import org.json.JSONArray
 
 /**
  * General http request methods for the app.
- * @author Jack Goldsworth
+ * @author Jack Goldsworth.
+ * @author Josh Edwards.
  */
 interface ServerService {
 
@@ -49,7 +48,17 @@ interface ServerService {
         votes: Map<String, Int>
     )
 
-    fun getGuestList(activity: AppCompatActivity, isGuest: Boolean)
+    /**
+     * Kicks a guest from the current party.
+     * @param givenEmail email of the person to kick.
+     * @param activity activity this method is called from.
+     */
+    fun kickGuest(givenEmail: String, activity: GuestListActivity)
 
-    fun parseGuests(givenJSON: JSONArray) : ArrayList<Guest>
+    /**
+     * Gets the current list of people in a party.
+     * @param activity activity this method is called from.
+     * @param isGuest is the caller a guest or a host.
+     */
+    fun getGuestList(activity: GuestListActivity, isGuest: Boolean)
 }

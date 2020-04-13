@@ -8,16 +8,15 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import cs309.selectunes.R
-import cs309.selectunes.activities.GuestMenuActivity
+import cs309.selectunes.activities.GuestListActivity
 import cs309.selectunes.models.Guest
 import cs309.selectunes.services.ServerServiceImpl
 
 class GuestAdapter(
     context: Context,
     private val guestList: List<Guest>,
-    private val act: AppCompatActivity,
+    private val act: GuestListActivity,
     private val isGuest: Boolean
 ) : ArrayAdapter<String>(context, R.layout.guest_list_menu, guestList as List<String>) {
 

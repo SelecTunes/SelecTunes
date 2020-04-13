@@ -17,7 +17,6 @@ import cs309.selectunes.activities.SongSearchActivity
 import cs309.selectunes.adapter.GuestAdapter
 import cs309.selectunes.adapter.QueueAdapter
 import cs309.selectunes.adapter.SongAdapter
-import cs309.selectunes.models.Guest
 import cs309.selectunes.models.Song
 import cs309.selectunes.utils.HttpUtils
 import cs309.selectunes.utils.JsonUtils
@@ -139,7 +138,7 @@ class ServerServiceImpl : ServerService {
         requestQueue.add(jsonObjectRequest)
     }
 
-    fun kickGuest(givenEmail: String, activity: AppCompatActivity) {
+    override fun kickGuest(givenEmail: String, activity: GuestListActivity) {
         val jsonObjectRequest = object : StringRequest(Method.POST, "https://coms-309-jr-2.cs.iastate.edu/api/Auth/Kick",
                 Response.Listener {
                     this.getGuestList(activity, false)
@@ -164,11 +163,11 @@ class ServerServiceImpl : ServerService {
         requestQueue.add(jsonObjectRequest)
     }
 
-    override fun getGuestList(activity: AppCompatActivity, isGuest: Boolean){
+    override fun getGuestList(activity: GuestListActivity, isGuest: Boolean) {
         val jsonObjectRequest = object : StringRequest(Method.GET, "https://coms-309-jr-2.cs.iastate.edu/api/Party/Members",
                 Response.Listener {
                     val array = JSONArray(it)
-                    val guests = parseGuests(array)
+                    val guests = activity.parseGuests(array)
                     activity.setContentView(R.layout.guest_list_menu)
                     val listView = activity.findViewById<ListView>(R.id.guests)
                     val adapter = GuestAdapter(activity, guests, activity, isGuest)
@@ -187,16 +186,5 @@ class ServerServiceImpl : ServerService {
         val requestQueue = Volley.newRequestQueue(activity, HttpUtils.createAuthCookie(activity))
         requestQueue.add(jsonObjectRequest)
 
-    }
-
-    override fun parseGuests(givenJSON: JSONArray): ArrayList<Guest> {
-        val returnArrayList = ArrayList<Guest>()
-        for(x in 0 until givenJSON.length())
-        {
-            val guestObj = givenJSON.getJSONObject(x)
-            val guest = Guest(guestObj.getString("email"))
-            returnArrayList.add(guest)
-        }
-        return returnArrayList
     }
 }
