@@ -4,50 +4,45 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import cs309.selectunes.GuestRecyclerViewAdapter
 import cs309.selectunes.R
 import cs309.selectunes.models.Guest
+import cs309.selectunes.services.ServerServiceImpl
+import org.json.JSONArray
 
 /**
  * The guest list activity allows people
  * to see who is currently in the party.
  * @author Joshua Edwards
  */
-class GuestListActivity : AppCompatActivity()
-{
-    var guests = ArrayList<Guest>()
+class GuestListActivity : AppCompatActivity() {
 
+    internal val guestList = mutableListOf<Guest>()
 
     override fun onCreate(instanceState: Bundle?) {
-
-
-        var guest1 = Guest("Reggie Bush")
-        var guest2 = Guest("George Bush")
-        var guest3 = Guest("Busch Light")
-        var guest4 = Guest("Large Bush")
-        var guest5 = Guest("Bushy Bush")
-        guests.add(guest1)
-        guests.add(guest2)
-        guests.add(guest3)
-        guests.add(guest4)
-        guests.add(guest5)
-
         super.onCreate(instanceState)
         setContentView(R.layout.guest_list_menu)
-
-
         val returnButton = findViewById<Button>(R.id.return_id)
-        returnButton.setOnClickListener{
-            val backOut = Intent(this, HostMenuActivity::class.java)
-            startActivity(backOut)
+
+        returnButton.setOnClickListener {
+            if (intent.getStringExtra("previousActivity") == "host")
+                startActivity(Intent(this, HostMenuActivity::class.java))
+            else
+                startActivity(Intent(this, GuestMenuActivity::class.java))
         }
+    }
 
-        val recycler = findViewById<RecyclerView>(R.id.guest_recycler)
-        recycler.layoutManager = LinearLayoutManager(this)
-        val adapter = GuestRecyclerViewAdapter(guests, this, this)
+    override fun onStart() {
+        super.onStart()
+        ServerServiceImpl().getGuestList(this, intent.getBooleanExtra("isGuest", true))
+    }
 
-        recycler.adapter = adapter
+    fun parseGuests(givenJSON: JSONArray): List<Guest> {
+        guestList.clear()
+        for (x in 0 until givenJSON.length()) {
+            val guestObj = givenJSON.getJSONObject(x)
+            val guest = Guest(guestObj.getString("email"))
+            guestList.add(guest)
+        }
+        return guestList
     }
 }

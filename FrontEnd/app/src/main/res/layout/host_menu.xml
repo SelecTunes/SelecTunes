@@ -48,21 +48,6 @@
         android:textColor="@color/colorTextHost" />
 
     <Button
-        android:id="@+id/moderators"
-        android:layout_width="307dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="267dp"
-        android:layout_marginEnd="52dp"
-        android:background="@drawable/host_menu_button_bg"
-        android:outlineProvider="none"
-        android:text="moderators"
-        android:textColor="@color/colorTextHost" />
-
-    <Button
         android:id="@+id/explicit"
         android:layout_width="307dp"
         android:layout_height="wrap_content"
@@ -70,7 +55,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="327dp"
+        android:layout_marginTop="267dp"
         android:layout_marginEnd="52dp"
         android:background="@drawable/host_menu_button_bg"
         android:outlineProvider="none"
@@ -114,8 +99,8 @@
         android:layout_height="13dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="372dp"
-        android:layout_marginBottom="698dp"
+        android:layout_marginEnd="366dp"
+        android:layout_marginBottom="697dp"
         android:background="@drawable/arrow" />
 
 </RelativeLayout>
