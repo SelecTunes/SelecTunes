@@ -29,6 +29,6 @@ class GuestListActivity : AppCompatActivity()
     override fun onStart()
     {
         super.onStart()
-        ServerServiceImpl().getGuestList(this)
+        ServerServiceImpl().getGuestList(this, intent.getBooleanExtra("isGuest", true))
     }
 }

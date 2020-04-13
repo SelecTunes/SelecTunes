@@ -142,7 +142,7 @@ class ServerServiceImpl : ServerService {
     fun kickGuest(givenEmail: String, activity: AppCompatActivity) {
         val jsonObjectRequest = object : StringRequest(Method.POST, "https://coms-309-jr-2.cs.iastate.edu/api/Auth/Kick",
                 Response.Listener {
-                    println(it)
+                    this.getGuestList(activity, false)
                 },
                 Response.ErrorListener {
                     println("Error kicking user: ${it.networkResponse.statusCode}")
@@ -164,14 +164,14 @@ class ServerServiceImpl : ServerService {
         requestQueue.add(jsonObjectRequest)
     }
 
-    override fun getGuestList(activity: AppCompatActivity){
+    override fun getGuestList(activity: AppCompatActivity, isGuest: Boolean){
         val jsonObjectRequest = object : StringRequest(Method.GET, "https://coms-309-jr-2.cs.iastate.edu/api/Party/Members",
                 Response.Listener {
                     val array = JSONArray(it)
                     val guests = parseGuests(array)
                     activity.setContentView(R.layout.guest_list_menu)
                     val listView = activity.findViewById<ListView>(R.id.guests)
-                    val adapter = GuestAdapter(activity, guests, activity)
+                    val adapter = GuestAdapter(activity, guests, activity, isGuest)
                     listView.adapter = adapter
                 },
                 Response.ErrorListener {

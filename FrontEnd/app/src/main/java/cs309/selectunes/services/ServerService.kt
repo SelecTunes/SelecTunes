@@ -49,7 +49,7 @@ interface ServerService {
         votes: Map<String, Int>
     )
 
-    fun getGuestList(activity: AppCompatActivity)
+    fun getGuestList(activity: AppCompatActivity, isGuest: Boolean)
 
     fun parseGuests(givenJSON: JSONArray) : ArrayList<Guest>
 }

@@ -27,12 +27,12 @@ class HostMenuActivity : AppCompatActivity() {
         val songSearch = findViewById<Button>(R.id.host_song_search_button)
         val backArrow = findViewById<Button>(R.id.back_arrow)
         val endParty = findViewById<Button>(R.id.end_party)
-        val moderators = findViewById<Button>(R.id.moderators)
         val explicit = findViewById<Button>(R.id.explicit)
 
         guestList.setOnClickListener{
-            val toGuestList = Intent(this, GuestListActivity::class.java)
-            startActivity(toGuestList)
+            val intent = Intent(this, GuestListActivity::class.java)
+            intent.putExtra("isGuest", false)
+            startActivity(intent)
         }
 
         songList.setOnClickListener{
@@ -52,7 +52,7 @@ class HostMenuActivity : AppCompatActivity() {
         }
 
         endParty.setOnClickListener{
-            HttpUtils.endParty(this, LoginActivity::class.java)
+            HttpUtils.endParty(this, ChooseActivity::class.java)
         }
 
         explicit.setOnClickListener {

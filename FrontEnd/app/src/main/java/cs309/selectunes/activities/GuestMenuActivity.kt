@@ -30,7 +30,7 @@ class GuestMenuActivity : AppCompatActivity() {
         }
 
         leaveParty.setOnClickListener {
-            HttpUtils.leaveParty(this, LoginActivity::class.java)
+            HttpUtils.leaveParty(this, ChooseActivity::class.java)
         }
 
         backArrow.setOnClickListener {
@@ -40,6 +40,12 @@ class GuestMenuActivity : AppCompatActivity() {
         songSearch.setOnClickListener {
             val intent = Intent(this, SongSearchActivity::class.java)
             intent.putExtra("previousActivity", "guest")
+            startActivity(intent)
+        }
+
+        partyMembers.setOnClickListener {
+            val intent = Intent(this, GuestListActivity::class.java)
+            intent.putExtra("isGuest", true)
             startActivity(intent)
         }
     }
