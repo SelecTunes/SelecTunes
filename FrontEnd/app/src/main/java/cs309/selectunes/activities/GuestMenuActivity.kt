@@ -45,6 +45,7 @@ class GuestMenuActivity : AppCompatActivity() {
 
         partyMembers.setOnClickListener {
             val intent = Intent(this, GuestListActivity::class.java)
+            intent.putExtra("previousActivity", "guest")
             intent.putExtra("isGuest", true)
             startActivity(intent)
         }

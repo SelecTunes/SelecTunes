@@ -22,9 +22,12 @@ class GuestListActivity : AppCompatActivity() {
         super.onCreate(instanceState)
         setContentView(R.layout.guest_list_menu)
         val returnButton = findViewById<Button>(R.id.return_id)
+
         returnButton.setOnClickListener {
-            val backOut = Intent(this, HostMenuActivity::class.java)
-            startActivity(backOut)
+            if (intent.getStringExtra("previousActivity") == "host")
+                startActivity(Intent(this, HostMenuActivity::class.java))
+            else
+                startActivity(Intent(this, GuestMenuActivity::class.java))
         }
     }
 

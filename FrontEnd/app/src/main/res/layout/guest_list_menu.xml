@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/guest_host_menu_background"
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/return_id"
-        android:layout_width="63dp"
-        android:layout_height="wrap_content"
-        android:text="@string/goBack" />
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="All Party Members:" />
+        android:layout_width="16dp"
+        android:layout_height="13dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="364dp"
+        android:layout_marginBottom="697dp"
+        android:background="@drawable/arrow" />
 
     <ListView
         android:id="@+id/guests"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_width="277dp"
+        android:layout_height="652dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="67dp"
+        android:layout_marginEnd="67dp"
+        android:layout_marginBottom="1dp"
+        android:divider="#00000000" />
 
-</LinearLayout>
+</RelativeLayout>
