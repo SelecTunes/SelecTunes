@@ -40,10 +40,10 @@ object JsonUtils {
      * @param body login response body.
      * @param status request response code.
      */
-    fun parseRegisterResponse(activity: AppCompatActivity, body: String?, status: Int): Boolean {
-        val registerError = activity.findViewById<TextView>(R.id.register_error)
+    fun parseRegisterResponse(activity: AppCompatActivity?, body: String?, status: Int): Boolean {
+        val registerError = activity?.findViewById<TextView>(R.id.register_error)
         if (body == "true") {
-            registerError.text = ""
+            registerError?.text = ""
             return true
         }
         var json: JSONArray? = null
@@ -52,20 +52,20 @@ object JsonUtils {
         }
         return when {
             status == 400 -> {
-                registerError.text = "The passwords don't match."
+                if (activity != null) registerError?.text = "The passwords don't match."
                 false
             }
             status == 500 -> {
-                registerError.text = "The server is down."
+                if (activity != null) registerError?.text = "The server is down."
                 false
             }
-            json?.getJSONObject(0)!!.has("errors") -> {
-                registerError.text =
+            body != null && json?.getJSONObject(0)!!.has("errors") -> {
+                registerError?.text =
                     json.getJSONObject(0).getJSONArray("ConfirmPassword").getString(0)
                 false
             }
-            json.getJSONObject(0).has("description") -> {
-                registerError.text = json.getJSONObject(0).getString("description")
+            body != null && json!!.getJSONObject(0).has("description") -> {
+                registerError?.text = json.getJSONObject(0).getString("description")
                 false
             }
             else -> true
