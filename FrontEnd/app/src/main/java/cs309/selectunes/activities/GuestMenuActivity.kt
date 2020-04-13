@@ -24,7 +24,7 @@ class GuestMenuActivity : AppCompatActivity() {
         val queue = findViewById<Button>(R.id.guest_current_queue)
 
         queue.setOnClickListener {
-            val intent = Intent(this, SongListActivity::class.java)
+            val intent = Intent(this, SongQueueActivity::class.java)
             intent.putExtra("previousActivity", "guest")
             startActivity(intent)
         }
