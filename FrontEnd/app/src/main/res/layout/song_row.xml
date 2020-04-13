@@ -18,7 +18,7 @@
 
         <TextView
             android:id="@+id/songName"
-            android:layout_width="286dp"
+            android:layout_width="278dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="Main Title"
@@ -28,13 +28,14 @@
 
         <TextView
             android:id="@+id/artistName"
-            android:layout_width="286dp"
+            android:layout_width="277dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="Sub Title"
             android:textColor="@color/colorText"
             android:textSize="12sp"
             android:textStyle="bold" />
+
         <!--so our layout is set-->
 
     </LinearLayout>

@@ -7,7 +7,7 @@
     tools:context=".activities.SongSearchActivity">
 
     <RelativeLayout
-        android:id="@+id/above_list"
+        android:id="@+id/queue_above_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
@@ -16,48 +16,28 @@
         android:layout_marginTop="0dp"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/search_song_input"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="98dp"
-            android:layout_marginTop="86dp"
-            android:layout_marginEnd="99dp"
-            android:autoText="false"
-            android:backgroundTint="@color/colorText"
-            android:ems="10"
-            android:hint="Song to Search"
-            android:inputType="text"
-            android:textColor="@color/colorText"
-            android:textColorHighlight="@color/colorText"
-            android:textColorHint="@color/colorText"
-            android:textColorLink="@color/colorText" />
-
         <Button
-            android:id="@+id/back_arrow_song_search"
+            android:id="@+id/back_arrow_song_queue"
             android:layout_width="16dp"
             android:layout_height="13dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="372dp"
-            android:layout_marginBottom="698dp"
+            android:layout_marginEnd="364dp"
+            android:layout_marginBottom="697dp"
             android:background="@drawable/arrow" />
     </RelativeLayout>
 
     <ListView
-        android:id="@+id/song_search_list"
+        android:id="@+id/song_queue_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/above_list"
+        android:layout_height="654dp"
+        android:layout_below="@id/queue_above_list"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="168dp"
+        android:layout_marginTop="72dp"
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="5dp"
         android:divider="#00000000" />

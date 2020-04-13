@@ -21,9 +21,16 @@ class GuestMenuActivity : AppCompatActivity() {
         val partyMembers = findViewById<Button>(R.id.party_members)
         val leaveParty = findViewById<Button>(R.id.leave_party)
         val backArrow = findViewById<Button>(R.id.back_arrow_guest)
+        val queue = findViewById<Button>(R.id.guest_current_queue)
+
+        queue.setOnClickListener {
+            val intent = Intent(this, SongListActivity::class.java)
+            intent.putExtra("previousActivity", "guest")
+            startActivity(intent)
+        }
 
         leaveParty.setOnClickListener {
-            HttpUtils.leaveParty(this, LoginActivity::class.java)
+            HttpUtils.leaveParty(this, ChooseActivity::class.java)
         }
 
         backArrow.setOnClickListener {
@@ -33,6 +40,13 @@ class GuestMenuActivity : AppCompatActivity() {
         songSearch.setOnClickListener {
             val intent = Intent(this, SongSearchActivity::class.java)
             intent.putExtra("previousActivity", "guest")
+            startActivity(intent)
+        }
+
+        partyMembers.setOnClickListener {
+            val intent = Intent(this, GuestListActivity::class.java)
+            intent.putExtra("previousActivity", "guest")
+            intent.putExtra("isGuest", true)
             startActivity(intent)
         }
     }

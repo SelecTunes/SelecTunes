@@ -3,16 +3,25 @@ package cs309.selectunes.services
 import android.content.Intent
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.microsoft.signalr.HubConnection
 import cs309.selectunes.R
+import cs309.selectunes.activities.GuestListActivity
 import cs309.selectunes.activities.HostMenuActivity
+import cs309.selectunes.activities.SongListActivity
 import cs309.selectunes.activities.SongSearchActivity
+import cs309.selectunes.adapter.GuestAdapter
+import cs309.selectunes.adapter.QueueAdapter
 import cs309.selectunes.adapter.SongAdapter
-import cs309.selectunes.models.Guest
 import cs309.selectunes.models.Song
 import cs309.selectunes.utils.HttpUtils
+import cs309.selectunes.utils.JsonUtils
+import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
 
@@ -93,56 +102,89 @@ class ServerServiceImpl : ServerService {
         requestQueue.add(jsonObjectRequest)
     }
 
-    fun kickGuest(givenEmail : String, activity : AppCompatActivity)
-    {
-        val json = JSONObject()
-        json.put("email", givenEmail)
-        val jsonObjectRequest = object : JsonObjectRequest(Method.POST, "https://coms-309-jr-2.cs.iastate.edu/api/Auth/Kick", json,
-            Response.Listener{
+    override fun getSongQueue(
+        activity: SongListActivity,
+        socket: HubConnection,
+        votes: Map<String, Int>
+    ) {
+        val url = "https://coms-309-jr-2.cs.iastate.edu/api/Song/Queue"
+        val jsonObjectRequest = StringRequest(
+            Request.Method.GET, url,
+            Response.Listener {
                 println(it)
+                try {
+                    val jsonObject = JSONObject(it)
+                    val voteableSongArray = jsonObject.getJSONArray("votable")
+                    val lockedSongArray = jsonObject.getJSONArray("lockedIn")
+                    val voteableSongList = JsonUtils.parseSongQueue(voteableSongArray, true)
+                    val lockedSongList = JsonUtils.parseSongQueue(lockedSongArray, false)
+                    val allSongs = ArrayList<Song>()
+                    allSongs.addAll(lockedSongList)
+                    allSongs.addAll(voteableSongList)
+                    val listView = activity.findViewById<ListView>(R.id.song_queue_list)
+                    val adapter = QueueAdapter(activity, allSongs, socket, votes)
+                    listView.adapter = adapter
+                } catch (e: JSONException) {
+                    println("The queue doesn't exist.")
+                }
             },
             Response.ErrorListener {
-                println("Error kicking user: ${it.networkResponse.statusCode}")
-                println(it.networkResponse.data.toString(StandardCharsets.UTF_8))
-            }) {
-            override fun getHeaders(): Map<String, String> {
-                val headers: MutableMap<String, String> = java.util.HashMap()
-                headers["Content-Type"] = "application/json"
-                headers["Accept"] = "application/json, text/json"
-                return headers
-            }
-        }
-        val requestQueue = Volley.newRequestQueue(activity)
+                if (it.networkResponse != null) {
+                    println("Error getting the song queue: ${it.networkResponse.statusCode}")
+                    println(it.networkResponse.data.toString(StandardCharsets.UTF_8))
+                }
+            })
+        val requestQueue = Volley.newRequestQueue(activity, HttpUtils.createAuthCookie(activity))
         requestQueue.add(jsonObjectRequest)
     }
 
-    fun getGuestList(activity: AppCompatActivity) : ArrayList<Guest>
-    {
-        var returnArrayList = ArrayList<Guest>()
-        val json = JSONObject()
-        val jsonObjectRequest = object : JsonObjectRequest(Method.GET, "https://coms-309-jr-2.cs.iastate.edu/api/Party/Members", json,
-            Response.Listener{
-                returnArrayList = parseGuests(it)
-            },
-            Response.ErrorListener {
-                println("Error kicking user: ${it.networkResponse.statusCode}")
-                println(it.networkResponse.data.toString(StandardCharsets.UTF_8))
-            }) {
+    override fun kickGuest(givenEmail: String, activity: GuestListActivity) {
+        val jsonObjectRequest = object : StringRequest(Method.POST, "https://coms-309-jr-2.cs.iastate.edu/api/Auth/Kick",
+                Response.Listener {
+                    this.getGuestList(activity, false)
+                },
+                Response.ErrorListener {
+                    println("Error kicking user: ${it.networkResponse.statusCode}")
+                    println(it.networkResponse.data.toString(StandardCharsets.UTF_8))
+                }) {
             override fun getHeaders(): Map<String, String> {
                 val headers: MutableMap<String, String> = java.util.HashMap()
-                headers["Content-Type"] = "application/json"
+                headers["Content-Type"] = "application/x-www-form-urlencoded"
                 headers["Accept"] = "application/json, text/json"
                 return headers
             }
+            override fun getParams(): Map<String, String> {
+                val params: MutableMap<String, String> = HashMap()
+                params["email"] = givenEmail
+                return params
+            }
         }
-        val requestQueue = Volley.newRequestQueue(activity)
+        val requestQueue = Volley.newRequestQueue(activity, HttpUtils.createAuthCookie(activity))
         requestQueue.add(jsonObjectRequest)
-        return returnArrayList
     }
 
-    private fun parseGuests(givenJson : JSONObject) : ArrayList<Guest>
-    {
-        var returnArrayList = ArrayList<Guest>()
-        return returnArrayList
+    override fun getGuestList(activity: GuestListActivity, isGuest: Boolean) {
+        val jsonObjectRequest = object : StringRequest(Method.GET, "https://coms-309-jr-2.cs.iastate.edu/api/Party/Members",
+                Response.Listener {
+                    val array = JSONArray(it)
+                    val guests = activity.parseGuests(array)
+                    activity.setContentView(R.layout.guest_list_menu)
+                    val listView = activity.findViewById<ListView>(R.id.guests)
+                    val adapter = GuestAdapter(activity, guests, activity, isGuest)
+                    listView.adapter = adapter
+                },
+                Response.ErrorListener {
+                    println("Error getting the memberList...")
+                }) {
+            override fun getHeaders(): Map<String, String> {
+                val headers: MutableMap<String, String> = java.util.HashMap()
+                headers["Content-Type"] = "application/json"
+                headers["Accept"] = "application/json, text/json, text/plain"
+                return headers
+            }
+        }
+        val requestQueue = Volley.newRequestQueue(activity, HttpUtils.createAuthCookie(activity))
+        requestQueue.add(jsonObjectRequest)
+
     }
 }

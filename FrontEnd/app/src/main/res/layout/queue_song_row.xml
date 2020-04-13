@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/queue_album_cover"
+        android:layout_width="85dp"
+        android:layout_height="82dp"
+        android:src="@mipmap/ic_launcher" />
+
+    <RelativeLayout
+        android:layout_width="299dp"
+        android:layout_height="106dp">
+
+        <TextView
+            android:id="@+id/queue_songName"
+            android:layout_width="272dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="23dp"
+            android:text="Main Title"
+            android:textColor="@color/colorText"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/queue_artistName"
+            android:layout_width="286dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="9dp"
+            android:text="Sub Title"
+            android:textColor="@color/colorText"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/upvote_button"
+            android:layout_width="37dp"
+            android:layout_height="26dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="46dp"
+            android:layout_marginEnd="258dp"
+            android:background="@drawable/thumbs_up_not" />
+
+        <Button
+            android:id="@+id/downvote_button"
+            android:layout_width="37dp"
+            android:layout_height="26dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="46dp"
+            android:layout_marginEnd="215dp"
+            android:background="@drawable/thumbs_down_not" />
+
+        <EditText
+            android:id="@+id/song_vote_total"
+            android:layout_width="58dp"
+            android:layout_height="29dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="43dp"
+            android:layout_marginEnd="148dp"
+            android:background="@null"
+            android:ems="10"
+            android:inputType="number"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+</LinearLayout>

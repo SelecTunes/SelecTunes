@@ -66,7 +66,8 @@ class SongSearchActivity : AppCompatActivity() {
                             songId,
                             artistName,
                             albumArtSrc,
-                            explicit
+                            explicit,
+                        null
                     )
             )
         }
