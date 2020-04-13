@@ -37,7 +37,7 @@ class HostMenuActivity : AppCompatActivity() {
         }
 
         songList.setOnClickListener{
-            val intent = Intent(this, SongListActivity::class.java)
+            val intent = Intent(this, SongQueueActivity::class.java)
             intent.putExtra("previousActivity", "host")
             startActivity(intent)
         }

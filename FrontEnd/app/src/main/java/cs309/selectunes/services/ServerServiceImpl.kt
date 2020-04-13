@@ -12,7 +12,7 @@ import com.microsoft.signalr.HubConnection
 import cs309.selectunes.R
 import cs309.selectunes.activities.GuestListActivity
 import cs309.selectunes.activities.HostMenuActivity
-import cs309.selectunes.activities.SongListActivity
+import cs309.selectunes.activities.SongQueueActivity
 import cs309.selectunes.activities.SongSearchActivity
 import cs309.selectunes.adapter.GuestAdapter
 import cs309.selectunes.adapter.QueueAdapter
@@ -103,9 +103,9 @@ class ServerServiceImpl : ServerService {
     }
 
     override fun getSongQueue(
-        activity: SongListActivity,
-        socket: HubConnection,
-        votes: Map<String, Int>
+        activity: SongQueueActivity,
+        socket: HubConnection?,
+        votes: Map<String, Int>?
     ) {
         val url = "https://coms-309-jr-2.cs.iastate.edu/api/Song/Queue"
         val jsonObjectRequest = StringRequest(
@@ -122,7 +122,7 @@ class ServerServiceImpl : ServerService {
                     allSongs.addAll(lockedSongList)
                     allSongs.addAll(voteableSongList)
                     val listView = activity.findViewById<ListView>(R.id.song_queue_list)
-                    val adapter = QueueAdapter(activity, allSongs, socket, votes)
+                    val adapter = QueueAdapter(activity, allSongs, socket!!, votes!!)
                     listView.adapter = adapter
                 } catch (e: JSONException) {
                     println("The queue doesn't exist.")
@@ -185,6 +185,5 @@ class ServerServiceImpl : ServerService {
         }
         val requestQueue = Volley.newRequestQueue(activity, HttpUtils.createAuthCookie(activity))
         requestQueue.add(jsonObjectRequest)
-
     }
 }

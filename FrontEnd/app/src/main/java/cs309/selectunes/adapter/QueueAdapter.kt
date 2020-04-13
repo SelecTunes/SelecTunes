@@ -10,11 +10,9 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import com.microsoft.signalr.HubConnection
 import cs309.selectunes.R
-import cs309.selectunes.activities.SongListActivity
+import cs309.selectunes.activities.SongQueueActivity
 import cs309.selectunes.models.Song
 import cs309.selectunes.utils.BitmapCache
 import java.net.URL
@@ -44,7 +42,7 @@ class QueueAdapter(
         val downvoteButton = row.findViewById<Button>(R.id.downvote_button)
         val songVoteTotal = row.findViewById<TextView>(R.id.song_vote_total)
         val songId = songList[position].id
-        val votedSongs = SongListActivity.songsVotedOn
+        val votedSongs = SongQueueActivity.songsVotedOn
 
         // Hide song vote options if the song is not voteable.
         if(!songList[position].voteable!!) {
@@ -71,26 +69,26 @@ class QueueAdapter(
                 socket.send("UpvoteSong", songId)
                 songVoteTotal.text = votes[songId]?.plus(1)?.toString() ?: "1"
                 upvoteButton.setBackgroundResource(R.drawable.thumbs_up_click)
-                SongListActivity.songsVotedOn[songId] = "UP"
+                SongQueueActivity.songsVotedOn[songId] = "UP"
             } else if(votedSongs.contains(songId) && votedSongs[songId] == "UP") {
                 socket.send("DownvoteSong", songId)
                 songVoteTotal.text = votes[songId]?.minus(1)?.toString() ?: "0"
                 upvoteButton.setBackgroundResource(R.drawable.thumbs_up_not)
-                SongListActivity.songsVotedOn.remove(songId)
+                SongQueueActivity.songsVotedOn.remove(songId)
             }
         }
 
         downvoteButton.setOnClickListener {
-            if(!SongListActivity.songsVotedOn.contains(songId)) {
+            if (!SongQueueActivity.songsVotedOn.contains(songId)) {
                 socket.send("DownvoteSong", songId)
                 songVoteTotal.text = votes[songId]?.minus(1)?.toString() ?: "-1"
                 downvoteButton.setBackgroundResource(R.drawable.thumbs_down_click)
-                SongListActivity.songsVotedOn[songId] = "DOWN"
+                SongQueueActivity.songsVotedOn[songId] = "DOWN"
             } else if(votedSongs.contains(songId) && votedSongs[songId] == "DOWN") {
                 socket.send("UpvoteSong", songId)
                 songVoteTotal.text = votes[songId]?.plus(1)?.toString() ?: "0"
                 downvoteButton.setBackgroundResource(R.drawable.thumbs_down_not)
-                SongListActivity.songsVotedOn.remove(songId)
+                SongQueueActivity.songsVotedOn.remove(songId)
             }
         }
 

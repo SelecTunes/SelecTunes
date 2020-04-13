@@ -3,7 +3,7 @@ package cs309.selectunes.services
 import androidx.appcompat.app.AppCompatActivity
 import com.microsoft.signalr.HubConnection
 import cs309.selectunes.activities.GuestListActivity
-import cs309.selectunes.activities.SongListActivity
+import cs309.selectunes.activities.SongQueueActivity
 import cs309.selectunes.activities.SongSearchActivity
 import cs309.selectunes.models.Song
 
@@ -43,9 +43,9 @@ interface ServerService {
      * @param votes map of votes by id to number of votes.
      */
     fun getSongQueue(
-        activity: SongListActivity,
-        socket: HubConnection,
-        votes: Map<String, Int>
+        activity: SongQueueActivity,
+        socket: HubConnection?,
+        votes: Map<String, Int>?
     )
 
     /**
