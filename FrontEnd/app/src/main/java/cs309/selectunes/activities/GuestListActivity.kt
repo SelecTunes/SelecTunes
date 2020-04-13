@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import cs309.selectunes.R
 import cs309.selectunes.models.Guest
 import cs309.selectunes.services.ServerServiceImpl
+import org.json.JSONArray
 
 /**
  * The guest list activity allows people
@@ -15,7 +16,7 @@ import cs309.selectunes.services.ServerServiceImpl
  */
 class GuestListActivity : AppCompatActivity()
 {
-    val guestList = ArrayList<Guest>()
+    var guestList = ArrayList<Guest>()
     override fun onCreate(instanceState: Bundle?) {
         super.onCreate(instanceState)
         setContentView(R.layout.guest_list_menu)
@@ -30,5 +31,9 @@ class GuestListActivity : AppCompatActivity()
     {
         super.onStart()
         ServerServiceImpl().getGuestList(this)
+
+        val fileText = this.javaClass.classLoader?.getResource("guestListExample.json")?.readText(Charsets.UTF_8)
+        val array = JSONArray(fileText)
+        guestList = ServerServiceImpl().parseGuests(array)
     }
 }

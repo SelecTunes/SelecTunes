@@ -2,10 +2,8 @@ package cs309.selectunes.activities
 
 import androidx.test.rule.ActivityTestRule
 import cs309.selectunes.models.Guest
-import cs309.selectunes.models.Song
 import cs309.selectunes.services.ServerService
 import org.json.JSONArray
-import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -21,12 +19,11 @@ class GuestListActivityTest {
 
     private lateinit var guestListActivity: GuestListActivity
 
-
+    private var guestList = ArrayList<Guest>()
     @Before
     fun setup() {
         guestListActivity = activityTestRule.activity
         serverService = Mockito.mock(ServerService::class.java)
-        var guestList = ArrayList<Guest>()
         // Just test the first five entries.
         guestList.add(Guest("test1@iastate.edu"))
         guestList.add(Guest("joshuae1@iastate.edu"))
@@ -44,7 +41,8 @@ class GuestListActivityTest {
 
         var isSame = true
         for (i in 0..2) {
-
+            val tempList = guestListActivity.guestList
+            isSame = isSame && tempList[i].email == guestList[i].email
         }
         assertEquals(isSame, true)
     }
