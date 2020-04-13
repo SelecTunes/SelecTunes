@@ -143,6 +143,20 @@ namespace SelecTunes.Backend.Helper
 
         public bool BanUser(User ToBan, User CurrentUser, ApplicationContext context)
         {
+            if(ToBan == null)
+            {
+                return false;
+            }
+
+            if(CurrentUser == null)
+            {
+                return false;
+            }
+
+            if (context == null)
+            {
+                return false;
+            }
             // Reset strike counter
             ToBan.Strikes = 0;
             // Do all of the lockout features
