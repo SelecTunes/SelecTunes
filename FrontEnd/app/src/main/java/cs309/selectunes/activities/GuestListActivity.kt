@@ -16,7 +16,6 @@ import org.json.JSONArray
  */
 class GuestListActivity : AppCompatActivity()
 {
-    var guestList = ArrayList<Guest>()
     override fun onCreate(instanceState: Bundle?) {
         super.onCreate(instanceState)
         setContentView(R.layout.guest_list_menu)
@@ -31,9 +30,5 @@ class GuestListActivity : AppCompatActivity()
     {
         super.onStart()
         ServerServiceImpl().getGuestList(this)
-
-        val fileText = this.javaClass.classLoader?.getResource("guestListExample.json")?.readText(Charsets.UTF_8)
-        val array = JSONArray(fileText)
-        guestList = ServerServiceImpl().parseGuests(array)
     }
 }

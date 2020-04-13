@@ -164,7 +164,7 @@ class ServerServiceImpl : ServerService {
         requestQueue.add(jsonObjectRequest)
     }
 
-    override fun getGuestList(activity: GuestListActivity){
+    override fun getGuestList(activity: AppCompatActivity){
         val jsonObjectRequest = object : StringRequest(Method.GET, "https://coms-309-jr-2.cs.iastate.edu/api/Party/Members",
                 Response.Listener {
                     val array = JSONArray(it)
