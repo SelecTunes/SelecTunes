@@ -50,7 +50,7 @@ namespace SelecTunes.Backend.Controllers
         {
             if (join == null)
             {
-                throw new InvalidOperationException("Attempting to Join Party with null code");
+                return new BadRequestObjectResult("Party is null");
             }
 
             string joinCode = join.JoinCode;
@@ -62,12 +62,12 @@ namespace SelecTunes.Backend.Controllers
 
             if (party == null) // no party with that join code
             {
-                throw new InvalidOperationException("A party with that code does not exist");
+                return new NotFoundObjectResult("No party with that code exists");
             }
 
             if (party.KickedMembers.Contains(ToJoin))
             {
-                throw new InvalidOperationException("You can't join a party you've been kicked from");
+                return new ForbidResult("You have been banned from that party");
             }
 
             // In the event they are already in a party, remove them from that, add them to new party
@@ -111,11 +111,17 @@ namespace SelecTunes.Backend.Controllers
             _logger.LogDebug("User {0} attempting to leave party", _userManager.GetUserAsync(HttpContext.User).Result);
 
             User ToLeave = _userManager.GetUserAsync(HttpContext.User).Result;
+
+            if (ToLeave == null)
+            {
+                return new UnauthorizedObjectResult("User needs to log in first");
+            }
+
             Party PartyToLeave = _context.Parties.Where(p => p == ToLeave.Party || p.Id == ToLeave.PartyId).FirstOrDefault();
 
             if (PartyToLeave == null)
             {
-                throw new InvalidOperationException("Trying to leave party that does not exist");
+                return new NotFoundObjectResult("No party with that code exists");
             }
 
             if (PartyToLeave.PartyHost == ToLeave && PartyToLeave.PartyHost.PartyId == PartyToLeave.Id)
@@ -151,16 +157,22 @@ namespace SelecTunes.Backend.Controllers
         public ActionResult<String> DisbandParty()
         {
             User PartyDisbander = _userManager.GetUserAsync(HttpContext.User).Result;
+
+            if (PartyDisbander == null)
+            {
+                return new UnauthorizedObjectResult("Need to log in first");
+            }
+
             Party PartyToDisband = _context.Parties.Where(p => p.Id == PartyDisbander.PartyId).FirstOrDefault();
 
             if (PartyToDisband == null)
             {
-                throw new InvalidOperationException("Attempting to dispand invalid party!");
+                return new NotFoundObjectResult("No party exists");
             }
 
             if (PartyToDisband.PartyHost != PartyDisbander)
             {
-                throw new InvalidOperationException("Attempting to disband party as non-host");
+                return new ForbidResult("Not the host of the party!");
             }
 
             if (DisbandCurrentParty(PartyToDisband))
@@ -188,14 +200,14 @@ namespace SelecTunes.Backend.Controllers
 
             if (user == null)
             {
-                throw new InvalidOperationException("User is null");
+                return new UnauthorizedObjectResult("Need to log in first");
             }
 
             Party party = _context.Parties.Where(p => p.Id == user.PartyId).FirstOrDefault();
 
             if (party == null)
             {
-                throw new InvalidOperationException("party is null");
+                return new NotFoundObjectResult("You are not a member of a party");
             }
 
             // Temporary fix.
@@ -228,14 +240,14 @@ namespace SelecTunes.Backend.Controllers
 
             if (user == null)
             {
-                throw new InvalidOperationException("User is null");
+                return new UnauthorizedObjectResult("User needs to log in first");
             }
 
             Party party = _context.Parties.Where(p => p.Id == user.PartyId).FirstOrDefault();
 
             if (party == null)
             {
-                throw new InvalidOperationException("party is null");
+                return new NotFoundObjectResult("User is not in a party");
             }
 
             party.AllowExplicit = !party.AllowExplicit;
@@ -263,14 +275,14 @@ namespace SelecTunes.Backend.Controllers
 
             if (user == null)
             {
-                throw new InvalidOperationException("User is null");
+                return new UnauthorizedObjectResult("User needs to log in");
             }
 
             Party party = _context.Parties.Where(p => p.Id == user.PartyId).FirstOrDefault();
 
             if (party == null)
             {
-                throw new InvalidOperationException("party is null");
+                return new NotFoundObjectResult("User is not in a party that exists");
             }
 
             return new JsonResult(new { allowed = party.AllowExplicit});
