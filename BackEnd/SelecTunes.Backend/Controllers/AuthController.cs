@@ -84,7 +84,7 @@ namespace SelecTunes.Backend.Controllers
             if (model == null)
             {
                 _logger.LogError("Input Model is NULL", model);
-                throw new ArgumentNullException(nameof(model));
+                return new BadRequestObjectResult("Input body is null");
             }
 
             _logger.LogDebug("Registering User with Email {}", model.Email);
@@ -122,7 +122,7 @@ namespace SelecTunes.Backend.Controllers
             if (model == null)
             {
                 _logger.LogError("Login Model is NULL", model);
-                throw new ArgumentNullException(nameof(model));
+                return new BadRequestObjectResult("Input body is null");
             }
 
             if (ModelState.IsValid)
@@ -169,7 +169,7 @@ namespace SelecTunes.Backend.Controllers
             if (login == null)
             { // If login is nil, throw a nil arg expection.
                 _logger.LogError("Spotify Login Model is NULL", login);
-                throw new ArgumentNullException(nameof(login));
+                return new BadRequestObjectResult("Input body is null");
             }
 
             AccessAuthToken tok = await _auth.TransmutAuthCode(login.Code).ConfigureAwait(false); // Change that login code to an access token and refresh token.
@@ -252,69 +252,12 @@ namespace SelecTunes.Backend.Controllers
 
             if (PartyToLeave == null)
             {
-                throw new InvalidOperationException("Trying to leave party that does not exist");
+                return new NotFoundObjectResult("Trying to leave party that does not exist");
             }
 
             PartyToLeave.PartyMembers.Remove(ToLeave);
 
             _context.SaveChanges();
-
-            return new JsonResult(new { Success = true });
-        }
-
-        /**
-         * Func Ban(string: email) -> async <ActionResult<String>>
-         * => true
-         *
-         * Bans the user specified by email address. This is a 2 week ban from using the app
-         * 
-         * This operation will only work if all conditions are met:
-         * 1. The UserToBan is in a party
-         * 2. The CurrentUser is a host
-         * 3. The CurrentUser is the host of the party of the UserToBan
-         *
-         * 
-         * 20/02/2020 - Alexander Young
-         * 04/03/2020 - Nathan Tucker - Fix method verb
-         */
-        [HttpPost]
-        [Authorize]
-        public async Task<ActionResult<String>> Ban([FromForm]string email)
-        {
-            if (email == null)
-            {
-                throw new ArgumentNullException(nameof(email));
-            }
-
-            User ToBan = await _userManager.FindByEmailAsync(email).ConfigureAwait(false);
-            User CurrentUser = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
-
-            if (ToBan == null)
-            {
-                throw new InvalidOperationException("User to banne is null.");
-            }
-
-            if (CurrentUser == null)
-            {
-                throw new InvalidOperationException("Current User is null.");
-            }
-
-            if (ToBan.PartyId == null || ToBan.Party == null)
-            {
-                throw new InvalidOperationException("User to banne is not a part of a party.");
-            }
-
-            if (CurrentUser.PartyId == null || CurrentUser.Party == null)
-            {
-                throw new InvalidOperationException("Current User is not a part of a party.");
-            }
-
-            if (ToBan.Party.PartyHost != CurrentUser)
-            {
-                throw new InvalidOperationException("Current User is not the host of the User to banne's party.");
-            }
-
-            _auth.BanUser(ToBan, CurrentUser, _context);
 
             return new JsonResult(new { Success = true });
         }
@@ -339,7 +282,7 @@ namespace SelecTunes.Backend.Controllers
         {
             if (email == null)
             {
-                throw new ArgumentNullException(nameof(email));
+                return new BadRequestObjectResult("Body is null");
             }
 
             User ToKick = await _userManager.FindByEmailAsync(email).ConfigureAwait(false);
@@ -347,24 +290,24 @@ namespace SelecTunes.Backend.Controllers
 
             if (ToKick == null)
             {
-                throw new InvalidOperationException("User to kick is null.");
+                return new NotFoundObjectResult("User does not exist");
             }
 
             if (CurrentUser == null)
             {
-                throw new InvalidOperationException("Current user is null.");
+                return new UnauthorizedObjectResult("Need to log in first");
             }
 
             Party KickFrom = _context.Parties.Where(p => p == ToKick.Party || p.Id == ToKick.PartyId).FirstOrDefault();
 
             if (KickFrom == null)
             {
-                throw new InvalidOperationException("Party is null");
+                return new NotFoundObjectResult("Party does not exist");
             }
 
             if (KickFrom.PartyHost != CurrentUser || KickFrom.PartyHost.Id != CurrentUser.Id)
             {
-                throw new InvalidOperationException("Current user is not a host user");
+                return new ForbidResult("Not a host user");
             }
 
             ToKick.Strikes += 1;

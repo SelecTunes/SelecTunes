@@ -224,14 +224,14 @@ namespace SelecTunes.Backend.Controllers
 
             if (user == null)
             {
-                throw new InvalidOperationException("User is null");
+                return new UnauthorizedObjectResult("User needs to log in");
             }
 
             Party party = _context.Parties.Where(p => p == user.Party || p.Id == user.PartyId).FirstOrDefault(); // find the party that they are member of
 
             if (party == null)
             {
-                throw new InvalidOperationException("User is not in a party");
+                return new NotFoundObjectResult("No party exists for this user");
             }
 
             byte[] ByteQueue = await _cache.GetAsync($"$queue:${party.JoinCode}").ConfigureAwait(false);
