@@ -1,8 +1,9 @@
-package cs309.selectunes.activities
+package cs309.selectunes
 
 import androidx.test.rule.ActivityTestRule
+import cs309.selectunes.activities.SongSearchActivity
 import cs309.selectunes.models.Song
-import cs309.selectunes.services.ServerService
+import cs309.selectunes.services.SongService
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -15,7 +16,7 @@ class SongSearchActivityTest {
     @get:Rule
     val activityTestRule = ActivityTestRule(SongSearchActivity::class.java)
 
-    private lateinit var serverService: ServerService
+    private lateinit var songService: SongService
 
     private lateinit var songSearchActivity: SongSearchActivity
 
@@ -24,7 +25,7 @@ class SongSearchActivityTest {
     @Before
     fun setup() {
         songSearchActivity = activityTestRule.activity
-        serverService = Mockito.mock(ServerService::class.java)
+        songService = Mockito.mock(SongService::class.java)
         songList = mutableListOf()
         // Just test the first five entries.
         songList.add(Song("Good News", "1DWZUa5Mzf2BwzpHtgbHPY", "Mac Miller", "https://i.scdn.co/image/ab67616d0000b27326b7dd89810cc1a40ada642c", false, null))
@@ -37,12 +38,12 @@ class SongSearchActivityTest {
 
     @Test
     fun testParseJson() {
-        Mockito.`when`(serverService.searchSong("Good News", songSearchActivity)).then {
+        Mockito.`when`(songService.searchSong("Good News", songSearchActivity)).then {
             val fileText = this.javaClass.classLoader?.getResource("example_song_list.json")?.readText(Charsets.UTF_8)
             val json = JSONObject(fileText ?: error("example song json file not found."))
             songSearchActivity.parseJson(json)
         }
-        serverService.searchSong("Good News", songSearchActivity)
+        songService.searchSong("Good News", songSearchActivity)
         var isSame = true
         for (i in 0..4) {
             val tempList = songSearchActivity.songList

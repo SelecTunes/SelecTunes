@@ -4,8 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import androidx.appcompat.app.AppCompatActivity
-import cs309.selectunes.utils.BitmapCache
-import cs309.selectunes.utils.HttpUtils
 import cs309.selectunes.utils.NukeSSLCerts
 
 
@@ -21,11 +19,5 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         startActivity(Intent(this, LoginActivity::class.java))
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        HttpUtils.endParty(this, null)
-        BitmapCache.clear()
     }
 }

@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import cs309.selectunes.R
 import cs309.selectunes.models.Song
-import cs309.selectunes.services.ServerServiceImpl
+import cs309.selectunes.services.SongServiceImpl
 import org.json.JSONObject
 
 /**
@@ -31,7 +31,7 @@ class SongSearchActivity : AppCompatActivity() {
 
         songSearch.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                ServerServiceImpl().searchSong(songSearch.text.toString(), this)
+                SongServiceImpl().searchSong(songSearch.text.toString(), this)
                 return@OnKeyListener true
             }
             false
@@ -67,7 +67,7 @@ class SongSearchActivity : AppCompatActivity() {
                             artistName,
                             albumArtSrc,
                             explicit,
-                        null
+                            null
                     )
             )
         }

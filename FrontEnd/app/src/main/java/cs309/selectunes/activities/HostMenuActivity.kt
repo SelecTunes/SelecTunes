@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import cs309.selectunes.R
+import cs309.selectunes.services.PartyServiceImpl
 import cs309.selectunes.services.SongServiceImpl
-import cs309.selectunes.utils.HttpUtils
 
 /**
  * The host menu activity is what a user
@@ -17,6 +17,7 @@ import cs309.selectunes.utils.HttpUtils
 class HostMenuActivity : AppCompatActivity() {
 
     private val songService = SongServiceImpl()
+    private val partyService = PartyServiceImpl()
 
     override fun onCreate(instanceState: Bundle?) {
         super.onCreate(instanceState)
@@ -49,11 +50,11 @@ class HostMenuActivity : AppCompatActivity() {
         }
 
         backArrow.setOnClickListener{
-            HttpUtils.endParty(this, ChooseActivity::class.java)
+            partyService.endParty(this, ChooseActivity::class.java)
         }
 
         endParty.setOnClickListener{
-            HttpUtils.endParty(this, ChooseActivity::class.java)
+            partyService.endParty(this, ChooseActivity::class.java)
         }
 
         explicit.setOnClickListener {

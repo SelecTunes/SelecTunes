@@ -8,8 +8,7 @@ import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationResponse
 import com.spotify.sdk.android.authentication.LoginActivity.REQUEST_CODE
 import cs309.selectunes.R
-import cs309.selectunes.services.ServerServiceImpl
-import cs309.selectunes.utils.HttpUtils
+import cs309.selectunes.services.PartyServiceImpl
 import cs309.selectunes.utils.SpotifyUtils
 
 /**
@@ -19,7 +18,7 @@ import cs309.selectunes.utils.SpotifyUtils
  */
 class ChooseActivity : AppCompatActivity() {
 
-    private val serverService = ServerServiceImpl()
+    private val partyService = PartyServiceImpl()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +28,7 @@ class ChooseActivity : AppCompatActivity() {
         val joinButton = findViewById<Button>(R.id.join_party_button)
 
         createButton.setOnClickListener {
-            HttpUtils.endParty(this, null)
+            partyService.endParty(this, null)
             SpotifyUtils.login(this)
         }
 
@@ -43,7 +42,7 @@ class ChooseActivity : AppCompatActivity() {
         if (requestCode == REQUEST_CODE) {
             val response = AuthenticationClient.getResponse(resultCode, intent)
             if (response.type == AuthenticationResponse.Type.CODE) {
-                serverService.createParty(response.code, this)
+                partyService.createParty(response.code, this)
             } else if (response.type == AuthenticationResponse.Type.ERROR) {
                 println("There was an error while logging into Spotify")
             }
