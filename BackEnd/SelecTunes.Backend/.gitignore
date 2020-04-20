@@ -3,3 +3,5 @@ obj/
 
 appsettings.Development.json
 cs309server.csproj.user
+
+*.log
