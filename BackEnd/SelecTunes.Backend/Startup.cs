@@ -17,6 +17,7 @@ using System.Net.Http;
 using Microsoft.Extensions.Options;
 using SelecTunes.Backend.Helper.Hubs;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Serilog;
 
 namespace SelecTunes.Backend
 {
@@ -144,6 +145,8 @@ namespace SelecTunes.Backend
             {
                 context.Database.Migrate();
             }
+
+            app.UseSerilogRequestLogging();
 
             app.UseSwagger();
 
