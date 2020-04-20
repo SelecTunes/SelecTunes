@@ -1,6 +1,10 @@
 package cs309.selectunes.utils
 
 import androidx.appcompat.app.AppCompatActivity
+import com.spotify.android.appremote.api.ConnectionParams
+import com.spotify.android.appremote.api.Connector
+import com.spotify.android.appremote.api.SpotifyAppRemote
+import com.spotify.protocol.types.PlayerState
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
@@ -14,15 +18,23 @@ object SpotifyUtils {
     private const val REQUEST_CODE = 1138
     private const val redirect = "https://coms-309-jr-2.cs.iastate.edu/api/auth/callback"
     private const val client = "cadb1b4323ac428fa153e815a7277dc6"
+    private val connectionParams = ConnectionParams.Builder(client)
+        .setRedirectUri(redirect)
+        .showAuthView(true)
+        .build()
+    private var mSpotifyAppRemote: SpotifyAppRemote? = null
+
     private val scopes = StringBuilder()
-            .append("user-read-private")
-            .append(" user-read-email")
-            .append(" user-read-playback-state")
-            .append(" user-modify-playback-state")
-            .append(" user-read-currently-playing")
-            .append(" streaming")
-            .toString()
-    private val spotify = AuthenticationRequest.Builder(client, AuthenticationResponse.Type.CODE, redirect)
+        .append("user-read-private")
+        .append(" user-read-email")
+        .append(" user-read-playback-state")
+        .append(" user-modify-playback-state")
+        .append(" user-read-currently-playing")
+        .append(" streaming")
+        .toString()
+
+    private val spotify =
+        AuthenticationRequest.Builder(client, AuthenticationResponse.Type.CODE, redirect)
             .setScopes(arrayOf(scopes))
             .build()
 
@@ -32,5 +44,32 @@ object SpotifyUtils {
      */
     fun login(activity: AppCompatActivity) {
         AuthenticationClient.openLoginActivity(activity, REQUEST_CODE, spotify)
+    }
+
+    fun connectToSpotify(activity: AppCompatActivity) {
+        SpotifyAppRemote.connect(activity, connectionParams,
+            object : Connector.ConnectionListener {
+                override fun onConnected(spotifyAppRemote: SpotifyAppRemote) {
+                    mSpotifyAppRemote = spotifyAppRemote
+                    mSpotifyAppRemote!!.playerApi.play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
+                    println("Connected")
+                    mSpotifyAppRemote!!.playerApi
+                        .subscribeToPlayerState()
+                        .setEventCallback { playerState: PlayerState ->
+                            val track = playerState.track
+                            if (track != null) {
+                                println(
+                                    "MainActivity " +
+                                            track.name.toString() + " by " + track.artist.name
+                                )
+                            }
+                        }
+                }
+
+                override fun onFailure(throwable: Throwable) {
+                    println(throwable.message)
+                    println("Connection Failed: ${throwable.stackTrace}")
+                }
+            })
     }
 }

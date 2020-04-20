@@ -42,6 +42,7 @@ class ChooseActivity : AppCompatActivity() {
         if (requestCode == REQUEST_CODE) {
             val response = AuthenticationClient.getResponse(resultCode, intent)
             if (response.type == AuthenticationResponse.Type.CODE) {
+                SpotifyUtils.connectToSpotify(this)
                 partyService.createParty(response.code, this)
             } else if (response.type == AuthenticationResponse.Type.ERROR) {
                 println("There was an error while logging into Spotify")
