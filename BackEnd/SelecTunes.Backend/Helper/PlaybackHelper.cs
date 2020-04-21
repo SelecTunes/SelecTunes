@@ -71,7 +71,7 @@ namespace SelecTunes.Backend.Helper
             if (!r.IsSuccessStatusCode)
             {
                 Console.WriteLine(await r.Content.ReadAsStringAsync().ConfigureAwait(false));
-                return false;
+                return true;
             }
 
             return true;
