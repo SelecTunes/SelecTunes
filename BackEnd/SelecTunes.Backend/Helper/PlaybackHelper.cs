@@ -15,9 +15,19 @@ namespace SelecTunes.Backend.Helper
 
         public async Task<bool> SendToSpotifyQueue(User user, string id)
         {
-            if(user == null)
+            if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
+            }
+
+            if (id == null)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
+            if (!id.StartsWith("spotify:track:", StringComparison.InvariantCulture))
+            {
+                id = $"spotify:track:{id}";
             }
 
             HttpClient c = ClientFactory.CreateClient("spotify");
