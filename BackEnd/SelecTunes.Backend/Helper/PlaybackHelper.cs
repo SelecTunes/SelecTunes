@@ -61,6 +61,11 @@ namespace SelecTunes.Backend.Helper
 
             HttpClient c = ClientFactory.CreateClient("spotify");
 
+            c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                "Bearer",
+                user.Token.AccessToken
+            );
+
             if (!await SendToSpotifyQueue(user, "spotify:track:4uLU6hMCjMI75M1A2tKUQC").ConfigureAwait(false))
             {
                 return false;
