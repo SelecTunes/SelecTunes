@@ -21,11 +21,14 @@ namespace SelecTunes.Backend.Helper.Hubs
 
         private readonly ApplicationContext _context;
 
-        public QueueHub(IDistributedCache cache, UserManager<User> manager, ApplicationContext context)
+        private readonly PlaybackHelper _playback;
+
+        public QueueHub(IDistributedCache cache, UserManager<User> manager, ApplicationContext context, PlaybackHelper playback)
         {
             _cache = cache ?? throw new ArgumentNullException(nameof(cache));
             _userManager = manager ?? throw new ArgumentNullException(nameof(manager));
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _playback = playback ?? throw new ArgumentNullException(nameof(playback));
         }
 
         public async Task JoinQueue(string queueName)
@@ -72,6 +75,7 @@ namespace SelecTunes.Backend.Helper.Hubs
 
             if (votes >= VotesToTriggerAction)
             {
+                await _playback.SendToSpotifyQueue(party.PartyHost, spotifyId).ConfigureAwait(false);
                 await MoveSongToFront(spotifyId).ConfigureAwait(true);
                 await _cache.RemoveAsync($"$votes:${partyId}:${spotifyId}").ConfigureAwait(false); // Remove it from the voteable pool, as it is no longer votable.
 
