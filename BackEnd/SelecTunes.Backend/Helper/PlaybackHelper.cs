@@ -26,9 +26,12 @@ namespace SelecTunes.Backend.Helper
                 user.Token.AccessToken
             );
 
-            KeyValuePair<string, string> formContent = new KeyValuePair<string, string>("uri", id);
+            using FormUrlEncodedContent formContent = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("uri", id),
+            });
 
-            HttpResponseMessage response = await c.PostAsJsonAsync(
+            HttpResponseMessage response = await c.PostAsync(
                 new Uri("me/player/queue", UriKind.Relative), // This is a Uri object instead of a string so VS can stop complaining.
                 formContent
             ).ConfigureAwait(false); // Post it over to spotify.
