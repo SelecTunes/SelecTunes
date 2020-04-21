@@ -33,8 +33,9 @@ namespace SelecTunes.Backend.Helper
                 formContent
             ).ConfigureAwait(false); // Post it over to spotify.
 
-            if (response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
+                Console.WriteLine(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
                 return false;
             }
 
@@ -57,8 +58,9 @@ namespace SelecTunes.Backend.Helper
 
             HttpResponseMessage r = await c.PutAsync(new Uri("me/player/play", UriKind.Relative), null).ConfigureAwait(false);
 
-            if (r.IsSuccessStatusCode)
+            if (!r.IsSuccessStatusCode)
             {
+                Console.WriteLine(await r.Content.ReadAsStringAsync().ConfigureAwait(false));
                 return false;
             }
 
