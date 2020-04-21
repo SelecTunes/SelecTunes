@@ -36,11 +36,11 @@ namespace SelecTunes.Backend.Helper
 
             string query = QueryHelpers.AddQueryString("me/player/queue", formContent);
 
-            using StringContent content = new StringContent(null, null, "application/json");
+            /*using StringContent content = new StringContent(null, null, "application/json");*/
 
             HttpResponseMessage response = await c.PostAsync(
                 query,
-                content
+                null
             ).ConfigureAwait(false); // Post it over to spotify.
 
             if (!response.IsSuccessStatusCode)
