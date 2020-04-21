@@ -1,13 +1,16 @@
 package cs309.selectunes.utils
 
-import android.graphics.BitmapFactory
+import android.graphics.Bitmap
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.microsoft.signalr.HubConnection
 import com.microsoft.signalr.HubConnectionBuilder
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
+import com.spotify.protocol.types.Image
+import com.spotify.protocol.types.ImageUri
 import com.spotify.protocol.types.PlayerState
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
@@ -15,7 +18,7 @@ import com.spotify.sdk.android.authentication.AuthenticationResponse
 import cs309.selectunes.R
 import cs309.selectunes.activities.GuestMenuActivity
 import cs309.selectunes.activities.HostMenuActivity
-import java.net.URL
+
 
 /**
  * General Spotify based utility methods.
@@ -65,8 +68,9 @@ object SpotifyUtils {
                                 .setEventCallback { playerState: PlayerState ->
                                     val track = playerState.track
                                     if (track != null) {
-                                        println("MainActivity " + track.name.toString())
-                                        hubConnection!!.send("CurrentSong", track.name.toString(), track.artist.toString(), track.imageUri)
+                                        println(track.name.toString())
+                                        val trackId = track.uri.replace("spotify:track:", "")
+                                        hubConnection!!.send("UpdateCurrentSong", track.imageUri.raw, track.name.toString(), track.artist.name.toString(), trackId)
                                     }
                                 }
                     }
@@ -86,15 +90,31 @@ object SpotifyUtils {
                 .withHeader("cookie", "Holtzmann=" + settings.getString("cookie", ""))
                 .build()
 
-        hubConnection!!.on("ReceiveSong", { uri, songName, artistName ->
-            val bitmap = BitmapFactory.decodeStream(URL(uri).openConnection().getInputStream())
-            if (activity is HostMenuActivity) {
-                activity.findViewById<ImageView>(R.id.host_song_img).setImageBitmap(bitmap)
-            } else if (activity is GuestMenuActivity) {
-                activity.findViewById<ImageView>(R.id.guest_song_img).setImageBitmap(bitmap)
-            }
-        }, String::class.java, String::class.java, String::class.java)
+        hubConnection!!.on("ReceiveSong", { uri, songName, artistName, trackId ->
+            var bitmap = BitmapCache.loadBitmap(trackId)
+            if (bitmap == null) {
+                mSpotifyAppRemote!!.imagesApi.getImage(ImageUri(uri), Image.Dimension.LARGE).setResultCallback {
+                    bitmap = it
+                    BitmapCache.store(trackId, bitmap!!)
+                    addSongUI(activity, songName, artistName, it)
+                }
+            } else addSongUI(activity, songName, artistName, bitmap!!)
+        }, String::class.java, String::class.java, String::class.java, String::class.java)
 
         hubConnection!!.start().blockingAwait()
+    }
+
+    private fun addSongUI(activity: AppCompatActivity, songName: String, artistName: String, bitmap: Bitmap) {
+        activity.runOnUiThread {
+            if (activity is HostMenuActivity) {
+                activity.findViewById<ImageView>(R.id.host_song_img).setImageBitmap(bitmap)
+                activity.findViewById<TextView>(R.id.host_song_name).text = songName
+                activity.findViewById<TextView>(R.id.host_song_artist).text = "By $artistName"
+            } else if (activity is GuestMenuActivity) {
+                activity.findViewById<ImageView>(R.id.guest_song_img).setImageBitmap(bitmap)
+                activity.findViewById<TextView>(R.id.host_song_name).text = songName
+                activity.findViewById<TextView>(R.id.host_song_artist).text = "By $artistName"
+            }
+        }
     }
 }
