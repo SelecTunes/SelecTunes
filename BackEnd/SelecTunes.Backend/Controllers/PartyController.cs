@@ -294,36 +294,6 @@ namespace SelecTunes.Backend.Controllers
             return new JsonResult(new { allowed = party.AllowExplicit });
         }
 
-        [Authorize]
-        [HttpGet("{token}")]
-        public async Task<IActionResult> Play(string token)
-        {
-            /*User host = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);*/
-
-            HttpClient c = _cf.CreateClient("spotify");
-
-            c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-                "Bearer",
-                /*host.Token.AccessToken*/
-                token
-            );
-
-            KeyValuePair<string, string> formContent = new KeyValuePair<string, string>("uri", "spotify:track:4uLU6hMCjMI75M1A2tKUQC");
-
-            HttpResponseMessage response = await c.PostAsJsonAsync(
-                new Uri("me/player/queue", UriKind.Relative), // This is a Uri object instead of a string so VS can stop complaining.
-                formContent
-            ).ConfigureAwait(false); // Post it over to spotify.
-
-            string x = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-            HttpResponseMessage r = await c.PutAsync(new Uri("me/player/play", UriKind.Relative), null).ConfigureAwait(false);
-
-            string z = await r.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-            return new JsonResult(new { Success = true, ResponseAddSong = x, ResponsePlaySong = z });
-        }
-
         /**
          * Func DisbandCurrentParty(Party: PartyToDisband) -> bool
          * => true

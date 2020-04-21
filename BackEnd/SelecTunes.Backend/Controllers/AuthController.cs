@@ -44,7 +44,9 @@ namespace SelecTunes.Backend.Controllers
 
         private readonly ILogger<AuthController> _logger;
 
-        public AuthController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, IConfiguration config, IOptions<AppSettings> options, UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AuthController> logger, AuthHelper auth)
+        private readonly PlaybackHelper _playback;
+
+        public AuthController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, IConfiguration config, IOptions<AppSettings> options, UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AuthController> logger, AuthHelper auth, PlaybackHelper playback)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context)); // Throw nil arg expection if context is nil.
             _cache = cache ?? throw new ArgumentNullException(nameof(cache)); // Throw nil arg expection if cache is nil.
@@ -55,6 +57,7 @@ namespace SelecTunes.Backend.Controllers
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager)); // "
             _logger = logger ?? throw new ArgumentNullException(nameof(logger)); // "
             _auth = auth ?? throw new ArgumentNullException(nameof(auth));
+            _playback = playback ?? throw new ArgumentNullException(nameof(playback));
         }
 
         // Example Code to get the Currently Logged In User.
@@ -229,6 +232,11 @@ namespace SelecTunes.Backend.Controllers
             _context.Parties.Add(party);
 
             _context.SaveChanges(); // Kommit to DB.
+
+            if (!await _playback.BeginPlayback(host).ConfigureAwait(false))
+            {
+                return new JsonResult(new { Success = false, Error = "Cannot start the party on Spotify" });
+            }
 
             return new JsonResult(new { Success = true, JoinCode = party.JoinCode }); // Return Party Join Code.
         }
