@@ -6,6 +6,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import cs309.selectunes.R
 import cs309.selectunes.services.PartyServiceImpl
+import cs309.selectunes.utils.SpotifyUtils
 
 /**
  * The guest menu activity is the view
@@ -51,5 +52,10 @@ class GuestMenuActivity : AppCompatActivity() {
             intent.putExtra("isGuest", true)
             startActivity(intent)
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        SpotifyUtils.createSpotifySocket(this)
     }
 }

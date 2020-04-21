@@ -1,6 +1,10 @@
 package cs309.selectunes.utils
 
+import android.graphics.BitmapFactory
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.microsoft.signalr.HubConnection
+import com.microsoft.signalr.HubConnectionBuilder
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
@@ -8,6 +12,10 @@ import com.spotify.protocol.types.PlayerState
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
+import cs309.selectunes.R
+import cs309.selectunes.activities.GuestMenuActivity
+import cs309.selectunes.activities.HostMenuActivity
+import java.net.URL
 
 /**
  * General Spotify based utility methods.
@@ -19,24 +27,25 @@ object SpotifyUtils {
     private const val redirect = "https://coms-309-jr-2.cs.iastate.edu/api/auth/callback"
     private const val client = "cadb1b4323ac428fa153e815a7277dc6"
     private val connectionParams = ConnectionParams.Builder(client)
-        .setRedirectUri(redirect)
-        .showAuthView(true)
-        .build()
+            .setRedirectUri(redirect)
+            .showAuthView(true)
+            .build()
     private var mSpotifyAppRemote: SpotifyAppRemote? = null
+    private var hubConnection: HubConnection? = null
 
     private val scopes = StringBuilder()
-        .append("user-read-private")
-        .append(" user-read-email")
-        .append(" user-read-playback-state")
-        .append(" user-modify-playback-state")
-        .append(" user-read-currently-playing")
-        .append(" streaming")
-        .toString()
+            .append("user-read-private")
+            .append(" user-read-email")
+            .append(" user-read-playback-state")
+            .append(" user-modify-playback-state")
+            .append(" user-read-currently-playing")
+            .append(" streaming")
+            .toString()
 
     private val spotify =
-        AuthenticationRequest.Builder(client, AuthenticationResponse.Type.CODE, redirect)
-            .setScopes(arrayOf(scopes))
-            .build()
+            AuthenticationRequest.Builder(client, AuthenticationResponse.Type.CODE, redirect)
+                    .setScopes(arrayOf(scopes))
+                    .build()
 
     /**
      * Opens the spotify login page and logs the user in.
@@ -48,28 +57,44 @@ object SpotifyUtils {
 
     fun connectToSpotify(activity: AppCompatActivity) {
         SpotifyAppRemote.connect(activity, connectionParams,
-            object : Connector.ConnectionListener {
-                override fun onConnected(spotifyAppRemote: SpotifyAppRemote) {
-                    mSpotifyAppRemote = spotifyAppRemote
-                    mSpotifyAppRemote!!.playerApi.play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
-                    println("Connected")
-                    mSpotifyAppRemote!!.playerApi
-                        .subscribeToPlayerState()
-                        .setEventCallback { playerState: PlayerState ->
-                            val track = playerState.track
-                            if (track != null) {
-                                println(
-                                    "MainActivity " +
-                                            track.name.toString() + " by " + track.artist.name
-                                )
-                            }
-                        }
-                }
+                object : Connector.ConnectionListener {
+                    override fun onConnected(spotifyAppRemote: SpotifyAppRemote) {
+                        mSpotifyAppRemote = spotifyAppRemote
+                        mSpotifyAppRemote!!.playerApi
+                                .subscribeToPlayerState()
+                                .setEventCallback { playerState: PlayerState ->
+                                    val track = playerState.track
+                                    if (track != null) {
+                                        println("MainActivity " + track.name.toString())
+                                        hubConnection!!.send("CurrentSong", track.name.toString(), track.artist.toString(), track.imageUri)
+                                    }
+                                }
+                    }
 
-                override fun onFailure(throwable: Throwable) {
-                    println(throwable.message)
-                    println("Connection Failed: ${throwable.stackTrace}")
-                }
-            })
+                    override fun onFailure(throwable: Throwable) {
+                        println(throwable.message)
+                        println("Connection Failed: ${throwable.stackTrace}")
+                    }
+                })
+    }
+
+    fun createSpotifySocket(activity: AppCompatActivity) {
+        val url = "http://coms-309-jr-2.cs.iastate.edu/spotify"
+
+        val settings = activity.getSharedPreferences("Cookie", 0)
+        hubConnection = HubConnectionBuilder.create(url)
+                .withHeader("cookie", "Holtzmann=" + settings.getString("cookie", ""))
+                .build()
+
+        hubConnection!!.on("ReceiveSong", { uri, songName, artistName ->
+            val bitmap = BitmapFactory.decodeStream(URL(uri).openConnection().getInputStream())
+            if (activity is HostMenuActivity) {
+                activity.findViewById<ImageView>(R.id.host_song_img).setImageBitmap(bitmap)
+            } else if (activity is GuestMenuActivity) {
+                activity.findViewById<ImageView>(R.id.guest_song_img).setImageBitmap(bitmap)
+            }
+        }, String::class.java, String::class.java, String::class.java)
+
+        hubConnection!!.start().blockingAwait()
     }
 }

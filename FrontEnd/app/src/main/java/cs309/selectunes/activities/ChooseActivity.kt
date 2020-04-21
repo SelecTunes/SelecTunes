@@ -45,7 +45,7 @@ class ChooseActivity : AppCompatActivity() {
                 SpotifyUtils.connectToSpotify(this)
                 partyService.createParty(response.code, this)
             } else if (response.type == AuthenticationResponse.Type.ERROR) {
-                println("There was an error while logging into Spotify")
+                println("There was an error while logging into Spotify ${response.error}")
             }
         }
     }
