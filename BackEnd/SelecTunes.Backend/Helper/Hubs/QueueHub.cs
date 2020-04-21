@@ -6,6 +6,7 @@ using SelecTunes.Backend.Data;
 using SelecTunes.Backend.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -75,7 +76,15 @@ namespace SelecTunes.Backend.Helper.Hubs
 
             if (votes >= VotesToTriggerAction)
             {
-                await _playback.SendToSpotifyQueue(party.PartyHost, spotifyId).ConfigureAwait(false);
+                User host = _context.Users.Where(u => u.Id == party.PartyHostId).FirstOrDefault();
+
+                if (host == null)
+                {
+                    Console.WriteLine("UpvoteSong PartyHost is null");
+                    return;
+                }
+
+                await _playback.SendToSpotifyQueue(host, spotifyId).ConfigureAwait(false);
                 await MoveSongToFront(spotifyId).ConfigureAwait(true);
                 await _cache.RemoveAsync($"$votes:${partyId}:${spotifyId}").ConfigureAwait(false); // Remove it from the voteable pool, as it is no longer votable.
 
