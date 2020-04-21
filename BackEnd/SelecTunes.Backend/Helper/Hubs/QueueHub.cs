@@ -172,11 +172,11 @@ namespace SelecTunes.Backend.Helper.Hubs
             await Clients.All.SendAsync("ReceiveMoveSongToFront", spotifyId).ConfigureAwait(false);
         }
 
-        public async Task UpdateCurrentSong(string image, string song, string artist)
+        public async Task UpdateCurrentSong(string image, string song, string artist, string track) // This will be called everytime the player state changes
         {
-            Console.WriteLine("Updating Current Song {0} {1} {2}", image, song, artist);
+            Console.WriteLine("Updating Current Song {0} {1} {2} {3}", image, song, artist, track);
 
-            await Clients.All.SendAsync("ReceiveSong", image, song, artist).ConfigureAwait(false);
+            await Clients.All.SendAsync("ReceiveSong", image, song, artist, track).ConfigureAwait(false);
         }
 
         public async Task RemoveSong(string spotifyId)
