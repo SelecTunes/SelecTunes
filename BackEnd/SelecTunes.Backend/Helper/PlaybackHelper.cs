@@ -1,4 +1,5 @@
-﻿using SelecTunes.Backend.Models;
+﻿using Microsoft.AspNetCore.WebUtilities;
+using SelecTunes.Backend.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,14 +27,18 @@ namespace SelecTunes.Backend.Helper
                 user.Token.AccessToken
             );
 
-            using FormUrlEncodedContent formContent = new FormUrlEncodedContent(new[]
-            {
-                new KeyValuePair<string, string>("uri", id),
-            });
+            c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            Dictionary<string, string> formContent = new Dictionary<string, string>
+            { 
+                {"uri", id},
+            };
+
+            string query = QueryHelpers.AddQueryString("me/player/queue", formContent);
 
             HttpResponseMessage response = await c.PostAsync(
-                new Uri("me/player/queue", UriKind.Relative), // This is a Uri object instead of a string so VS can stop complaining.
-                formContent
+                query,
+                null
             ).ConfigureAwait(false); // Post it over to spotify.
 
             if (!response.IsSuccessStatusCode)
