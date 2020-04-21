@@ -172,6 +172,13 @@ namespace SelecTunes.Backend.Helper.Hubs
             await Clients.All.SendAsync("ReceiveMoveSongToFront", spotifyId).ConfigureAwait(false);
         }
 
+        public async Task UpdateCurrentSong(object song)
+        {
+            Console.WriteLine(JsonConvert.SerializeObject(song));
+
+            await Clients.All.SendAsync("ReceiveSong", song).ConfigureAwait(false);
+        }
+
         public async Task RemoveSong(string spotifyId)
         {
             User user = await _userManager.GetUserAsync(Context.User).ConfigureAwait(false);
