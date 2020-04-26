@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using NUnit.Framework;
 using SelecTunes.Backend.Helper;
 using SelecTunes.Backend.Models;
@@ -49,39 +49,12 @@ namespace SelecTunes.Backend.Test.Controllers
         [Test]
         public void AssertBanUserReturnsFalseOnNullToBan()
         {
-            User CurrentUser = new User()
-            {
-                IsBanned = false,
-                Party = null,
-                PartyId = null,
-                Token = null,
-                Strikes = 0
-            };
-
-            User ToBan = new User()
-            {
-                IsBanned = false,
-                Party = null,
-                PartyId = null,
-                Token = null,
-                Strikes = 0
-            };
-
-            Assert.False(authHelper.BanUser(null, null, null));
+            Assert.False(AuthHelper.BanUser(null, null, null));
         }
 
         [Test]
         public void AssertBanUserReturnsFalseOnNullCurrent()
         {
-            User CurrentUser = new User()
-            {
-                IsBanned = false,
-                Party = null,
-                PartyId = null,
-                Token = null,
-                Strikes = 0
-            };
-
             User ToBan = new User()
             {
                 IsBanned = false,
@@ -91,7 +64,7 @@ namespace SelecTunes.Backend.Test.Controllers
                 Strikes = 0
             };
 
-            Assert.False(authHelper.BanUser(ToBan, null, null));
+            Assert.False(AuthHelper.BanUser(ToBan, null, null));
         }
 
         [Test]
@@ -115,14 +88,14 @@ namespace SelecTunes.Backend.Test.Controllers
                 Strikes = 0
             };
 
-            Assert.False(authHelper.BanUser(ToBan, CurrentUser, null));
+            Assert.False(AuthHelper.BanUser(ToBan, CurrentUser, null));
         }
 
         public class IdentityResultMock : IdentityResult
         {
             public IdentityResultMock(bool succeeded)
             {
-                this.Succeeded = succeeded;
+                Succeeded = succeeded;
             }
         }
 
@@ -130,7 +103,7 @@ namespace SelecTunes.Backend.Test.Controllers
         public void AssertSucceededReturnsSuccess()
         {
             IdentityResultMock identityResultMock = new IdentityResultMock(true);
-            Assert.AreEqual("Success", authHelper.ParseIdentityResult(identityResultMock));
+            Assert.AreEqual("Success", AuthHelper.ParseIdentityResult(identityResultMock));
         }
     }
 }

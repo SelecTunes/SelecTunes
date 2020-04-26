@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -11,7 +11,6 @@ using System.Net.Http;
 
 namespace SelecTunes.Backend.Test.Controllers
 {
-
     internal class SongControllerTest
     {
         private static readonly DbContextOptions optionBuilder = new DbContextOptionsBuilder<ApplicationContext>().UseInMemoryDatabase(databaseName: "selectunes").Options;
@@ -36,7 +35,7 @@ namespace SelecTunes.Backend.Test.Controllers
         [Test]
         public void AssertNeedsAuth()
         {
-            Assert.ThrowsAsync<NullReferenceException>(async () => await controller.Queue());
+            Assert.ThrowsAsync<NullReferenceException>(async () => await controller.Queue().ConfigureAwait(false));
         }
     }
 }

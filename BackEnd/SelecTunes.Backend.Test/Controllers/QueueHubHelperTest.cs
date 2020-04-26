@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SelecTunes.Backend.Helper.Hubs;
 using SelecTunes.Backend.Models;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace SelecTunes.Test.Controllers
 {
-    class QueueHubHelperTest
+    internal class QueueHubHelperTest
     {
         [Test]
         public void AssertThatBuildSongQueueWorks()
