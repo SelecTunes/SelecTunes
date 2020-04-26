@@ -36,37 +36,35 @@ namespace SelecTunes.Backend.Helper
                 throw new ArgumentOutOfRangeException(nameof(code));
             }
 
-            using (HttpClient c = ClientFactory.CreateClient("spotify-accounts")) // create a new client to spotify, see Startup
-            {
-                string clientHeader = Convert.ToBase64String(
-                    Encoding.ASCII.GetBytes(
-                        $"{ClientId}:{ClientSecret}"
-                    )
-                ); // Encode the Client ID and Client Secret to Base 64
+            using HttpClient c = ClientFactory.CreateClient("spotify-accounts");
+            string clientHeader = Convert.ToBase64String(
+                Encoding.ASCII.GetBytes(
+                    $"{ClientId}:{ClientSecret}"
+                )
+            ); // Encode the Client ID and Client Secret to Base 64
 
-                c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-                    "Basic",
-                    clientHeader
-                ); // Add the Authorization Header, now that it exists.
+            c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                "Basic",
+                clientHeader
+            ); // Add the Authorization Header, now that it exists.
 
-                using FormUrlEncodedContent formContent = new FormUrlEncodedContent(new[]
-                { // See https://developer.spotify.com/documentation/general/guides/authorization-guide/
-                    new KeyValuePair<string, string>("grant_type", "authorization_code"), 
-                    new KeyValuePair<string, string>("redirect_uri", RedirectUrl),
-                    new KeyValuePair<string, string>("code", code),
-                }); // Create a new FormContent to give to spotify.
+            using FormUrlEncodedContent formContent = new FormUrlEncodedContent(new[]
+            { // See https://developer.spotify.com/documentation/general/guides/authorization-guide/
+                new KeyValuePair<string, string>("grant_type", "authorization_code"),
+                new KeyValuePair<string, string>("redirect_uri", RedirectUrl),
+                new KeyValuePair<string, string>("code", code),
+            }); // Create a new FormContent to give to spotify.
 
-                HttpResponseMessage r = await c.PostAsync(
-                    new Uri("token", UriKind.Relative), // This is a Uri object instead of a string so VS can stop complaining.
-                    formContent
-                ).ConfigureAwait(false); // Post it over to spotify.
+            HttpResponseMessage r = await c.PostAsync(
+                new Uri("token", UriKind.Relative), // This is a Uri object instead of a string so VS can stop complaining.
+                formContent
+            ).ConfigureAwait(false); // Post it over to spotify.
 
-                string s = await r.Content.ReadAsStringAsync().ConfigureAwait(false); // Await the result response.
+            string s = await r.Content.ReadAsStringAsync().ConfigureAwait(false); // Await the result response.
 
-                AccessAuthToken content = JsonConvert.DeserializeObject<AccessAuthToken>(s); // Deserialize it to a AccessToken.
+            AccessAuthToken content = JsonConvert.DeserializeObject<AccessAuthToken>(s); // Deserialize it to a AccessToken.
 
-                return content;
-            }
+            return content;
         }
 
         public async Task<AccessAuthToken> AssertValidLogin(AccessAuthToken token, Boolean loopUntilSuccess)
@@ -142,7 +140,7 @@ namespace SelecTunes.Backend.Helper
             return user;
         }
 
-        public bool BanUser(User ToBan, User CurrentUser, ApplicationContext context)
+        public static bool BanUser(User ToBan, User CurrentUser, ApplicationContext context)
         {
             if(ToBan == null)
             {
@@ -173,7 +171,7 @@ namespace SelecTunes.Backend.Helper
             return true;
         }
 
-        public String ParseIdentityResult(IdentityResult identityResult)
+        public static string ParseIdentityResult(IdentityResult identityResult)
         {
             if (identityResult == null)
             {

@@ -1,23 +1,23 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
-using SelecTunes.Backend.Data;
-using SelecTunes.Backend.Models.SongSearchIngestion;
-using Newtonsoft.Json;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using SelecTunes.Backend.Models;
-using System.Linq;
-using Microsoft.AspNetCore.Authorization;
-using System.Net;
-using System.Security.Claims;
-using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using System.Collections.Generic;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using SelecTunes.Backend.Data;
 using SelecTunes.Backend.Helper;
+using SelecTunes.Backend.Models;
+using SelecTunes.Backend.Models.OneOff;
+using SelecTunes.Backend.Models.SongSearchIngestion;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -65,7 +65,7 @@ namespace SelecTunes.Backend.Controllers
 
             try
             {
-                SpotifyTracksResponseBody tracks = await Search<SpotifyTracksResponseBody>("track", songToSearch, HttpContext.User, user, party).ConfigureAwait(false);
+                SpotifyTracksResponseBody tracks = await Search<SpotifyTracksResponseBody>("track", songToSearch, user, party).ConfigureAwait(false);
                 if (!party.AllowExplicit)
                 {
                     tracks.Tracks.Items = tracks.Tracks.Items.Where(x => !x.Explicit).ToList();
@@ -78,7 +78,7 @@ namespace SelecTunes.Backend.Controllers
             {
                 Console.WriteLine("ArgNullException Occurred: {0}", e);
                 _logger.LogDebug("Search Called with NULL Query {}", e);
-                return new BadRequestObjectResult("Query is null.");
+                return BadRequest("Query is null.");
             }
             catch (InvalidOperationException e)
             {
@@ -113,14 +113,14 @@ namespace SelecTunes.Backend.Controllers
 
             try
             {
-                SpotifyArtistResponseBody artists = await Search<SpotifyArtistResponseBody>("artist", artistToSearch, HttpContext.User, user, party).ConfigureAwait(false);
+                SpotifyArtistResponseBody artists = await Search<SpotifyArtistResponseBody>("artist", artistToSearch, user, party).ConfigureAwait(false);
                 
                 return Ok(artists);
             }
             catch (ArgumentNullException e)
             {
                 _logger.LogDebug("Search Called with NULL Query {}", e);
-                return new BadRequestObjectResult("Query is null.");
+                return BadRequest("Query is null.");
             }
             catch (InvalidOperationException e)
             {
@@ -137,7 +137,7 @@ namespace SelecTunes.Backend.Controllers
         }
 
         /**
-         * Func AddToQueue(<Song> :SongToAdd) -> async <ActionResult<String>>
+         * Func AddToQueue(<Song> :SongToAdd) -> async <ActionResult<string>>
          * => true
          *
          * 
@@ -149,11 +149,11 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<String>> AddToQueue([FromBody]Song SongToAdd)
+        public async Task<ActionResult<string>> AddToQueue([FromBody]Song SongToAdd)
         {
             if (SongToAdd == null)
             {
-                return new BadRequestObjectResult("Query is null.");
+                return BadRequest("Query is null.");
             }
 
             User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false); // Find the current user asking to join a party
@@ -177,7 +177,7 @@ namespace SelecTunes.Backend.Controllers
                 queue.Enqueue(SongToAdd);
                 await _cache.SetStringAsync($"$queue:${party.JoinCode}", JsonConvert.SerializeObject(queue)).ConfigureAwait(false);
                 
-                return new JsonResult(new { Success = true });
+                return Ok(new { Success = true });
             }
 
             byte[] q = await _cache.GetAsync($"$locked:${party.JoinCode}").ConfigureAwait(false);
@@ -193,7 +193,7 @@ namespace SelecTunes.Backend.Controllers
                 Queue<Song> queue = new Queue<Song>();
                 queue.Enqueue(SongToAdd);
                 await _cache.SetStringAsync($"$queue:${party.JoinCode}", JsonConvert.SerializeObject(queue)).ConfigureAwait(false);
-                return new JsonResult(new { Success = true });
+                return Ok(new { Success = true });
             }
 
             CurrentQueue.Enqueue(SongToAdd);
@@ -201,11 +201,11 @@ namespace SelecTunes.Backend.Controllers
             // Write the new queue to the redis cache. Because it used the old key from the key value pair, the old one will be written over
             await _cache.SetStringAsync($"$queue:${party.JoinCode}", JsonConvert.SerializeObject(CurrentQueue)).ConfigureAwait(false);
 
-            return new JsonResult(new { Success = true });
+            return Ok(new { Success = true });
         }
 
         /**
-         * Func Queue() -> async <ActionResult<String>>
+         * Func Queue() -> async <ActionResult<string>>
          * => JSON representation of Song Queue of the current User's Party
          *
          * Send a GET request to the endpoint to get a queue
@@ -218,32 +218,32 @@ namespace SelecTunes.Backend.Controllers
          */
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<String>> Queue()
+        public async Task<ActionResult<string>> Queue()
         {
             User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false); // Find the current user asking to join a party
 
             if (user == null)
             {
-                return new UnauthorizedObjectResult("User needs to log in");
+                return Unauthorized("User needs to log in");
             }
 
             Party party = _context.Parties.Where(p => p == user.Party || p.Id == user.PartyId).FirstOrDefault(); // find the party that they are member of
 
             if (party == null)
             {
-                return new NotFoundObjectResult("No party exists for this user");
+                return NotFound("No party exists for this user");
             }
 
             byte[] ByteQueue = await _cache.GetAsync($"$queue:${party.JoinCode}").ConfigureAwait(false);
             if (ByteQueue == null)
             {
-                return new JsonResult(new { Success = false });
+                return BadRequest(new { Success = false });
             }
 
             byte[] locked = await _cache.GetAsync($"$locked:${party.JoinCode}").ConfigureAwait(false);
             if (locked == null)
             {
-                return new JsonResult(new { Success = false });
+                return BadRequest(new { Success = false });
             }
 
             Queue<Song> lockedIn = JsonConvert.DeserializeObject<Queue<Song>>(Encoding.UTF8.GetString(locked));
@@ -251,11 +251,6 @@ namespace SelecTunes.Backend.Controllers
             Queue<Song> queue = JsonConvert.DeserializeObject<Queue<Song>>(Encoding.UTF8.GetString(ByteQueue));
 
             return Ok(new { LockedIn = lockedIn, Votable = queue});
-        }
-
-        public partial class GetDeleteThis
-        {
-            public string Id { get; set; }
         }
 
         [Authorize]
@@ -313,7 +308,7 @@ namespace SelecTunes.Backend.Controllers
          * 15/02/2020 D/M/Y - Nathan Tucker - Creation
          * 16/02/2020 D/M/Y - Alexander Young - Finalize
          */
-        private async Task<T> Search<T>(string type, SearchQuery query, ClaimsPrincipal context, User user, Party party)
+        private async Task<T> Search<T>(string type, SearchQuery query, User user, Party party)
         {
             if (query == null)
             {

@@ -1,23 +1,22 @@
-using System;
-using SelecTunes.Backend.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.HttpOverrides;
-using System.Net;
-using Microsoft.OpenApi.Models;
-using SelecTunes.Backend.Models;
-using Microsoft.AspNetCore.Http;
-using SelecTunes.Backend.Helper;
-using System.Net.Http;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
+using SelecTunes.Backend.Data;
+using SelecTunes.Backend.Helper;
 using SelecTunes.Backend.Helper.Hubs;
-using Microsoft.AspNetCore.Cors.Infrastructure;
+using SelecTunes.Backend.Models;
 using Serilog;
+using System;
+using System.Net;
+using System.Net.Http;
 
 namespace SelecTunes.Backend
 {
@@ -182,7 +181,6 @@ namespace SelecTunes.Backend
                 endpoints.MapControllers();
                 endpoints.MapHub<QueueHub>("/queue");
                 endpoints.MapHub<SpotifyHub>("/spotify");
-                endpoints.MapHub<ChatHub>("/chat");
             });
         }
     }

@@ -1,23 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Moq;
 using NUnit.Framework;
-using SelecTunes.Backend.Data;
 using SelecTunes.Backend.Helper;
 using SelecTunes.Backend.Models;
 using SelecTunes.Backend.Models.Auth;
 using System;
-using System.Collections.Generic;
 
 namespace SelecTunes.Backend.Test.Controllers
 {
-
     internal class AuthHelperTest
     {
         private readonly AuthHelper authHelper;
-
-        private static readonly DbContextOptions contextOptions = new DbContextOptionsBuilder<ApplicationContext>().UseInMemoryDatabase(databaseName: "selectunes").Options;
-        private readonly Mock<ApplicationContext> mockContext = new Mock<ApplicationContext>(contextOptions);
 
         public AuthHelperTest() => authHelper = new AuthHelper();
 
@@ -57,39 +49,12 @@ namespace SelecTunes.Backend.Test.Controllers
         [Test]
         public void AssertBanUserReturnsFalseOnNullToBan()
         {
-            User CurrentUser = new User()
-            {
-                IsBanned = false,
-                Party = null,
-                PartyId = null,
-                Token = null,
-                Strikes = 0
-            };
-
-            User ToBan = new User()
-            {
-                IsBanned = false,
-                Party = null,
-                PartyId = null,
-                Token = null,
-                Strikes = 0
-            };
-
-            Assert.False(authHelper.BanUser(null, null, null));
+            Assert.False(AuthHelper.BanUser(null, null, null));
         }
 
         [Test]
         public void AssertBanUserReturnsFalseOnNullCurrent()
         {
-            User CurrentUser = new User()
-            {
-                IsBanned = false,
-                Party = null,
-                PartyId = null,
-                Token = null,
-                Strikes = 0
-            };
-
             User ToBan = new User()
             {
                 IsBanned = false,
@@ -99,7 +64,7 @@ namespace SelecTunes.Backend.Test.Controllers
                 Strikes = 0
             };
 
-            Assert.False(authHelper.BanUser(ToBan, null, null));
+            Assert.False(AuthHelper.BanUser(ToBan, null, null));
         }
 
         [Test]
@@ -123,14 +88,14 @@ namespace SelecTunes.Backend.Test.Controllers
                 Strikes = 0
             };
 
-            Assert.False(authHelper.BanUser(ToBan, CurrentUser, null));
+            Assert.False(AuthHelper.BanUser(ToBan, CurrentUser, null));
         }
 
         public class IdentityResultMock : IdentityResult
         {
             public IdentityResultMock(bool succeeded)
             {
-                this.Succeeded = succeeded;
+                Succeeded = succeeded;
             }
         }
 
@@ -138,7 +103,7 @@ namespace SelecTunes.Backend.Test.Controllers
         public void AssertSucceededReturnsSuccess()
         {
             IdentityResultMock identityResultMock = new IdentityResultMock(true);
-            Assert.AreEqual("Success", authHelper.ParseIdentityResult(identityResultMock));
+            Assert.AreEqual("Success", AuthHelper.ParseIdentityResult(identityResultMock));
         }
     }
 }
