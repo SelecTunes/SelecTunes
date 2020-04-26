@@ -97,10 +97,10 @@ namespace SelecTunes.Backend.Controllers
                 if (identityResult.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, true).ConfigureAwait(false);
-                    return new JsonResult(true);
+                    return Ok(true);
                 }
 
-                return new JsonResult(identityResult.Errors);
+                return BadRequest(_auth.ParseIdentityResult(identityResult));
             }
 
             return new JsonResult(ModelState);
