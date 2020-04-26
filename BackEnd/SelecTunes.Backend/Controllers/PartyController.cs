@@ -36,7 +36,7 @@ namespace SelecTunes.Backend.Controllers
         }
 
         /**
-         * Func JoinParty(string :joinCode) -> ActionResult<String>
+         * Func JoinParty(string :joinCode) -> ActionResult<string>
          * => party join code
          * 
          * Send a POST request to /api/party/joinparty with a join code
@@ -47,7 +47,7 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpPost]
         [Authorize]
-        public ActionResult<String> JoinParty([FromBody]JoinRequest join)
+        public async Task<ActionResult<string>> JoinParty([FromBody]JoinRequest code)
         {
             if (join == null)
             {
@@ -97,7 +97,7 @@ namespace SelecTunes.Backend.Controllers
         }
 
         /**
-         * Func LeaveParty() -> ActionResult<String>
+         * Func LeaveParty() -> ActionResult<string>
          *
          * Send a POST request to /api/party/leaveparty
          * The user that sent the request will be removed from the party which they are currently in
@@ -107,7 +107,7 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpPost]
         [Authorize]
-        public ActionResult<String> LeaveParty()
+        public ActionResult<string> LeaveParty()
         {
             _logger.LogDebug("User {0} attempting to leave party", _userManager.GetUserAsync(HttpContext.User).Result);
 
@@ -143,7 +143,7 @@ namespace SelecTunes.Backend.Controllers
         }
 
         /**
-         * Func DisbandParty -> ActionResult<String>
+         * Func DisbandParty -> ActionResult<string>
          *
          * Send a DELTE request to /api/party/disband
          * 
@@ -156,7 +156,7 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpDelete]
         [Authorize]
-        public ActionResult<String> DisbandParty()
+        public async Task<ActionResult<string>> DisbandParty()
         {
             User PartyDisbander = _userManager.GetUserAsync(HttpContext.User).Result;
 
@@ -186,7 +186,7 @@ namespace SelecTunes.Backend.Controllers
         }
 
         /**
-         * Func Members -> ActionResult<String>
+         * Func Members -> ActionResult<string>
          *
          * Send a GET request to /api/party/members
          *
@@ -196,7 +196,7 @@ namespace SelecTunes.Backend.Controllers
          */
         [Authorize]
         [HttpGet]
-        public ActionResult<String> Members()
+        public async Task<ActionResult<string>> Members()
         {
             User user = _userManager.GetUserAsync(HttpContext.User).Result;
 
@@ -236,7 +236,7 @@ namespace SelecTunes.Backend.Controllers
         [Authorize]
         [Route("/api/party/explicit")]
         [HttpPost]
-        public ActionResult<String> ToggleExplicit()
+        public async Task<ActionResult<string>> ToggleExplicit()
         {
             User user = _userManager.GetUserAsync(HttpContext.User).Result;
 
@@ -260,7 +260,7 @@ namespace SelecTunes.Backend.Controllers
         }
 
         /**
-         * Func ViewExplicit() -> ActionResult<String>
+         * Func ViewExplicit() -> ActionResult<string>
          * => true
          *
          * Send a GET request to the endpoint to view the current status of explicit song searches
@@ -271,7 +271,7 @@ namespace SelecTunes.Backend.Controllers
         [Authorize]
         [Route("/api/party/explicit")]
         [HttpGet]
-        public ActionResult<String> ViewExplicit()
+        public async Task<ActionResult<string>> ViewExplicit()
         {
             User user = _userManager.GetUserAsync(HttpContext.User).Result;
 

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using SelecTunes.Backend.Data;
 using SelecTunes.Backend.Helper.Exceptions;
@@ -173,7 +173,7 @@ namespace SelecTunes.Backend.Helper
             return true;
         }
 
-        public String ParseIdentityResult(IdentityResult identityResult)
+        public static string ParseIdentityResult(IdentityResult identityResult)
         {
             if (identityResult == null)
             {

@@ -137,7 +137,7 @@ namespace SelecTunes.Backend.Controllers
         }
 
         /**
-         * Func AddToQueue(<Song> :SongToAdd) -> async <ActionResult<String>>
+         * Func AddToQueue(<Song> :SongToAdd) -> async <ActionResult<string>>
          * => true
          *
          * 
@@ -149,7 +149,7 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<String>> AddToQueue([FromBody]Song SongToAdd)
+        public async Task<ActionResult<string>> AddToQueue([FromBody]Song SongToAdd)
         {
             if (SongToAdd == null)
             {
@@ -205,7 +205,7 @@ namespace SelecTunes.Backend.Controllers
         }
 
         /**
-         * Func Queue() -> async <ActionResult<String>>
+         * Func Queue() -> async <ActionResult<string>>
          * => JSON representation of Song Queue of the current User's Party
          *
          * Send a GET request to the endpoint to get a queue
@@ -218,7 +218,7 @@ namespace SelecTunes.Backend.Controllers
          */
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<String>> Queue()
+        public async Task<ActionResult<string>> Queue()
         {
             User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false); // Find the current user asking to join a party
 

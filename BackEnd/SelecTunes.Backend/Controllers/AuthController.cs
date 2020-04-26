@@ -50,7 +50,7 @@ namespace SelecTunes.Backend.Controllers
 
         // Example Code to get the Currently Logged In User.
         [HttpGet]
-        public async Task<ActionResult<String>> GetCurrentUserEmail()
+        public async Task<ActionResult<string>> GetCurrentUserEmail()
         {
             User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
@@ -70,7 +70,7 @@ namespace SelecTunes.Backend.Controllers
          * 11/02/2020 D/M/Y - Alexander Young - Finalize
          */
         [HttpPost]
-        public async Task<ActionResult<String>> Register([FromForm]InputModel model)
+        public async Task<ActionResult<string>> Register([FromForm]InputModel model)
         {
             if (model == null)
             {
@@ -97,7 +97,7 @@ namespace SelecTunes.Backend.Controllers
         }
 
         /**
-         * Func Login(<InputModel> :model) -> async <ActionResult<String>>
+         * Func Login(<InputModel> :model) -> async <ActionResult<string>>
          * => SignInResult.Succeeded
          * 
          * 1. Takes a username and password.
@@ -107,7 +107,7 @@ namespace SelecTunes.Backend.Controllers
          * 11/02/2020 D/M/Y - Alexander Young - Finalize
          */
         [HttpPost]
-        public async Task<ActionResult<String>> Login([FromForm]InputModel model)
+        public async Task<ActionResult<string>> Login([FromForm]InputModel model)
         {
             if (model == null)
             {
@@ -142,7 +142,7 @@ namespace SelecTunes.Backend.Controllers
         
 
         /**
-         * Func Callback(<SpotifyLogin> :login) -> async <ActionResult<String>>
+         * Func Callback(<SpotifyLogin> :login) -> async <ActionResult<string>>
          * => Party.JoinCode
          * 
          * 1. Takes in a Spotify login token, and changes it into a accesstoken.
@@ -154,7 +154,7 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<String>> Callback([FromQuery]SpotifyLogin login)
+        public async Task<ActionResult<string>> Callback([FromQuery]SpotifyLogin login)
         {
             if (login == null)
             { // If login is nil, throw a nil arg expection.
@@ -236,7 +236,7 @@ namespace SelecTunes.Backend.Controllers
         }
 
         /**
-         * Func Logout() -> async <ActionResult<String>>
+         * Func Logout() -> async <ActionResult<string>>
          * => true
          *
          * Attempts to log out the current user from the service. If they are a member of any parties, remove them from the party
@@ -247,7 +247,7 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<String>> Logout()
+        public async Task<ActionResult<string>> Logout()
         {
             User ToLeave = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
             Party PartyToLeave = _context.Parties.Where(p => p == ToLeave.Party || p.Id == ToLeave.PartyId).FirstOrDefault();
@@ -265,7 +265,7 @@ namespace SelecTunes.Backend.Controllers
         }
 
         /**
-         * Func Kick(string: email) -> async <ActionResult<String>>
+         * Func Kick(string: email) -> async <ActionResult<string>>
          * => true
          *
          * Kicks the user specified by email address.
@@ -280,7 +280,7 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<String>> Kick([FromForm]string email)
+        public async Task<ActionResult<string>> Kick([FromForm]string email)
         {
             if (email == null)
             {
