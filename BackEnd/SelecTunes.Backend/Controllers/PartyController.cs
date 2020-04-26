@@ -298,6 +298,23 @@ namespace SelecTunes.Backend.Controllers
          */
         private bool DisbandCurrentParty(Party PartyToDisband)
         {
+            if (PartyToDisband == null)
+            {
+                return false;
+            }
+
+            PartyToDisband.PartyMembers.Clear();
+            PartyToDisband.KickedMembers.Clear();
+
+            try { 
+                _context.SaveChanges();
+            } 
+            catch (DbUpdateException)
+            {
+                _logger.LogError("Error disbanding party");
+                return false;
+            }
+
             _context.Parties.Remove(PartyToDisband);
 
             try
