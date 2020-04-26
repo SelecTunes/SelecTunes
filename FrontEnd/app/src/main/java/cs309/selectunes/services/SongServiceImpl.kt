@@ -147,4 +147,23 @@ class SongServiceImpl : SongService {
         val requestQueue = Volley.newRequestQueue(activity, HttpUtils.createAuthCookie(activity))
         requestQueue.add(jsonObjectRequest)
     }
+
+    override fun removeLockedSong(song: String, activity: AppCompatActivity) {
+        val json = JSONObject()
+        json.put("id", song)
+        val jsonObjectRequest = object : JsonObjectRequest(Method.POST, "https://coms-309-jr-2.cs.iastate.edu/api/Song/ThisSongWasPlayed", json, null,
+                Response.ErrorListener {
+                    println("Error removing the song $song from queue: ${it.networkResponse.statusCode}")
+                    println(it.networkResponse.data.toString(StandardCharsets.UTF_8))
+                }) {
+            override fun getHeaders(): Map<String, String> {
+                val headers: MutableMap<String, String> = java.util.HashMap()
+                headers["Content-Type"] = "application/json"
+                headers["Accept"] = "application/json, text/json"
+                return headers
+            }
+        }
+        val requestQueue = Volley.newRequestQueue(activity, HttpUtils.createAuthCookie(activity))
+        requestQueue.add(jsonObjectRequest)
+    }
 }

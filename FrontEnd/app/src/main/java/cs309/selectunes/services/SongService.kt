@@ -53,4 +53,11 @@ interface SongService {
             socket: HubConnection?,
             votes: Map<String, Int>?
     )
+
+    /**
+     * This removed a song from the locked queue.
+     * @param song song id.
+     * @param activity activity this method is called from.
+     */
+    fun removeLockedSong(song: String, activity: AppCompatActivity)
 }

@@ -18,6 +18,7 @@ import com.spotify.sdk.android.authentication.AuthenticationResponse
 import cs309.selectunes.R
 import cs309.selectunes.activities.GuestMenuActivity
 import cs309.selectunes.activities.HostMenuActivity
+import cs309.selectunes.services.SongServiceImpl
 
 
 /**
@@ -33,8 +34,11 @@ object SpotifyUtils {
             .setRedirectUri(redirect)
             .showAuthView(true)
             .build()
+    private val songService = SongServiceImpl()
+
     private var mSpotifyAppRemote: SpotifyAppRemote? = null
     private var hubConnection: HubConnection? = null
+    private var currentSongId: String? = null
 
     private val scopes = StringBuilder()
             .append("user-read-private")
@@ -68,9 +72,14 @@ object SpotifyUtils {
                                 .setEventCallback { playerState: PlayerState ->
                                     val track = playerState.track
                                     if (track != null) {
-                                        println(track.name.toString())
                                         val trackId = track.uri.replace("spotify:track:", "")
                                         hubConnection!!.send("UpdateCurrentSong", track.imageUri.raw, track.name.toString(), track.artist.name.toString(), trackId)
+                                        if (currentSongId != null) {
+                                            if (trackId != currentSongId) {
+                                                songService.removeLockedSong(trackId, activity)
+                                            }
+                                        }
+                                        currentSongId = trackId
                                     }
                                 }
                     }
