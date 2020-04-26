@@ -254,8 +254,8 @@ namespace SelecTunes.Backend.Controllers
         }
 
         [Authorize]
-        [HttpPost("{id}")]
-        public async Task<ActionResult<string>> ThisSongWasPlayed(string id)
+        [HttpPost]
+        public async Task<ActionResult<string>> ThisSongWasPlayed([FromBody]string id)
         {
             User user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
 
