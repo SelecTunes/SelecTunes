@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
 using SelecTunes.Backend.Data;
@@ -6,6 +7,7 @@ using SelecTunes.Backend.Helper;
 using SelecTunes.Backend.Models;
 using SelecTunes.Backend.Models.Auth;
 using System;
+using System.Collections.Generic;
 
 namespace SelecTunes.Backend.Test.Controllers
 {
@@ -122,6 +124,21 @@ namespace SelecTunes.Backend.Test.Controllers
             };
 
             Assert.False(authHelper.BanUser(ToBan, CurrentUser, null));
+        }
+
+        public class IdentityResultMock : IdentityResult
+        {
+            public IdentityResultMock(bool succeeded)
+            {
+                this.Succeeded = succeeded;
+            }
+        }
+
+        [Test]
+        public void AssertSucceededReturnsSuccess()
+        {
+            IdentityResultMock identityResultMock = new IdentityResultMock(true);
+            Assert.AreEqual("Success", authHelper.ParseIdentityResult(identityResultMock));
         }
     }
 }
