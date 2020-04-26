@@ -253,10 +253,20 @@ namespace SelecTunes.Backend.Controllers
             return Ok(new { LockedIn = lockedIn, Votable = queue});
         }
 
+        public partial class GetDeleteThis
+        {
+            public string Id { get; set; }
+        }
+
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult<string>> ThisSongWasPlayed([FromBody]string id)
+        public async Task<ActionResult<string>> ThisSongWasPlayed([FromBody]GetDeleteThis id)
         {
+            if (id == null)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
             User user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
 
             if (user == null)
@@ -284,7 +294,7 @@ namespace SelecTunes.Backend.Controllers
 
             Queue<Song> lockedIn = JsonConvert.DeserializeObject<Queue<Song>>(Encoding.UTF8.GetString(locked));
 
-            if (lockedIn.Peek().Id == id)
+            if (lockedIn.Peek().Id == id.Id)
             {
                 lockedIn.Dequeue();
             }
