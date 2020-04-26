@@ -253,6 +253,57 @@ namespace SelecTunes.Backend.Controllers
             return Ok(new { LockedIn = lockedIn, Votable = queue});
         }
 
+        public partial class GetDeleteThis
+        {
+            public string Id { get; set; }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<ActionResult<string>> ThisSongWasPlayed([FromBody]GetDeleteThis id)
+        {
+            if (id == null)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
+            User user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
+
+            if (user == null)
+            {
+                return BadRequest("You bad user.");
+            }
+
+            Party party = _context.Parties.Where(p => p == user.Party || p.PartyHostId == user.Id || p.Id == user.PartyId).FirstOrDefault(); // find the party that they are member of
+        
+            if (party == null)
+            {
+                return BadRequest("You ded");
+            }
+
+            if (party.PartyHost != user || party.PartyHostId != user.Id)
+            {
+                return BadRequest("You not host. Please go away");
+            }
+
+            byte[] locked = await _cache.GetAsync($"$locked:${party.JoinCode}").ConfigureAwait(false);
+            if (locked == null)
+            {
+                return BadRequest(new { Success = false, Error = "Party hath no locked" });
+            }
+
+            Queue<Song> lockedIn = JsonConvert.DeserializeObject<Queue<Song>>(Encoding.UTF8.GetString(locked));
+
+            if (lockedIn.Peek().Id == id.Id)
+            {
+                lockedIn.Dequeue();
+            }
+
+            await _cache.SetStringAsync($"$locked:${party.JoinCode}", JsonConvert.SerializeObject(lockedIn)).ConfigureAwait(false);
+
+            return Ok(new { Success = true });
+        }
+
         /**
          * Func Search<T>() -> async <T>
          * => SpotifyResult
