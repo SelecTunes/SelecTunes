@@ -103,7 +103,6 @@ object SpotifyUtils {
 
         hubConnection!!.on("ReceiveSong", { uri, songName, artistName, trackId ->
             var bitmap = BitmapCache.loadBitmap(trackId)
-            println(uri)
             val updatedUri = uri.replace("spotify:image:", "https://i.scdn.co/image/")
             if (bitmap == null) {
                 bitmap = BitmapFactory.decodeStream(URL(updatedUri).openConnection().getInputStream())
@@ -123,8 +122,8 @@ object SpotifyUtils {
                 activity.findViewById<TextView>(R.id.host_song_artist).text = "By $artistName"
             } else if (activity is GuestMenuActivity) {
                 activity.findViewById<ImageView>(R.id.guest_song_img).setImageBitmap(bitmap)
-                activity.findViewById<TextView>(R.id.host_song_name).text = songName
-                activity.findViewById<TextView>(R.id.host_song_artist).text = "By $artistName"
+                activity.findViewById<TextView>(R.id.guest_song_name).text = songName
+                activity.findViewById<TextView>(R.id.guest_song_artist).text = "By $artistName"
             }
         }
     }
