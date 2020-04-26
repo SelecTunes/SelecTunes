@@ -17,6 +17,9 @@ using SelecTunes.Backend.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
 using System.Threading.Tasks;
+using System.Security.Claims;
+using SelecTunes.Backend.Models.Auth;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace SelecTunes.Backend.Test.Controllers
 {
@@ -41,6 +44,46 @@ namespace SelecTunes.Backend.Test.Controllers
         public void AssertThatInstantiatedControllerIsInstanceOfTheClass()
         {
             Assert.IsInstanceOf<AuthController>(controller);
+        }
+
+        [Test]
+        public void RegisterUserSucceeds()
+        {
+            mockUserManager
+                .Setup(s => s.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            var authServiceMock = new Mock<IAuthenticationService>();
+
+            _ = authServiceMock
+                .Setup(_ => _.SignInAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<ClaimsPrincipal>(), It.IsAny<AuthenticationProperties>()))
+                .Returns(Task.FromResult((object)null));
+
+            InputModel inputModel = new InputModel()
+            {
+                Email = "testemail@gmail.com",
+                Password = "cdccdccdc!123",
+                ConfirmPassword = "cdccdccdc!123"
+            };
+
+            Assert.IsInstanceOf<ActionResult<String>>(controller.Register(inputModel).Result);
+        }
+
+        [Test]
+        public void SignInUserSucceeds()
+        {
+            mockSignInManager
+                .Setup(s => s.PasswordSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
+                .Returns(Task.FromResult(new SignInResult())) ;
+
+            InputModel inputModel = new InputModel()
+            {
+                Email = "testemail@gmail.com",
+                Password = "cdccdccdc!123",
+                ConfirmPassword = "cdccdccdc!123"
+            };
+
+            Assert.IsInstanceOf<ActionResult<String>>(controller.Login(inputModel).Result);
         }
     }
 
