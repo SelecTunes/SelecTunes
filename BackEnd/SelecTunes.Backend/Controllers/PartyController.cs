@@ -30,10 +30,6 @@ namespace SelecTunes.Backend.Controllers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public class JoinRequest
-        {
-            public string JoinCode { get; set; }
-        }
 
         /**
          * Func JoinParty(string :joinCode) -> ActionResult<string>
@@ -220,10 +216,7 @@ namespace SelecTunes.Backend.Controllers
             return Ok(users);
         }
 
-        internal class PesudoUser
-        {
-            public string Email { get; set; }
-        }
+
 
         /**
          * Func ToggleExplicit() -> ActionResult<String>

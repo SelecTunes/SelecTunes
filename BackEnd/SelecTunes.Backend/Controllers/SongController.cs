@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -251,11 +251,6 @@ namespace SelecTunes.Backend.Controllers
             Queue<Song> queue = JsonConvert.DeserializeObject<Queue<Song>>(Encoding.UTF8.GetString(ByteQueue));
 
             return Ok(new { LockedIn = lockedIn, Votable = queue});
-        }
-
-        public partial class GetDeleteThis
-        {
-            public string Id { get; set; }
         }
 
         [Authorize]
