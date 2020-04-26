@@ -4,7 +4,7 @@ using SelecTunes.Backend.Models;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace SelecTunes.Test.Controllers
+namespace SelecTunes.Backend.Test.Controllers
 {
     internal class QueueHubHelperTest
     {
