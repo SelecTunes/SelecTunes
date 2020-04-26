@@ -74,8 +74,7 @@ namespace SelecTunes.Backend.Controllers
         {
             if (model == null)
             {
-                _logger.LogError("Input Model is NULL", model);
-                return new BadRequestObjectResult("Input body is null");
+                return BadRequest("Input body is null");
             }
 
             _logger.LogDebug("Registering User with Email {}", model.Email);
@@ -88,13 +87,13 @@ namespace SelecTunes.Backend.Controllers
                 if (identityResult.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, true).ConfigureAwait(false);
-                    return Ok(true);
+                    return Ok(new { Success = true });
                 }
 
-                return BadRequest(_auth.ParseIdentityResult(identityResult));
+                return BadRequest(AuthHelper.ParseIdentityResult(identityResult));
             }
 
-            return new JsonResult(ModelState);
+            return BadRequest(ModelState);
         }
 
         /**
@@ -113,7 +112,7 @@ namespace SelecTunes.Backend.Controllers
             if (model == null)
             {
                 _logger.LogError("Login Model is NULL", model);
-                return new BadRequestObjectResult("Input body is null");
+                return BadRequest("Input body is null");
             }
 
             if (ModelState.IsValid)
@@ -122,23 +121,23 @@ namespace SelecTunes.Backend.Controllers
                 
                 if (result.Succeeded)
                 {
-                   return new JsonResult(new { Success = true });
+                   return Ok(new { Success = true });
                 }
 
                 if (result.IsNotAllowed)
                 {
-                    return new JsonResult(new { Success = false, Error = "Account Is Not Allowed Login" });
+                    return Unauthorized(new { Success = false, Error = "Account Is Not Allowed Login" });
                 }
 
                 if (result.IsLockedOut)
                 {
-                    return new JsonResult(new { Success = false, Error = "Account Is Locked Out" });
+                    return Unauthorized(new { Success = false, Error = "Account Is Locked Out" });
                 }
 
-                return new JsonResult(new { Success = false, Error = "Login Failure" });
+                return BadRequest(new { Success = false, Error = "Login Failure" });
             }
 
-            return new JsonResult(ModelState);
+            return BadRequest(ModelState);
         }
         
 
@@ -160,7 +159,7 @@ namespace SelecTunes.Backend.Controllers
             if (login == null)
             { // If login is nil, throw a nil arg expection.
                 _logger.LogError("Spotify Login Model is NULL", login);
-                return new BadRequestObjectResult("Input body is null");
+                return BadRequest("Input body is null");
             }
 
             AccessAuthToken tok = await _auth.TransmutAuthCode(login.Code).ConfigureAwait(false); // Change that login code to an access token and refresh token.
@@ -184,7 +183,7 @@ namespace SelecTunes.Backend.Controllers
 
             if (host == null)
             { // If not, reject
-                return new BadRequestObjectResult(new { Success = false, Error = "User has not yet registered with the Identity Provider." });
+                return BadRequest(new { Success = false, Error = "User has not yet registered with the Identity Provider." });
             }
 
             // If so, update the tokens.
@@ -230,10 +229,10 @@ namespace SelecTunes.Backend.Controllers
 
             if (!await _playback.BeginPlayback(host).ConfigureAwait(false))
             {
-                return new JsonResult(new { Success = false, Error = "Cannot start the party on Spotify" });
+                return Ok(new { Success = false, Error = "Cannot start the party on Spotify" });
             }
 
-            return new JsonResult(new { Success = true, JoinCode = party.JoinCode }); // Return Party Join Code.
+            return Ok(new { Success = true, party.JoinCode }); // Return Party Join Code.
         }
 
         /**
@@ -255,14 +254,14 @@ namespace SelecTunes.Backend.Controllers
 
             if (PartyToLeave == null)
             {
-                return new NotFoundObjectResult("Trying to leave party that does not exist");
+                return NotFound("Trying to leave party that does not exist");
             }
 
             PartyToLeave.PartyMembers.Remove(ToLeave);
 
             _context.SaveChanges();
 
-            return new JsonResult(new { Success = true });
+            return Ok(new { Success = true });
         }
 
         /**
@@ -285,7 +284,7 @@ namespace SelecTunes.Backend.Controllers
         {
             if (email == null)
             {
-                return new BadRequestObjectResult("Body is null");
+                return BadRequest("Body is null");
             }
 
             User ToKick = await _userManager.FindByEmailAsync(email).ConfigureAwait(false);
@@ -293,32 +292,31 @@ namespace SelecTunes.Backend.Controllers
 
             if (ToKick == null)
             {
-                return new NotFoundObjectResult("User does not exist");
+                return NotFound("User does not exist");
             }
 
             if (CurrentUser == null)
             {
-                return new UnauthorizedObjectResult("Need to log in first");
+                return Unauthorized("Need to log in first");
             }
 
             Party KickFrom = _context.Parties.Where(p => p == ToKick.Party || p.Id == ToKick.PartyId).FirstOrDefault();
 
             if (KickFrom == null)
             {
-                return new NotFoundObjectResult("Party does not exist");
+                return NotFound("Party does not exist");
             }
 
             if (KickFrom.PartyHost != CurrentUser || KickFrom.PartyHost.Id != CurrentUser.Id)
             {
-                return new ForbidResult("Not a host user");
+                return Forbid("Not a host user");
             }
 
             ToKick.Strikes += 1;
 
             if (ToKick.Strikes >= 3)
             {
-                _auth.BanUser(ToKick, CurrentUser, _context);
-                return new JsonResult(new { Success = true });
+                return Ok(new { Success = true });
 
             }
 
@@ -327,7 +325,7 @@ namespace SelecTunes.Backend.Controllers
 
             _context.SaveChanges();
 
-            return new JsonResult(new { Success = true });
+            return Ok(new { Success = true });
         }
     }
 }

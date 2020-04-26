@@ -51,7 +51,7 @@ namespace SelecTunes.Backend.Controllers
         {
             if (join == null)
             {
-                return new BadRequestObjectResult("Party is null");
+                return BadRequest("Join Code is null");
             }
 
             string joinCode = join.JoinCode;
@@ -63,12 +63,12 @@ namespace SelecTunes.Backend.Controllers
 
             if (party == null) // no party with that join code
             {
-                return new NotFoundObjectResult("No party with that code exists");
+                return NotFound("No party with that code exists");
             }
 
             if (party.KickedMembers.Contains(ToJoin))
             {
-                return new ForbidResult("You have been banned from that party");
+                return Forbid("You have been banned from that party");
             }
 
             // In the event they are already in a party, remove them from that, add them to new party
@@ -85,7 +85,7 @@ namespace SelecTunes.Backend.Controllers
 
                 party.PartyMembers.Add(ToJoin);
 
-                return new JsonResult(new { Success = true });
+                return Ok(new { Success = true });
             }
 
             party.PartyMembers.Add(ToJoin);
@@ -93,7 +93,7 @@ namespace SelecTunes.Backend.Controllers
 
             _context.SaveChanges();
 
-            return new JsonResult(new { Success = true });
+            return Ok(new { Success = true });
         }
 
         /**
@@ -115,30 +115,31 @@ namespace SelecTunes.Backend.Controllers
 
             if (ToLeave == null)
             {
-                return new UnauthorizedObjectResult("User needs to log in first");
+                return Unauthorized("User needs to log in first");
             }
 
             Party PartyToLeave = _context.Parties.Where(p => p == ToLeave.Party || p.Id == ToLeave.PartyId).FirstOrDefault();
 
             if (PartyToLeave == null)
             {
-                return new NotFoundObjectResult("No party with that code exists");
+                return NotFound("No party with that code exists");
             }
 
             if (PartyToLeave.PartyHost == ToLeave && PartyToLeave.PartyHost.PartyId == PartyToLeave.Id)
             {
                 if (DisbandCurrentParty(PartyToLeave))
                 {
-                    return new JsonResult(new { Success = true });
+                    return Ok(new { Success = true });
                 }
-                return new JsonResult(new { Success = false });
+
+                return Problem("Unable to disband party");
             }
 
             PartyToLeave.PartyMembers.Remove(ToLeave);
 
             _context.SaveChanges();
 
-            return new JsonResult(new { Success = true });
+            return Ok(new { Success = true });
         }
 
         /**
@@ -161,27 +162,27 @@ namespace SelecTunes.Backend.Controllers
 
             if (PartyDisbander == null)
             {
-                return new UnauthorizedObjectResult("Need to log in first");
+                return Unauthorized("Need to log in first");
             }
 
             Party PartyToDisband = _context.Parties.Where(p => p.Id == PartyDisbander.PartyId).FirstOrDefault();
 
             if (PartyToDisband == null)
             {
-                return new NotFoundObjectResult("No party exists");
+                return NotFound("No party exists");
             }
 
             if (PartyToDisband.PartyHost != PartyDisbander)
             {
-                return new ForbidResult("Not the host of the party!");
+                return Forbid("Not the host of the party!");
             }
 
             if (DisbandCurrentParty(PartyToDisband))
             {
-                return new JsonResult(new { Success = true });
+                return Ok(new { Success = true });
             }
 
-            return new JsonResult(new { Success = false });
+            return BadRequest(new { Success = false });
         }
 
         /**
@@ -201,14 +202,14 @@ namespace SelecTunes.Backend.Controllers
 
             if (user == null)
             {
-                return new UnauthorizedObjectResult("Need to log in first");
+                return Unauthorized("Need to log in first");
             }
 
             Party party = _context.Parties.Where(p => p.Id == user.PartyId).FirstOrDefault();
 
             if (party == null)
             {
-                return new NotFoundObjectResult("You are not a member of a party");
+                return NotFound("You are not a member of a party");
             }
 
             // Temporary fix.
@@ -241,21 +242,21 @@ namespace SelecTunes.Backend.Controllers
 
             if (user == null)
             {
-                return new UnauthorizedObjectResult("User needs to log in first");
+                return Unauthorized("User needs to log in first");
             }
 
             Party party = _context.Parties.Where(p => p.Id == user.PartyId).FirstOrDefault();
 
             if (party == null)
             {
-                return new NotFoundObjectResult("User is not in a party");
+                return NotFound("User is not in a party");
             }
 
             party.AllowExplicit = !party.AllowExplicit;
 
             _context.SaveChanges();
 
-            return new JsonResult(new { Success = true });
+            return Ok(new { Success = true });
         }
 
         /**
@@ -276,17 +277,17 @@ namespace SelecTunes.Backend.Controllers
 
             if (user == null)
             {
-                return new UnauthorizedObjectResult("User needs to log in");
+                return Unauthorized("User needs to log in");
             }
 
             Party party = _context.Parties.Where(p => p.Id == user.PartyId).FirstOrDefault();
 
             if (party == null)
             {
-                return new NotFoundObjectResult("User is not in a party that exists");
+                return NotFound("User is not in a party that exists");
             }
 
-            return new JsonResult(new { allowed = party.AllowExplicit });
+            return Ok(new { allowed = party.AllowExplicit });
         }
 
         /**
