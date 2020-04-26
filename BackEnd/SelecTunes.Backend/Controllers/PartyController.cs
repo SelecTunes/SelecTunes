@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -155,7 +155,7 @@ namespace SelecTunes.Backend.Controllers
         [Authorize]
         public async Task<ActionResult<string>> DisbandParty()
         {
-            User PartyDisbander = _userManager.GetUserAsync(HttpContext.User).Result;
+            User PartyDisbander = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
             if (PartyDisbander == null)
             {
@@ -195,7 +195,7 @@ namespace SelecTunes.Backend.Controllers
         [HttpGet]
         public async Task<ActionResult<string>> Members()
         {
-            User user = _userManager.GetUserAsync(HttpContext.User).Result;
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
             if (user == null)
             {
@@ -219,7 +219,7 @@ namespace SelecTunes.Backend.Controllers
 
 
         /**
-         * Func ToggleExplicit() -> ActionResult<String>
+         * Func ToggleExplicit() -> ActionResult<string>
          *
          * Send a POST request to the endpoint to enable or disable explicit song searches
          * 
@@ -228,11 +228,11 @@ namespace SelecTunes.Backend.Controllers
          * 05/04/2020 - Nathan Tucker
          */
         [Authorize]
-        [Route("/api/party/explicit")]
+        [ActionName("Explicit")]
         [HttpPost]
         public async Task<ActionResult<string>> ToggleExplicit()
         {
-            User user = _userManager.GetUserAsync(HttpContext.User).Result;
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
             if (user == null)
             {
@@ -263,11 +263,11 @@ namespace SelecTunes.Backend.Controllers
          * 05/04/2020 - Nathan Tucker
          */
         [Authorize]
-        [Route("/api/party/explicit")]
+        [ActionName("Explicit")]
         [HttpGet]
         public async Task<ActionResult<string>> ViewExplicit()
         {
-            User user = _userManager.GetUserAsync(HttpContext.User).Result;
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
             if (user == null)
             {
