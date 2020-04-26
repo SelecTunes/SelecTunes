@@ -201,7 +201,14 @@ namespace SelecTunes.Backend.Controllers
 
             if (host.IsHost())
             {
+                if (host.Party == null)
+                {
+                    host.Party = _context.Parties.Where(p => p.PartyHost == host || p.PartyHostId == host.Id).FirstOrDefault();
+                }
+
                 // Disband Party.
+                host.Party.PartyMembers.Clear();
+                host.Party.KickedMembers.Clear();
                 _context.Parties.Remove(host.Party);
                 host.Party = null;
                 host.PartyId = null;
