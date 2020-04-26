@@ -1,6 +1,7 @@
 package cs309.selectunes.utils
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -9,8 +10,6 @@ import com.microsoft.signalr.HubConnectionBuilder
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
-import com.spotify.protocol.types.Image
-import com.spotify.protocol.types.ImageUri
 import com.spotify.protocol.types.PlayerState
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
@@ -19,6 +18,7 @@ import cs309.selectunes.R
 import cs309.selectunes.activities.GuestMenuActivity
 import cs309.selectunes.activities.HostMenuActivity
 import cs309.selectunes.services.SongServiceImpl
+import java.net.URL
 
 
 /**
@@ -47,6 +47,8 @@ object SpotifyUtils {
             .append(" user-modify-playback-state")
             .append(" user-read-currently-playing")
             .append(" streaming")
+            .append(" user-modify-playback-state")
+            .append(" app-remote-control")
             .toString()
 
     private val spotify =
@@ -101,13 +103,13 @@ object SpotifyUtils {
 
         hubConnection!!.on("ReceiveSong", { uri, songName, artistName, trackId ->
             var bitmap = BitmapCache.loadBitmap(trackId)
+            println(uri)
+            val updatedUri = uri.replace("spotify:image:", "https://i.scdn.co/image/")
             if (bitmap == null) {
-                mSpotifyAppRemote!!.imagesApi.getImage(ImageUri(uri), Image.Dimension.LARGE).setResultCallback {
-                    bitmap = it
-                    BitmapCache.store(trackId, bitmap!!)
-                    addSongUI(activity, songName, artistName, it)
-                }
-            } else addSongUI(activity, songName, artistName, bitmap!!)
+                bitmap = BitmapFactory.decodeStream(URL(updatedUri).openConnection().getInputStream())
+                BitmapCache.store(trackId, bitmap)
+            }
+            addSongUI(activity, songName, artistName, bitmap!!)
         }, String::class.java, String::class.java, String::class.java, String::class.java)
 
         hubConnection!!.start().blockingAwait()
