@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -120,8 +120,9 @@ namespace SelecTunes.Backend.Test.Controllers
         {
             if (user == null)
             {
-                throw new ArgumentNullException("User user is null");
+                throw new ArgumentNullException(nameof(user));
             }
+
             return Task.FromResult(user.Email == "test@test.com");
         }
 
