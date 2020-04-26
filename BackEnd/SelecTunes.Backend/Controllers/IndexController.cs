@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
-using Newtonsoft.Json;
-using SelecTunes.Backend.Data;
-using SelecTunes.Backend.Models;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -14,19 +6,6 @@ namespace SelecTunes.Backend.Controllers
     [ApiController]
     public class IndexController : ControllerBase
     {
-        private readonly ApplicationContext _context;
-
-        private readonly IDistributedCache _cache;
-
-        private readonly IHttpClientFactory _cf;
-
-        public IndexController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory)
-        {
-            _context = context;
-            _cache = cache;
-            _cf = factory;
-        }
-
         /**
          * Func Index() -> async <ActionResult<List<String>>>
          * => List { "" }

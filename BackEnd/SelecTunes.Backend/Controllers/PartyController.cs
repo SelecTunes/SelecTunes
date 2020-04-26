@@ -1,17 +1,15 @@
-﻿using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SelecTunes.Backend.Data;
 using SelecTunes.Backend.Models;
+using SelecTunes.Backend.Models.OneOff;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
-/*using SelecTunes.Backend.Helper.Extensions;*/
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -25,14 +23,11 @@ namespace SelecTunes.Backend.Controllers
 
         private readonly ILogger<PartyController> _logger;
 
-        private readonly IHttpClientFactory _cf;
-
-        public PartyController(ApplicationContext context, UserManager<User> userManager, ILogger<PartyController> logger, IHttpClientFactory factory)
+        public PartyController(ApplicationContext context, UserManager<User> userManager, ILogger<PartyController> logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _cf = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
         public class JoinRequest

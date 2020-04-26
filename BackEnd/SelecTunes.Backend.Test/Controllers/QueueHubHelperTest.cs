@@ -1,10 +1,8 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using SelecTunes.Backend.Helper.Hubs;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
 using SelecTunes.Backend.Models;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace SelecTunes.Test.Controllers
 {

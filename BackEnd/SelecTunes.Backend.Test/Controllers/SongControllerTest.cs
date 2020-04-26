@@ -1,16 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging;
+using Moq;
 using NUnit.Framework;
 using SelecTunes.Backend.Controllers;
-using Moq;
 using SelecTunes.Backend.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Caching.Distributed;
-using System.Net.Http;
 using SelecTunes.Backend.Helper;
-using System.Linq;
-using SelecTunes.Backend.Models;
 using System;
+using System.Net.Http;
 
 namespace SelecTunes.Backend.Test.Controllers
 {

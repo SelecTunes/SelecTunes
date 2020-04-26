@@ -1,22 +1,19 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Microsoft.Extensions.Caching.Distributed;
-using SelecTunes.Backend.Data;
-using SelecTunes.Backend.Models;
-using SelecTunes.Backend.Models.Auth;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Net.Http.Headers;
-using Microsoft.Extensions.Configuration;
-using SelecTunes.Backend.Helper;
-using Microsoft.Extensions.Options;
-using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using SelecTunes.Backend.Data;
+using SelecTunes.Backend.Helper;
+using SelecTunes.Backend.Models;
+using SelecTunes.Backend.Models.Auth;
+using System;
+using System.Globalization;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -26,13 +23,7 @@ namespace SelecTunes.Backend.Controllers
     {
         private readonly ApplicationContext _context;
 
-        private readonly IDistributedCache _cache;
-
         private readonly IHttpClientFactory _cf;
-
-        private readonly IConfiguration _config;
-
-        private readonly IOptions<AppSettings> _options;
 
         private readonly AuthHelper _auth;
 
@@ -46,13 +37,10 @@ namespace SelecTunes.Backend.Controllers
 
         private readonly PlaybackHelper _playback;
 
-        public AuthController(ApplicationContext context, IDistributedCache cache, IHttpClientFactory factory, IConfiguration config, IOptions<AppSettings> options, UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AuthController> logger, AuthHelper auth, PlaybackHelper playback)
+        public AuthController(ApplicationContext context, IHttpClientFactory factory, UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AuthController> logger, AuthHelper auth, PlaybackHelper playback)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context)); // Throw nil arg expection if context is nil.
-            _cache = cache ?? throw new ArgumentNullException(nameof(cache)); // Throw nil arg expection if cache is nil.
             _cf = factory ?? throw new ArgumentNullException(nameof(factory)); // Throw nil arg expection if factory is nil.
-            _config = config ?? throw new ArgumentNullException(nameof(config)); // Throw nil arg expection if config is nil.
-            _options = options ?? throw new ArgumentNullException(nameof(options)); // Throw nil arg expection if options is nil.
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager)); // "
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager)); // "
             _logger = logger ?? throw new ArgumentNullException(nameof(logger)); // "

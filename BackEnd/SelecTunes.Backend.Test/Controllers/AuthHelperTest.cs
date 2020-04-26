@@ -1,23 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Moq;
+using Microsoft.AspNetCore.Identity;
 using NUnit.Framework;
-using SelecTunes.Backend.Data;
 using SelecTunes.Backend.Helper;
 using SelecTunes.Backend.Models;
 using SelecTunes.Backend.Models.Auth;
 using System;
-using System.Collections.Generic;
 
 namespace SelecTunes.Backend.Test.Controllers
 {
-
     internal class AuthHelperTest
     {
         private readonly AuthHelper authHelper;
-
-        private static readonly DbContextOptions contextOptions = new DbContextOptionsBuilder<ApplicationContext>().UseInMemoryDatabase(databaseName: "selectunes").Options;
-        private readonly Mock<ApplicationContext> mockContext = new Mock<ApplicationContext>(contextOptions);
 
         public AuthHelperTest() => authHelper = new AuthHelper();
 
