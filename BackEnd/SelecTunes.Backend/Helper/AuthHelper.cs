@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 using SelecTunes.Backend.Data;
 using SelecTunes.Backend.Helper.Exceptions;
 using SelecTunes.Backend.Models;
@@ -170,6 +171,33 @@ namespace SelecTunes.Backend.Helper
             context.SaveChanges();
 
             return true;
+        }
+
+        public String ParseIdentityResult(IdentityResult identityResult)
+        {
+            if (identityResult == null)
+            {
+                throw new NullReferenceException("identity result is null");
+            }
+
+            if (identityResult.Succeeded)
+            {
+                return "Success";
+            }
+
+            foreach (IdentityError err in identityResult.Errors)
+            {
+                if (err.Description.Contains("match", StringComparison.Ordinal))
+                {
+                    return "Passwords do not match";
+                }
+                else if (err.Description.Contains("long", StringComparison.Ordinal))
+                {
+                    return "Password does not meet length requirement";
+                }
+            }
+
+            return null;
         }
     }
 }
