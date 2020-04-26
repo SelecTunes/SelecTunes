@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using SelecTunes.Backend.Models.Auth;
 
 namespace SelecTunes.Backend.Models

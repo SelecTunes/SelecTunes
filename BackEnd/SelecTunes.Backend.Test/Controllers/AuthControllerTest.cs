@@ -1,24 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Moq;
 using NUnit.Framework;
 using SelecTunes.Backend.Controllers;
-using System;
-using System.Collections.Generic;
-using Moq;
-using System.Net.Http;
-using Microsoft.Extensions.Caching.Distributed;
 using SelecTunes.Backend.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Identity;
-using SelecTunes.Backend.Models;
-using Microsoft.Extensions.Logging;
 using SelecTunes.Backend.Helper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authentication;
-using System.Threading.Tasks;
-using System.Security.Claims;
+using SelecTunes.Backend.Models;
 using SelecTunes.Backend.Models.Auth;
+using System;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace SelecTunes.Backend.Test.Controllers
@@ -28,10 +25,7 @@ namespace SelecTunes.Backend.Test.Controllers
         private static readonly DbContextOptions contextOptions = new DbContextOptionsBuilder<ApplicationContext>().UseInMemoryDatabase(databaseName: "selectunes").Options;
 
         private readonly Mock<ApplicationContext> mockContext = new Mock<ApplicationContext>(contextOptions);
-        private readonly Mock<IDistributedCache> mockCache = new Mock<IDistributedCache>();
         private readonly Mock<IHttpClientFactory> mockFactory = new Mock<IHttpClientFactory>();
-        private readonly Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
-        private readonly Mock<IOptions<AppSettings>> mockOptions = new Mock<IOptions<AppSettings>>();
         private readonly Mock<ILogger<AuthController>> mockLogger = new Mock<ILogger<AuthController>>();
         private static readonly Mock<FakeUserManager> mockUserManager = new Mock<FakeUserManager>();
         private static readonly Mock<FakeSignInManager> mockSignInManager = new Mock<FakeSignInManager>();
@@ -39,7 +33,7 @@ namespace SelecTunes.Backend.Test.Controllers
         private readonly Mock<PlaybackHelper> mockPlayback = new Mock<PlaybackHelper>();
         private readonly AuthController controller;
 
-        public AuthControllerTest() => controller = new AuthController(mockContext.Object, mockCache.Object, mockFactory.Object, mockConfig.Object, mockOptions.Object, mockUserManager.Object, mockSignInManager.Object, mockLogger.Object, mockHelper.Object, mockPlayback.Object);
+        public AuthControllerTest() => controller = new AuthController(mockContext.Object, mockFactory.Object, mockUserManager.Object, mockSignInManager.Object, mockLogger.Object, mockHelper.Object, mockPlayback.Object);
 
         [Test]
         public void AssertThatInstantiatedControllerIsInstanceOfTheClass()
@@ -126,8 +120,9 @@ namespace SelecTunes.Backend.Test.Controllers
         {
             if (user == null)
             {
-                throw new ArgumentNullException("User user is null");
+                throw new ArgumentNullException(nameof(user));
             }
+
             return Task.FromResult(user.Email == "test@test.com");
         }
 

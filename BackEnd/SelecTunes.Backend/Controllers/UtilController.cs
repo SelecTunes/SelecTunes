@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -8,9 +7,6 @@ namespace SelecTunes.Backend.Controllers
     public class UtilController : ControllerBase
     {
         [HttpGet]
-        public ActionResult<String> Version()
-        {
-            return typeof(Program).Assembly.GetName().Version.ToString();
-        }
+        public ActionResult<string> Version() => typeof(Program).Assembly.GetName().Version.ToString();
     }
 }

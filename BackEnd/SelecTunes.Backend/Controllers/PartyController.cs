@@ -1,17 +1,15 @@
-﻿using System;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SelecTunes.Backend.Data;
 using SelecTunes.Backend.Models;
+using SelecTunes.Backend.Models.OneOff;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
-/*using SelecTunes.Backend.Helper.Extensions;*/
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -25,23 +23,16 @@ namespace SelecTunes.Backend.Controllers
 
         private readonly ILogger<PartyController> _logger;
 
-        private readonly IHttpClientFactory _cf;
-
-        public PartyController(ApplicationContext context, UserManager<User> userManager, ILogger<PartyController> logger, IHttpClientFactory factory)
+        public PartyController(ApplicationContext context, UserManager<User> userManager, ILogger<PartyController> logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _cf = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
-        public class JoinRequest
-        {
-            public string JoinCode { get; set; }
-        }
 
         /**
-         * Func JoinParty(string :joinCode) -> ActionResult<String>
+         * Func JoinParty(string :joinCode) -> ActionResult<string>
          * => party join code
          * 
          * Send a POST request to /api/party/joinparty with a join code
@@ -52,28 +43,29 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpPost]
         [Authorize]
-        public ActionResult<String> JoinParty([FromBody]JoinRequest join)
+        public async Task<ActionResult<string>> JoinParty([FromBody]JoinRequest code)
         {
-            if (join == null)
+            if (code == null)
             {
-                return new BadRequestObjectResult("Party is null");
+                return BadRequest("Join Code is null");
             }
 
-            string joinCode = join.JoinCode;
+            string joinCode = code.JoinCode;
 
-            _logger.LogDebug("User {0} attempting to join party with join code {1}", _userManager.GetUserAsync(HttpContext.User).Result, joinCode);
+            User ToJoin = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false); // Find the current user asking to join a party
 
-            User ToJoin = _userManager.GetUserAsync(HttpContext.User).Result; // Find the current user asking to join a party
+            _logger.LogDebug("User {0} attempting to join party with join code {1}", ToJoin, joinCode);
+
             Party party = _context.Parties.Where(p => p.JoinCode == joinCode).FirstOrDefault(); // Find a corresponding party with the requested join code
 
             if (party == null) // no party with that join code
             {
-                return new NotFoundObjectResult("No party with that code exists");
+                return NotFound("No party with that code exists");
             }
 
             if (party.KickedMembers.Contains(ToJoin))
             {
-                return new ForbidResult("You have been banned from that party");
+                return Forbid("You have been banned from that party");
             }
 
             // In the event they are already in a party, remove them from that, add them to new party
@@ -90,7 +82,7 @@ namespace SelecTunes.Backend.Controllers
 
                 party.PartyMembers.Add(ToJoin);
 
-                return new JsonResult(new { Success = true });
+                return Ok(new { Success = true });
             }
 
             party.PartyMembers.Add(ToJoin);
@@ -98,11 +90,11 @@ namespace SelecTunes.Backend.Controllers
 
             _context.SaveChanges();
 
-            return new JsonResult(new { Success = true });
+            return Ok(new { Success = true });
         }
 
         /**
-         * Func LeaveParty() -> ActionResult<String>
+         * Func LeaveParty() -> ActionResult<string>
          *
          * Send a POST request to /api/party/leaveparty
          * The user that sent the request will be removed from the party which they are currently in
@@ -112,42 +104,43 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpPost]
         [Authorize]
-        public ActionResult<String> LeaveParty()
+        public async Task<ActionResult<string>> LeaveParty()
         {
-            _logger.LogDebug("User {0} attempting to leave party", _userManager.GetUserAsync(HttpContext.User).Result);
+            User ToLeave = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
-            User ToLeave = _userManager.GetUserAsync(HttpContext.User).Result;
+            _logger.LogDebug("User {0} attempting to leave party", ToLeave);
 
             if (ToLeave == null)
             {
-                return new UnauthorizedObjectResult("User needs to log in first");
+                return Unauthorized("User needs to log in first");
             }
 
             Party PartyToLeave = _context.Parties.Where(p => p == ToLeave.Party || p.Id == ToLeave.PartyId).FirstOrDefault();
 
             if (PartyToLeave == null)
             {
-                return new NotFoundObjectResult("No party with that code exists");
+                return NotFound("No party with that code exists");
             }
 
             if (PartyToLeave.PartyHost == ToLeave && PartyToLeave.PartyHost.PartyId == PartyToLeave.Id)
             {
                 if (DisbandCurrentParty(PartyToLeave))
                 {
-                    return new JsonResult(new { Success = true });
+                    return Ok(new { Success = true });
                 }
-                return new JsonResult(new { Success = false });
+
+                return Problem("Unable to disband party");
             }
 
             PartyToLeave.PartyMembers.Remove(ToLeave);
 
             _context.SaveChanges();
 
-            return new JsonResult(new { Success = true });
+            return Ok(new { Success = true });
         }
 
         /**
-         * Func DisbandParty -> ActionResult<String>
+         * Func DisbandParty -> ActionResult<string>
          *
          * Send a DELTE request to /api/party/disband
          * 
@@ -160,37 +153,37 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpDelete]
         [Authorize]
-        public ActionResult<String> DisbandParty()
+        public async Task<ActionResult<string>> DisbandParty()
         {
-            User PartyDisbander = _userManager.GetUserAsync(HttpContext.User).Result;
+            User PartyDisbander = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
             if (PartyDisbander == null)
             {
-                return new UnauthorizedObjectResult("Need to log in first");
+                return Unauthorized("Need to log in first");
             }
 
             Party PartyToDisband = _context.Parties.Where(p => p.Id == PartyDisbander.PartyId).FirstOrDefault();
 
             if (PartyToDisband == null)
             {
-                return new NotFoundObjectResult("No party exists");
+                return NotFound("No party exists");
             }
 
             if (PartyToDisband.PartyHost != PartyDisbander)
             {
-                return new ForbidResult("Not the host of the party!");
+                return Forbid("Not the host of the party!");
             }
 
             if (DisbandCurrentParty(PartyToDisband))
             {
-                return new JsonResult(new { Success = true });
+                return Ok(new { Success = true });
             }
 
-            return new JsonResult(new { Success = false });
+            return BadRequest(new { Success = false });
         }
 
         /**
-         * Func Members -> ActionResult<String>
+         * Func Members -> ActionResult<string>
          *
          * Send a GET request to /api/party/members
          *
@@ -200,20 +193,20 @@ namespace SelecTunes.Backend.Controllers
          */
         [Authorize]
         [HttpGet]
-        public ActionResult<String> Members()
+        public async Task<ActionResult<string>> Members()
         {
-            User user = _userManager.GetUserAsync(HttpContext.User).Result;
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
             if (user == null)
             {
-                return new UnauthorizedObjectResult("Need to log in first");
+                return Unauthorized("Need to log in first");
             }
 
             Party party = _context.Parties.Where(p => p.Id == user.PartyId).FirstOrDefault();
 
             if (party == null)
             {
-                return new NotFoundObjectResult("You are not a member of a party");
+                return NotFound("You are not a member of a party");
             }
 
             // Temporary fix.
@@ -223,13 +216,10 @@ namespace SelecTunes.Backend.Controllers
             return Ok(users);
         }
 
-        internal class PesudoUser
-        {
-            public string Email { get; set; }
-        }
+
 
         /**
-         * Func ToggleExplicit() -> ActionResult<String>
+         * Func ToggleExplicit() -> ActionResult<string>
          *
          * Send a POST request to the endpoint to enable or disable explicit song searches
          * 
@@ -238,33 +228,33 @@ namespace SelecTunes.Backend.Controllers
          * 05/04/2020 - Nathan Tucker
          */
         [Authorize]
-        [Route("/api/party/explicit")]
+        [ActionName("Explicit")]
         [HttpPost]
-        public ActionResult<String> ToggleExplicit()
+        public async Task<ActionResult<string>> ToggleExplicit()
         {
-            User user = _userManager.GetUserAsync(HttpContext.User).Result;
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
             if (user == null)
             {
-                return new UnauthorizedObjectResult("User needs to log in first");
+                return Unauthorized("User needs to log in first");
             }
 
             Party party = _context.Parties.Where(p => p.Id == user.PartyId).FirstOrDefault();
 
             if (party == null)
             {
-                return new NotFoundObjectResult("User is not in a party");
+                return NotFound("User is not in a party");
             }
 
             party.AllowExplicit = !party.AllowExplicit;
 
             _context.SaveChanges();
 
-            return new JsonResult(new { Success = true });
+            return Ok(new { Success = true });
         }
 
         /**
-         * Func ViewExplicit() -> ActionResult<String>
+         * Func ViewExplicit() -> ActionResult<string>
          * => true
          *
          * Send a GET request to the endpoint to view the current status of explicit song searches
@@ -273,25 +263,25 @@ namespace SelecTunes.Backend.Controllers
          * 05/04/2020 - Nathan Tucker
          */
         [Authorize]
-        [Route("/api/party/explicit")]
+        [ActionName("Explicit")]
         [HttpGet]
-        public ActionResult<String> ViewExplicit()
+        public async Task<ActionResult<string>> ViewExplicit()
         {
-            User user = _userManager.GetUserAsync(HttpContext.User).Result;
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
             if (user == null)
             {
-                return new UnauthorizedObjectResult("User needs to log in");
+                return Unauthorized("User needs to log in");
             }
 
             Party party = _context.Parties.Where(p => p.Id == user.PartyId).FirstOrDefault();
 
             if (party == null)
             {
-                return new NotFoundObjectResult("User is not in a party that exists");
+                return NotFound("User is not in a party that exists");
             }
 
-            return new JsonResult(new { allowed = party.AllowExplicit });
+            return Ok(new { allowed = party.AllowExplicit });
         }
 
         /**
