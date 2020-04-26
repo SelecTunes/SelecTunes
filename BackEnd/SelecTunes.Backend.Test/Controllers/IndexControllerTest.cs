@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using SelecTunes.Backend.Controllers;
 
@@ -19,19 +19,9 @@ namespace SelecTunes.Backend.Test.Controllers
         [Test]
         public void AssertIndexWhenCalledReturnsOkResult()
         {
-            ActionResult<List<String>> response = controller.Index();
+            ActionResult<RedirectResult> response = controller.Index();
 
             Assert.IsInstanceOf<OkObjectResult>(response.Result);
-        }
-
-        [Test]
-        public void AssertIndexWhenCalledReturnsListWithOneElement()
-        {
-            OkObjectResult result = (controller.Index()).Result as OkObjectResult;
-
-            Assert.IsInstanceOf<List<String>>(result.Value);
-
-            Assert.AreEqual(1, (result.Value as List<String>).Count);
         }
     }
 }
