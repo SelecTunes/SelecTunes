@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using SelecTunes.Backend.Models;
+using SelecTunes.Backend.Models.OneOff;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,36 +67,6 @@ namespace SelecTunes.Backend.Helper
             }
 
             return true;
-        }
-
-        public partial class Devices
-        {
-            [JsonProperty("devices")]
-            public List<Device> Ope { get; set; }
-        }
-
-        public partial class Device
-        {
-            [JsonProperty("id")]
-            public string Id { get; set; }
-
-            [JsonProperty("is_active")]
-            public bool IsActive { get; set; }
-
-            [JsonProperty("is_private_session")]
-            public bool IsPrivateSession { get; set; }
-
-            [JsonProperty("is_restricted")]
-            public bool IsRestricted { get; set; }
-
-            [JsonProperty("name")]
-            public string Name { get; set; }
-
-            [JsonProperty("type")]
-            public string Type { get; set; }
-
-            [JsonProperty("volume_percent")]
-            public long VolumePercent { get; set; }
         }
 
         public async Task<Device> GetRandomDevice(User user)
