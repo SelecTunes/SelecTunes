@@ -254,8 +254,8 @@ namespace SelecTunes.Backend.Controllers
         }
 
         [Authorize]
-        [HttpPost]
-        public async Task<ActionResult<string>> ThisSongWasPlayed()
+        [HttpPost("{id}")]
+        public async Task<ActionResult<string>> ThisSongWasPlayed(string id)
         {
             User user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
 
@@ -283,7 +283,13 @@ namespace SelecTunes.Backend.Controllers
             }
 
             Queue<Song> lockedIn = JsonConvert.DeserializeObject<Queue<Song>>(Encoding.UTF8.GetString(locked));
-            lockedIn.Dequeue();
+
+            if (lockedIn.Peek().Id == id)
+            {
+                lockedIn.Dequeue();
+            }
+
+            await _cache.SetStringAsync($"$locked:${party.JoinCode}", JsonConvert.SerializeObject(lockedIn)).ConfigureAwait(false);
 
             return Ok(new { Success = true });
         }
