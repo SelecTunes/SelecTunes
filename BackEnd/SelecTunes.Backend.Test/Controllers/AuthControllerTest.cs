@@ -36,9 +36,10 @@ namespace SelecTunes.Backend.Test.Controllers
         private static readonly Mock<FakeUserManager> mockUserManager = new Mock<FakeUserManager>();
         private static readonly Mock<FakeSignInManager> mockSignInManager = new Mock<FakeSignInManager>();
         private readonly Mock<AuthHelper> mockHelper = new Mock<AuthHelper>();
+        private readonly Mock<PlaybackHelper> mockPlayback = new Mock<PlaybackHelper>();
         private readonly AuthController controller;
 
-        public AuthControllerTest() => controller = new AuthController(mockContext.Object, mockCache.Object, mockFactory.Object, mockConfig.Object, mockOptions.Object, mockUserManager.Object, mockSignInManager.Object, mockLogger.Object, mockHelper.Object);
+        public AuthControllerTest() => controller = new AuthController(mockContext.Object, mockCache.Object, mockFactory.Object, mockConfig.Object, mockOptions.Object, mockUserManager.Object, mockSignInManager.Object, mockLogger.Object, mockHelper.Object, mockPlayback.Object);
 
         [Test]
         public void AssertThatInstantiatedControllerIsInstanceOfTheClass()

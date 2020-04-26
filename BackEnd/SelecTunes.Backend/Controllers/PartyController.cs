@@ -9,6 +9,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+/*using SelecTunes.Backend.Helper.Extensions;*/
 
 namespace SelecTunes.Backend.Controllers
 {
@@ -22,11 +25,14 @@ namespace SelecTunes.Backend.Controllers
 
         private readonly ILogger<PartyController> _logger;
 
-        public PartyController(ApplicationContext context, UserManager<User> userManager, ILogger<PartyController> logger)
+        private readonly IHttpClientFactory _cf;
+
+        public PartyController(ApplicationContext context, UserManager<User> userManager, ILogger<PartyController> logger, IHttpClientFactory factory)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _cf = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
         public class JoinRequest
@@ -81,7 +87,7 @@ namespace SelecTunes.Backend.Controllers
                 {
                     ToJoin.Party.PartyMembers.Remove(ToJoin); // if they aren't the host, then go ahead and just do a simple remove
                 }
-                
+
                 party.PartyMembers.Add(ToJoin);
 
                 return new JsonResult(new { Success = true });
@@ -285,7 +291,7 @@ namespace SelecTunes.Backend.Controllers
                 return new NotFoundObjectResult("User is not in a party that exists");
             }
 
-            return new JsonResult(new { allowed = party.AllowExplicit});
+            return new JsonResult(new { allowed = party.AllowExplicit });
         }
 
         /**

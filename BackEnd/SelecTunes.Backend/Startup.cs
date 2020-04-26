@@ -113,6 +113,15 @@ namespace SelecTunes.Backend
                 };
             });
 
+            services.AddScoped<PlaybackHelper>(options => {
+                IHttpClientFactory _cf = options.GetRequiredService<IHttpClientFactory>();
+
+                return new PlaybackHelper
+                {
+                    ClientFactory = _cf,
+                };
+            });
+
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>
@@ -172,6 +181,7 @@ namespace SelecTunes.Backend
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<QueueHub>("/queue");
+                endpoints.MapHub<SpotifyHub>("/spotify");
                 endpoints.MapHub<ChatHub>("/chat");
             });
         }
