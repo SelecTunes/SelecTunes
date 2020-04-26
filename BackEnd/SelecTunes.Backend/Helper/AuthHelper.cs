@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using SelecTunes.Backend.Data;
 using SelecTunes.Backend.Helper.Exceptions;
@@ -140,7 +140,7 @@ namespace SelecTunes.Backend.Helper
             return user;
         }
 
-        public bool BanUser(User ToBan, User CurrentUser, ApplicationContext context)
+        public static bool BanUser(User ToBan, User CurrentUser, ApplicationContext context)
         {
             if(ToBan == null)
             {
