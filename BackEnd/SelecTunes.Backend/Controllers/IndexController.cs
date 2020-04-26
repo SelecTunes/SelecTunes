@@ -15,6 +15,6 @@ namespace SelecTunes.Backend.Controllers
          * 16/02/2020 D/M/Y - Alexander Young - Cleanup
          */
         [HttpGet]
-        public ActionResult<RedirectResult> Index() => Redirect("/swagger/index.html");
+        public RedirectResult Index() => Redirect("/swagger/index.html");
     }
 }

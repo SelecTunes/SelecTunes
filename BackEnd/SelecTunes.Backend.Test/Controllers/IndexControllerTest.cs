@@ -19,9 +19,9 @@ namespace SelecTunes.Backend.Test.Controllers
         [Test]
         public void AssertIndexWhenCalledReturnsOkResult()
         {
-            ActionResult<RedirectResult> response = controller.Index();
+            RedirectResult response = controller.Index();
 
-            Assert.IsInstanceOf<OkObjectResult>(response.Result);
+            Assert.IsInstanceOf<RedirectResult>(response);
         }
     }
 }
