@@ -19,7 +19,7 @@ import cs309.selectunes.services.SongServiceImpl
 class SongQueueActivity : AppCompatActivity() {
 
     companion object {
-        private var votes = HashMap<String, Int>()
+        var votes = HashMap<String, Int>()
         var songsVotedOn = HashMap<String, String>()
     }
 
@@ -47,6 +47,8 @@ class SongQueueActivity : AppCompatActivity() {
         val hubConnection = HubConnectionBuilder.create(url)
             .withHeader("cookie", "Holtzmann=" + settings.getString("cookie", ""))
             .build()
+
+        println(hubConnection.connectionState.name)
 
         hubConnection.on("ReceiveUpvote", { id, count ->
             votes[id] = count.toInt()
