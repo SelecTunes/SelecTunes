@@ -49,16 +49,17 @@ namespace SelecTunes.Backend.Controllers
         [Authorize]
         public async Task<ActionResult<string>> JoinParty([FromBody]JoinRequest code)
         {
-            if (join == null)
+            if (code == null)
             {
                 return BadRequest("Join Code is null");
             }
 
-            string joinCode = join.JoinCode;
+            string joinCode = code.JoinCode;
 
-            _logger.LogDebug("User {0} attempting to join party with join code {1}", _userManager.GetUserAsync(HttpContext.User).Result, joinCode);
+            User ToJoin = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false); // Find the current user asking to join a party
 
-            User ToJoin = _userManager.GetUserAsync(HttpContext.User).Result; // Find the current user asking to join a party
+            _logger.LogDebug("User {0} attempting to join party with join code {1}", ToJoin, joinCode);
+
             Party party = _context.Parties.Where(p => p.JoinCode == joinCode).FirstOrDefault(); // Find a corresponding party with the requested join code
 
             if (party == null) // no party with that join code
@@ -107,11 +108,11 @@ namespace SelecTunes.Backend.Controllers
          */
         [HttpPost]
         [Authorize]
-        public ActionResult<string> LeaveParty()
+        public async Task<ActionResult<string>> LeaveParty()
         {
-            _logger.LogDebug("User {0} attempting to leave party", _userManager.GetUserAsync(HttpContext.User).Result);
+            User ToLeave = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
-            User ToLeave = _userManager.GetUserAsync(HttpContext.User).Result;
+            _logger.LogDebug("User {0} attempting to leave party", ToLeave);
 
             if (ToLeave == null)
             {

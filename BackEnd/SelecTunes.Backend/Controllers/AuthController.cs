@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -54,13 +54,13 @@ namespace SelecTunes.Backend.Controllers
         {
             User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
-            Console.WriteLine(user);
+            _logger.LogInformation("Current User Email", user.Email, user);
 
             return user.Email;
         }
 
         /**
-         * Func Register(<InputModel> :model) -> async <ActionResult<String>>
+         * Func Register(<InputModel> :model) -> async <ActionResult<string>>
          * => SignInResult.Succeeded
          * 
          * 1. Takes a username and password.
@@ -74,10 +74,11 @@ namespace SelecTunes.Backend.Controllers
         {
             if (model == null)
             {
+                _logger.LogError("Input Model is not defined", model);
                 return BadRequest("Input body is null");
             }
 
-            _logger.LogDebug("Registering User with Email {}", model.Email);
+            _logger.LogInformation("Attempting to register User with Email {}", model.Email, model);
 
             if (ModelState.IsValid)
             {
@@ -92,6 +93,8 @@ namespace SelecTunes.Backend.Controllers
 
                 return BadRequest(AuthHelper.ParseIdentityResult(identityResult));
             }
+
+            _logger.LogWarning("Registration ModelState was not valid", model, ModelState);
 
             return BadRequest(ModelState);
         }
@@ -316,6 +319,7 @@ namespace SelecTunes.Backend.Controllers
 
             if (ToKick.Strikes >= 3)
             {
+                AuthHelper.BanUser(ToKick, CurrentUser, _context);
                 return Ok(new { Success = true });
 
             }
