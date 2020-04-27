@@ -29,7 +29,7 @@
             android:layout_alignEnd="@+id/host_song_info"
             android:layout_alignBottom="@+id/host_song_info"
             android:layout_marginEnd="32dp"
-            android:layout_marginBottom="33dp"
+            android:layout_marginBottom="29dp"
             android:textColor="@color/colorTextHost" />
 
         <TextView
@@ -38,8 +38,8 @@
             android:layout_height="wrap_content"
             android:layout_alignEnd="@+id/host_song_info"
             android:layout_alignBottom="@+id/host_song_info"
-            android:layout_marginEnd="29dp"
-            android:layout_marginBottom="9dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="5dp"
             android:textColor="@color/colorTextHost" />
 
         <ImageView
@@ -50,7 +50,7 @@
             android:layout_alignBottom="@+id/host_song_info"
             android:layout_marginStart="52dp"
             android:layout_marginTop="81dp"
-            android:layout_marginEnd="236dp"
+            android:layout_marginEnd="231dp"
             android:layout_marginBottom="0dp"
             android:outlineProvider="none" />
 

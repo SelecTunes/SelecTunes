@@ -27,7 +27,6 @@ import java.net.URL
  */
 object SpotifyUtils {
 
-    private const val REQUEST_CODE = 1138
     private const val redirect = "https://coms-309-jr-2.cs.iastate.edu/api/auth/callback"
     private const val client = "cadb1b4323ac428fa153e815a7277dc6"
     private val connectionParams = ConnectionParams.Builder(client)
@@ -61,9 +60,16 @@ object SpotifyUtils {
      * @param activity activity this method is being called from.
      */
     fun login(activity: AppCompatActivity) {
-        AuthenticationClient.openLoginActivity(activity, REQUEST_CODE, spotify)
+        AuthenticationClient.openLoginActivity(activity, 1138, spotify)
     }
 
+    /**
+     * This connects to Spotify on the hosts
+     * phone. This is needed for playback events,
+     * so we know when the users song is being
+     * changed.
+     * @param activity activity this is used in.
+     */
     fun connectToSpotify(activity: AppCompatActivity) {
         SpotifyAppRemote.connect(activity, connectionParams,
                 object : Connector.ConnectionListener {
@@ -93,6 +99,12 @@ object SpotifyUtils {
                 })
     }
 
+    /**
+     * Creates a web socket so that we can update all
+     * party users of the song that is currently
+     * being played from the hosts' Spotify.
+     * @param activity activity this is used in.
+     */
     fun createSpotifySocket(activity: AppCompatActivity) {
         val url = "http://coms-309-jr-2.cs.iastate.edu/spotify"
 
@@ -114,6 +126,14 @@ object SpotifyUtils {
         hubConnection!!.start().blockingAwait()
     }
 
+    /**
+     * This adds the song header to the host
+     * or guest interface.
+     * @param activity activity that this is being called from.
+     * @param songName name of the song.
+     * @param artistName name of the artist.
+     * @param bitmap album art bitmap.
+     */
     private fun addSongUI(activity: AppCompatActivity, songName: String, artistName: String, bitmap: Bitmap) {
         activity.runOnUiThread {
             if (activity is HostMenuActivity) {

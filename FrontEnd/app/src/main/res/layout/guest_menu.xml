@@ -29,7 +29,7 @@
             android:layout_alignEnd="@+id/guest_song_info"
             android:layout_marginStart="52dp"
             android:layout_marginTop="81dp"
-            android:layout_marginEnd="229dp"
+            android:layout_marginEnd="228dp"
             android:adjustViewBounds="true"
             android:outlineProvider="none"
             android:scaleType="fitCenter" />
@@ -41,7 +41,7 @@
             android:layout_alignEnd="@+id/guest_song_info"
             android:layout_alignBottom="@+id/guest_song_info"
             android:layout_marginEnd="27dp"
-            android:layout_marginBottom="36dp"
+            android:layout_marginBottom="30dp"
             android:textColor="@color/colorTextHost" />
 
         <TextView
@@ -51,7 +51,7 @@
             android:layout_alignEnd="@+id/guest_song_info"
             android:layout_alignBottom="@+id/guest_song_info"
             android:layout_marginEnd="24dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="5dp"
             android:textColor="@color/colorTextHost" />
     </RelativeLayout>
 
