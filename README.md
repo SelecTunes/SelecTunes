@@ -1,4 +1,3 @@
-[![pipeline status](https://git.linux.iastate.edu/cs309/spring-2020/JR_2/badges/master/pipeline.svg)](https://git.linux.iastate.edu/cs309/spring-2020/JR_2/commits/master)
 [![License: MIT](https://img.shields.io/badge/license-Apache%202.0-blue)](https://git.linux.iastate.edu/cs309/spring-2020/JR_2/blob/master/LICENSE)
 # SelecTunes 309 Project
 
