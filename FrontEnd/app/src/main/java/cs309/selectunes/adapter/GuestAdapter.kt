@@ -11,7 +11,7 @@ import android.widget.TextView
 import cs309.selectunes.R
 import cs309.selectunes.activities.GuestListActivity
 import cs309.selectunes.models.Guest
-import cs309.selectunes.services.ServerServiceImpl
+import cs309.selectunes.services.PartyServiceImpl
 
 class GuestAdapter(
     context: Context,
@@ -34,7 +34,7 @@ class GuestAdapter(
         }
 
         kickUser.setOnClickListener {
-            ServerServiceImpl().kickGuest(guestList[position].givenEmail, act)
+            PartyServiceImpl().kickGuest(guestList[position].givenEmail, act)
         }
         return row
     }

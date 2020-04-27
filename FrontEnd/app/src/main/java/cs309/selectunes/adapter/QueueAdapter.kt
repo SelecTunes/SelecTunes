@@ -60,8 +60,6 @@ class QueueAdapter(
             }
         }
 
-        println(votes[songId])
-
         songVoteTotal.text = votes[songId]?.toString() ?: "0"
 
         upvoteButton.setOnClickListener {

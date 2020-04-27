@@ -5,7 +5,8 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import cs309.selectunes.R
-import cs309.selectunes.utils.HttpUtils
+import cs309.selectunes.services.PartyServiceImpl
+import cs309.selectunes.utils.SpotifyUtils
 
 /**
  * The guest menu activity is the view
@@ -13,6 +14,8 @@ import cs309.selectunes.utils.HttpUtils
  * @author Jack Goldsworth
  */
 class GuestMenuActivity : AppCompatActivity() {
+
+    private val partyService = PartyServiceImpl()
 
     override fun onCreate(instanceState: Bundle?) {
         super.onCreate(instanceState)
@@ -30,11 +33,11 @@ class GuestMenuActivity : AppCompatActivity() {
         }
 
         leaveParty.setOnClickListener {
-            HttpUtils.leaveParty(this, ChooseActivity::class.java)
+            partyService.leaveParty(this, ChooseActivity::class.java)
         }
 
         backArrow.setOnClickListener {
-            HttpUtils.leaveParty(this, JoinPartyActivity::class.java)
+            partyService.leaveParty(this, JoinPartyActivity::class.java)
         }
 
         songSearch.setOnClickListener {
@@ -49,5 +52,10 @@ class GuestMenuActivity : AppCompatActivity() {
             intent.putExtra("isGuest", true)
             startActivity(intent)
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        SpotifyUtils.createSpotifySocket(this)
     }
 }

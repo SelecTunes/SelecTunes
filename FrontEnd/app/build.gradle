@@ -44,6 +44,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':spotify-app-remote-release-0.7.0')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0'
@@ -64,11 +65,11 @@ dependencies {
     implementation 'org.apache.httpcomponents:httpclient:4.5.11'
     implementation 'com.squareup.okhttp3:okhttp:4.3.1'
     implementation 'org.conscrypt:conscrypt-android:2.2.1'
-    testImplementation 'junit:junit:4.12'
     implementation 'com.github.bumptech.glide:glide:4.4.0'
-    kapt 'com.github.bumptech.glide:compiler:4.4.0'
     implementation 'com.microsoft.signalr:signalr:3.1.3'
     implementation 'org.slf4j:slf4j-jdk14:1.7.25'
+    kapt 'com.github.bumptech.glide:compiler:4.4.0'
+    testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

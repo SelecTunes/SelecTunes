@@ -6,7 +6,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.microsoft.signalr.HubConnectionBuilder
 import cs309.selectunes.R
-import cs309.selectunes.services.ServerServiceImpl
+import cs309.selectunes.services.SongServiceImpl
 
 
 /**
@@ -19,9 +19,11 @@ import cs309.selectunes.services.ServerServiceImpl
 class SongQueueActivity : AppCompatActivity() {
 
     companion object {
-        private var votes = HashMap<String, Int>()
+        var votes = HashMap<String, Int>()
         var songsVotedOn = HashMap<String, String>()
     }
+
+    private val songService = SongServiceImpl()
 
     override fun onCreate(instanceState: Bundle?) {
         super.onCreate(instanceState)
@@ -46,30 +48,31 @@ class SongQueueActivity : AppCompatActivity() {
             .withHeader("cookie", "Holtzmann=" + settings.getString("cookie", ""))
             .build()
 
+        println(hubConnection.connectionState.name)
+
         hubConnection.on("ReceiveUpvote", { id, count ->
             votes[id] = count.toInt()
-            ServerServiceImpl().getSongQueue(this, hubConnection, votes)
+            songService.getSongQueue(this, hubConnection, votes)
         }, String::class.java, String::class.java)
 
         hubConnection.on("ReceiveDownvote", { id, count ->
             votes[id] = count.toInt()
-            ServerServiceImpl().getSongQueue(this, hubConnection, votes)
+            songService.getSongQueue(this, hubConnection, votes)
         }, String::class.java, String::class.java)
 
         hubConnection.on("ReceiveMoveSongToFront", { id ->
             votes.remove(id)
             songsVotedOn.remove(id)
-            ServerServiceImpl().getSongQueue(this, hubConnection, votes)
+            songService.getSongQueue(this, hubConnection, votes)
         }, String::class.java)
 
         hubConnection.on("ReceiveRemoveSong", { id ->
             votes.remove(id)
             songsVotedOn.remove(id)
-            ServerServiceImpl().getSongQueue(this, hubConnection, votes)
+            songService.getSongQueue(this, hubConnection, votes)
         }, String::class.java)
 
         hubConnection.start().blockingAwait()
-        println(hubConnection.connectionState.name)
-        ServerServiceImpl().getSongQueue(this, hubConnection, votes)
+        songService.getSongQueue(this, hubConnection, votes)
     }
 }

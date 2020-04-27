@@ -18,8 +18,19 @@ object NukeSSLCerts {
         try {
             val trustAllCerts: Array<TrustManager> = arrayOf(
                     object : X509TrustManager {
-                        override fun checkClientTrusted(certs: Array<X509Certificate?>?, authType: String?) {}
-                        override fun checkServerTrusted(certs: Array<X509Certificate?>?, authType: String?) {}
+                        override fun checkClientTrusted(
+                            certs: Array<X509Certificate?>?,
+                            authType: String?
+                        ) {
+                            // We should never check if a client is trusted.
+                        }
+
+                        override fun checkServerTrusted(
+                            certs: Array<X509Certificate?>?,
+                            authType: String?
+                        ) {
+                            // We should never check if a server is trusted.
+                        }
                         override fun getAcceptedIssuers(): Array<X509Certificate> {
                             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                         }
@@ -30,6 +41,7 @@ object NukeSSLCerts {
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory())
             HttpsURLConnection.setDefaultHostnameVerifier { arg0, arg1 -> true }
         } catch (e: Exception) {
+            // Throw away the exception.
         }
     }
 }

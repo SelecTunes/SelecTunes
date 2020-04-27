@@ -1,9 +1,9 @@
-package cs309.selectunes.activities
+package cs309.selectunes
 
 import android.widget.Button
 import androidx.test.rule.ActivityTestRule
-import cs309.selectunes.R
-import cs309.selectunes.services.ServerService
+import cs309.selectunes.activities.ChooseActivity
+import cs309.selectunes.services.PartyService
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -17,7 +17,7 @@ class ChooseActivityTest {
     @get:Rule
     val activityTestRule = ActivityTestRule(ChooseActivity::class.java)
 
-    private val serverService = Mockito.mock(ServerService::class.java)
+    private val serverService = Mockito.mock(PartyService::class.java)
 
     private lateinit var chooseActivity: ChooseActivity
 
