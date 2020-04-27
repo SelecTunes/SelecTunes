@@ -1,8 +1,9 @@
-package cs309.selectunes.activities
+package cs309.selectunes
 
 import androidx.test.rule.ActivityTestRule
+import cs309.selectunes.activities.GuestListActivity
 import cs309.selectunes.models.Guest
-import cs309.selectunes.services.ServerService
+import cs309.selectunes.services.PartyService
 import org.json.JSONArray
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -15,15 +16,16 @@ class GuestListActivityTest {
     @get:Rule
     val activityTestRule = ActivityTestRule(GuestListActivity::class.java)
 
-    private lateinit var serverService: ServerService
+    private lateinit var serverService: PartyService
 
     private lateinit var guestListActivity: GuestListActivity
 
     private var guestList = ArrayList<Guest>()
+
     @Before
     fun setup() {
         guestListActivity = activityTestRule.activity
-        serverService = Mockito.mock(ServerService::class.java)
+        serverService = Mockito.mock(PartyService::class.java)
         // Just test the first three entries.
         guestList.add(Guest("test1@iastate.edu"))
         guestList.add(Guest("joshuae1@iastate.edu"))

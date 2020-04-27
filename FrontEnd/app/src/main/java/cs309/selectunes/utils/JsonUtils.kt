@@ -41,6 +41,7 @@ object JsonUtils {
      * @param status request response code.
      */
     fun parseRegisterResponse(activity: AppCompatActivity?, body: String?, status: Int): Boolean {
+        println(body)
         val registerError = activity?.findViewById<TextView>(R.id.register_error)
         if (body == "true") {
             registerError?.text = ""

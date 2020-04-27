@@ -6,7 +6,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import cs309.selectunes.R
 import cs309.selectunes.models.Guest
-import cs309.selectunes.services.ServerServiceImpl
+import cs309.selectunes.services.PartyServiceImpl
 import org.json.JSONArray
 
 /**
@@ -33,7 +33,7 @@ class GuestListActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        ServerServiceImpl().getGuestList(this, intent.getBooleanExtra("isGuest", true))
+        PartyServiceImpl().getGuestList(this, intent.getBooleanExtra("isGuest", true))
     }
 
     fun parseGuests(givenJSON: JSONArray): List<Guest> {

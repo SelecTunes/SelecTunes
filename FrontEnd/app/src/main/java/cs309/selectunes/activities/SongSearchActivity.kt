@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import cs309.selectunes.R
 import cs309.selectunes.models.Song
-import cs309.selectunes.services.ServerServiceImpl
+import cs309.selectunes.services.SongServiceImpl
 import org.json.JSONObject
 
 /**
@@ -31,7 +31,7 @@ class SongSearchActivity : AppCompatActivity() {
 
         songSearch.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                ServerServiceImpl().searchSong(songSearch.text.toString(), this)
+                SongServiceImpl().searchSong(songSearch.text.toString(), this)
                 return@OnKeyListener true
             }
             false
@@ -59,7 +59,6 @@ class SongSearchActivity : AppCompatActivity() {
             val albumArt = jsonAlbum.getJSONArray("images")
             val firstSize = albumArt.getJSONObject(0)
             val albumArtSrc = firstSize.getString("url")
-            //println("Song $x: name: $songName, id: $songId, artist: $artistName, albumSrc: $albumArtSrc, explicit: $explicit")
             songList.add(
                     Song(
                             songName,
@@ -67,7 +66,7 @@ class SongSearchActivity : AppCompatActivity() {
                             artistName,
                             albumArtSrc,
                             explicit,
-                        null
+                            null
                     )
             )
         }

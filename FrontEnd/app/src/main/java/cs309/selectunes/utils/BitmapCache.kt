@@ -9,7 +9,7 @@ import android.util.LruCache
  */
 object BitmapCache {
 
-    private const val cacheSize = 4 * 1024
+    private const val cacheSize = 100
     private val bitMapCache = object : LruCache<String, Bitmap>(cacheSize) {
         override fun sizeOf(key: String, value: Bitmap): Int {
             return value.byteCount
@@ -24,7 +24,6 @@ object BitmapCache {
      */
     fun loadOrStore(key: String, bitmap: Bitmap): Bitmap {
         if (bitMapCache[key] == null) {
-            bitMapCache.trimToSize(cacheSize / 2)
             bitMapCache.put(key, bitmap)
             return bitmap
         }

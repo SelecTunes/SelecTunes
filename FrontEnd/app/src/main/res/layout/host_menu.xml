@@ -4,28 +4,83 @@
     android:layout_height="match_parent"
     android:background="?attr/guest_host_menu_background">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/host_song_info"
+            android:layout_width="wrap_content"
+            android:layout_height="62dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="99dp"
+            android:layout_marginEnd="52dp"
+            android:background="@drawable/host_menu_button_bg"
+            android:outlineProvider="none"
+            android:textColor="@color/colorTextHost" />
+
+        <TextView
+            android:id="@+id/host_song_name"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/host_song_info"
+            android:layout_alignBottom="@+id/host_song_info"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="29dp"
+            android:textColor="@color/colorTextHost" />
+
+        <TextView
+            android:id="@+id/host_song_artist"
+            android:layout_width="198dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/host_song_info"
+            android:layout_alignBottom="@+id/host_song_info"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorTextHost" />
+
+        <ImageView
+            android:id="@+id/host_song_img"
+            android:layout_width="70dp"
+            android:layout_height="60dp"
+            android:layout_alignEnd="@+id/host_song_info"
+            android:layout_alignBottom="@+id/host_song_info"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="81dp"
+            android:layout_marginEnd="231dp"
+            android:layout_marginBottom="0dp"
+            android:outlineProvider="none" />
+
+    </RelativeLayout>
+
     <Button
-        android:id="@+id/host_song_search_button"
-        android:layout_width="307dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/join_code_button"
+        android:layout_width="wrap_content"
+        android:layout_height="102dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="207dp"
+        android:layout_marginTop="481dp"
         android:layout_marginEnd="52dp"
         android:background="@drawable/host_menu_button_bg"
         android:outlineProvider="none"
-        android:text="Song Search"
-        android:textColor="@color/colorTextHost" />
+        android:text="Join Code"
+        android:textColor="@color/colorTextHost"
+        android:textSize="40dp" />
 
     <Button
         android:id="@+id/end_party"
         android:layout_width="189dp"
         android:layout_height="64dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="550dp"
+        android:layout_marginStart="111dp"
+        android:layout_marginTop="621dp"
         android:layout_marginEnd="111dp"
         android:background="@drawable/host_menu_button_bg"
         android:outlineProvider="none"
@@ -33,18 +88,18 @@
         android:textColor="@color/colorTextHost" />
 
     <Button
-        android:id="@+id/song_list"
+        android:id="@+id/guest_list"
         android:layout_width="307dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="146dp"
+        android:layout_marginTop="214dp"
         android:layout_marginEnd="52dp"
         android:background="@drawable/host_menu_button_bg"
         android:outlineProvider="none"
-        android:text="Song queue"
+        android:text="Guest List"
         android:textColor="@color/colorTextHost" />
 
     <Button
@@ -55,7 +110,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="267dp"
+        android:layout_marginTop="396dp"
         android:layout_marginEnd="52dp"
         android:background="@drawable/host_menu_button_bg"
         android:outlineProvider="none"
@@ -63,34 +118,33 @@
         android:textColor="@color/colorTextHost" />
 
     <Button
-        android:id="@+id/join_code_button"
-        android:layout_width="wrap_content"
-        android:layout_height="102dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="51dp"
-        android:layout_marginTop="408dp"
-        android:layout_marginEnd="53dp"
-        android:background="@drawable/host_menu_button_bg"
-        android:outlineProvider="none"
-        android:text="Join Code"
-        android:textColor="@color/colorTextHost"
-        android:textSize="40dp" />
-
-    <Button
-        android:id="@+id/guest_list"
+        android:id="@+id/song_list"
         android:layout_width="307dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="85dp"
+        android:layout_marginTop="275dp"
         android:layout_marginEnd="52dp"
         android:background="@drawable/host_menu_button_bg"
         android:outlineProvider="none"
-        android:text="Guest List"
+        android:text="Song queue"
+        android:textColor="@color/colorTextHost" />
+
+    <Button
+        android:id="@+id/host_song_search_button"
+        android:layout_width="307dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="336dp"
+        android:layout_marginEnd="52dp"
+        android:background="@drawable/host_menu_button_bg"
+        android:outlineProvider="none"
+        android:text="Song Search"
         android:textColor="@color/colorTextHost" />
 
     <Button
