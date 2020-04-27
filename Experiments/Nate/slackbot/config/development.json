@@ -3,7 +3,7 @@
     "fileUploadUrl": "https://slack.com/api/files.upload",
     "reporterBot": {
         "fileUploadChannel": "#reporterbot_files",
-        "botToken": "xoxb-888593454304-915217061138-PcVjOOsph52sImbIuS5wxZca"
+        "botToken": "OOPS"
     }
   }
 }
