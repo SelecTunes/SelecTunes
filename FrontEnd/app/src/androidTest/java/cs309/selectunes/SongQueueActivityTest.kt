@@ -99,4 +99,27 @@ class SongQueueActivityTest {
         }
         Assert.assertEquals(isSame, true)
     }
+
+    @Test
+    fun testQueueAdd() {
+        val song = Song("Gimmie Love", "1", "Joji", "", explicit = false, voteable = false)
+        val song2 = Song("Right", "2", "Mac Miller", "", explicit = false, voteable = false)
+        var lastSong = ""
+        Mockito.`when`(songService.addSongToQueue(song, songQueueActivity)).then {
+            songList.add(song)
+            songList.add(song2)
+            lastSong = song.id
+            null
+        }
+        Mockito.`when`(songService.removeLockedSong("", songQueueActivity)).then {
+            val firstSong = songList.firstOrNull { it.id == lastSong }
+            songList.remove(firstSong)
+            lastSong = song2.id
+            null
+        }
+        songService.addSongToQueue(song, songQueueActivity)
+        Assert.assertEquals(song.id, lastSong)
+        songService.removeLockedSong("", songQueueActivity)
+        Assert.assertEquals(song2.id, lastSong)
+    }
 }
