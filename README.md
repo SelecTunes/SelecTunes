@@ -42,3 +42,9 @@ For this project, we have decided to make an application called SelecTunes. Have
 * Open the app in Android Studio
 * Run with corresponding run configuration
 
+## Authors
+* [Jack Goldsworth](https://github.com/JackGoldsworth)
+* [Nate Tucker](https://github.com/ntuckertriplet)
+* [Alexander Young](https://github.com/meun5)
+* Joshua Edwards
+
